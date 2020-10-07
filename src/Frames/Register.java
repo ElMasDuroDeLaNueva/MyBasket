@@ -209,10 +209,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_cuentaInicio.add(lbl_inicioSesion,BorderLayout.CENTER);
         lbl_inicioSesion.addMouseListener(this);
         lbl_inicioSesion.setFont(Fuentes.f_register);
-        subrayar = lbl_inicioSesion.getFont();
-        Map attributes = (Map) subrayar.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE,TextAttribute.UNDERLINE_ON);
-        lbl_inicioSesion.setFont(((Font) subrayar).deriveFont(attributes));
+        Fuentes.subrayar(lbl_inicioSesion);
 
         panel_cuentaInicio.add(lbl_cuenta,BorderLayout.WEST);
         panel_cuentaInicio.setBackground(Color.WHITE);
@@ -225,6 +222,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_separador.setBorder(new MatteBorder(1, 20, 1, 20,  Color.WHITE));
 
         //BOTON
+        btn_crearCuenta.setFont(Fuentes.f_eliminar);
         btn_crearCuenta.addActionListener(this);
 
         panel_columnas.add(panel_titulo);
@@ -325,18 +323,12 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         lbl_inicioSesion.setFont(Fuentes.f_b_inicio);
-        subrayar = lbl_inicioSesion.getFont();
-        Map attributes = (Map) subrayar.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE,TextAttribute.UNDERLINE_ON);
-        lbl_inicioSesion.setFont(((Font) subrayar).deriveFont(attributes));
+        Fuentes.subrayar(lbl_inicioSesion);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         lbl_inicioSesion.setFont(Fuentes.f_register);
-        subrayar = lbl_inicioSesion.getFont();
-        Map attributes = (Map) subrayar.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE,TextAttribute.UNDERLINE_ON);
-        lbl_inicioSesion.setFont(((Font) subrayar).deriveFont(attributes));
+        Fuentes.subrayar(lbl_inicioSesion);
     }
 }
