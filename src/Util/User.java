@@ -9,20 +9,16 @@ public class User {
     String password;
     String direccion;
     String movil;
-    String answer;
-    String pregunta;
     //POSTERIORMENTE PRODUCTOS
 
     //CONSTRUCTOR
-    public User(String nombre, String apellidos, String email, String password, String direccion, String movil, String pregunta, String answer){
+    public User(String nombre, String apellidos, String email, String password, String direccion, String movil){
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.password = password;
         this.direccion = direccion;
         this.movil = movil;
-        this.answer = answer;
-        this.pregunta = pregunta;
     }
 
     //GETTERS/SETTERS VARIABLES
@@ -74,19 +70,8 @@ public class User {
         this.movil = movil;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getNombreCompleto(){
+        return nombre+apellidos;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getPregunta() {
-        return pregunta;
-    }
-
-    public void setPregunta(String pregunta) {
-        this.pregunta = pregunta;
-    }
 }
