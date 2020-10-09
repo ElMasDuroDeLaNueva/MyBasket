@@ -6,10 +6,10 @@ import Frames.MiCuenta;
 public class Main {
 
     public static void main(String[] args) {
-	    //new InicioSesion();
+	    new InicioSesion();
         //new Register();
-        new MiCuenta();
-        //Ver push
+        //new MiCuenta();
+        //Ver push RAMON
     }
 }
 

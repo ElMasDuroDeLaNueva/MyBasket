@@ -85,6 +85,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         //Panel Eliminar
         lbl_eliminar.setFont(Fuentes.f_eliminar_plano);
         btn_eliminarCuenta.setFont(Fuentes.f_eliminar);
+        btn_eliminarCuenta.setBackground(Color.WHITE);
         btn_eliminarCuenta.setHorizontalAlignment(SwingConstants.LEFT);
         btn_eliminarCuenta.setPreferredSize(new Dimension(20, 50));
         panel_botonEliminar.add(btn_eliminarCuenta);

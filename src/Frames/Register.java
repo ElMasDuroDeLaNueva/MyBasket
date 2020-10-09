@@ -223,6 +223,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
 
         //BOTON
         btn_crearCuenta.setFont(Fuentes.f_eliminar);
+        btn_crearCuenta.setBackground(Color.WHITE);
         btn_crearCuenta.addActionListener(this);
 
         panel_columnas.add(panel_titulo);
