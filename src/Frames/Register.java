@@ -11,6 +11,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.net.URL;
 import java.util.Map;
 
 public class Register extends JFrame implements ActionListener, MouseListener {
@@ -90,6 +91,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JLabel lbl_movil = new JLabel("Movil");
     JLabel lbl_securityQuestion = new JLabel("Pregunta de seguridad");
 
+    URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
+    URL url_Mostrar = this.getClass().getResource("/images/Mostrar.png");
 
     public Register(){
 
@@ -141,7 +144,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_email_obligatorio.setBackground(Color.WHITE);
 
         //PANEL PASSWORD
-        ImageIcon mostrar = Imagenes.resize(new ImageIcon("images/Mostrar.png"), 30, 20);
+        ImageIcon icon_mostrar = new ImageIcon(url_Mostrar);
+        ImageIcon mostrar = Imagenes.resize(icon_mostrar, 30, 20);
         btn_mostrar_contraseña = new JButton(mostrar);
         btn_mostrar_contraseña.setBorder(null);
         btn_mostrar_contraseña.setBackground(Color.WHITE);
@@ -258,7 +262,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_contenido.setBorder(new MatteBorder(1, 25, 1, 25,  Color.WHITE));
 
         panel_logo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        ImageIcon logo = Imagenes.resize(new ImageIcon("images/Logo.png"), 120, 110);
+        ImageIcon icon_logo = new ImageIcon(url_Logo);
+        ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
         //ImageIcon logo = Imagenes.resize(new ImageIcon("images/Logo.png"), 182, 70);
         JLabel lblLogo = new JLabel(logo);
         panel_logo.add(lblLogo);

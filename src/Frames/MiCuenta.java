@@ -10,6 +10,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.net.URL;
 import java.util.Map;
 
 public class MiCuenta extends JFrame implements MouseListener{
@@ -54,16 +55,17 @@ public class MiCuenta extends JFrame implements MouseListener{
     JLabel lbl_tuCuenta= new JLabel("TU CUENTA");
     JLabel lbl_misDatos = new JLabel("MIS DATOS");
     JLabel lbl_misDatosTexto = new JLabel("Modifica tus datos personales a continuación para que tu cuenta esté actualizada.");
-
-
     JLabel lbl_eliminarCuenta = new JLabel("    E L I M I N A R  L A  C U E N T A               →");
-
     JLabel lbl_logo;
+
+    URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
+
 
     public MiCuenta() {
 
         //Panel titulo
-        ImageIcon logo = Imagenes.resize(new ImageIcon("images/LogoSinTexto.png"), 120, 110);
+        ImageIcon icon_logo = new ImageIcon(url_Logo);
+        ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
         lbl_logo = new JLabel(logo);
         lbl_logo.setBorder(null);
         lbltitulo.setFont(Fuentes.f_titulo);

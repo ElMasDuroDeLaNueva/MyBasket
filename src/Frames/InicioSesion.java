@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 
 public class InicioSesion extends JFrame implements ActionListener, MouseListener {
 
@@ -45,6 +46,8 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
 
     JButton b_registrate = new JButton("CREAR CUENTA");
     JButton b_inicio= new JButton("INICIAR SESION");
+
+    URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
 
     public InicioSesion(){
 
@@ -115,7 +118,8 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
         formulario.setBackground(Color.WHITE);
 
         //PANEL LOGO
-        ImageIcon logo = Imagenes.resize(new ImageIcon("images/LogoSinTexto.png"), 140, 130);
+        ImageIcon icon_logo = new ImageIcon(url_Logo);
+        ImageIcon logo = Imagenes.resize(icon_logo, 140, 130);
         JLabel lblLogo = new JLabel(logo);
         JLabel lbltitulo = new JLabel("My Basket");
         lbltitulo.setFont(Fuentes.f_titulo);
