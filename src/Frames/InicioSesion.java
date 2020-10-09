@@ -141,6 +141,8 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
         getContentPane().add(MainPanel);
 
         //Ventana
+        Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
+        this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
