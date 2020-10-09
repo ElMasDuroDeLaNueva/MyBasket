@@ -14,6 +14,7 @@ public class Fuentes {
     public static final Font f_register = new Font(Font.SANS_SERIF, Font.BOLD, 12);
     public static final Font f_campo = new Font(Font.SERIF, Font.BOLD, 12);
     public static final Font f_titulo = new Font("American Typewriter", Font.BOLD, 35);
+    public static final Font f_titulo_20 = new Font("American Typewriter", Font.BOLD, 20);
     public static final Font f_datos= new Font("Helvetica", Font.BOLD, 26);
     public static final Font f_correo= new Font("Helvetica", Font.BOLD, 18);
     public static final Font f_info= new Font("Helvetica", Font.PLAIN, 16);

@@ -18,9 +18,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
 
     InicioSesion frame_inicio;
 
-    JPanel panel_logo = new JPanel();
+    JPanel panel_logo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JPanel panel_contenido = new JPanel(new GridLayout(1,0));
-    //JPanel panel_intermedio = new JPanel(new GridLayout(0,1));
     JPanel panel_principal = new JPanel(new BorderLayout());
     JPanel panel_sur = new JPanel();
     //JPanel panel_info = new JPanel(new GridLayout(1,0));
@@ -91,7 +90,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JLabel lbl_movil = new JLabel("Movil");
     JLabel lbl_securityQuestion = new JLabel("Pregunta de seguridad");
 
-    URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
+    URL url_Logo = this.getClass().getResource("/images/Logo.png");
     URL url_Mostrar = this.getClass().getResource("/images/Mostrar.png");
 
     public Register(){
@@ -261,7 +260,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_contenido.setBackground(Color.WHITE);
         panel_contenido.setBorder(new MatteBorder(1, 25, 1, 25,  Color.WHITE));
 
-        panel_logo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        //Panel Logo
         ImageIcon icon_logo = new ImageIcon(url_Logo);
         ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
         //ImageIcon logo = Imagenes.resize(new ImageIcon("images/Logo.png"), 182, 70);
