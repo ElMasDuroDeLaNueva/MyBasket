@@ -12,8 +12,6 @@ import java.awt.event.WindowEvent;
 
 public class ErrorInicio extends JFrame {
 
-    InicioSesion pantalla_inicio;
-
     JPanel panel = new JPanel(new GridLayout(5,0));
     JPanel panel_principal = new JPanel(new BorderLayout());
 

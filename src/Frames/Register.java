@@ -310,6 +310,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         if(target == lbl_inicioSesion) {
             lbl_inicioSesion.setFont(Fuentes.f_b_inicio);
             Fuentes.subrayar(lbl_inicioSesion);
+            lbl_inicioSesion.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 

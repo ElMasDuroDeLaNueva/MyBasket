@@ -15,6 +15,7 @@ import java.net.URL;
 
 public class InicioSesion extends JFrame implements ActionListener, MouseListener {
 
+    OlvidarContraseña frame_olvidar;
     ErrorInicio frame_errorInicio;
     Register frame_register;
 
@@ -73,10 +74,12 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
 
         b_registrate.setFont(Fuentes.f_b_inicio);
         b_registrate.setBackground(Color.white);
+        b_registrate.addActionListener(this);
+        b_registrate.setCursor(new Cursor(Cursor.HAND_CURSOR));
         b_inicio.setFont(Fuentes.f_b_inicio);
         b_inicio.setBackground(Color.white);
-        b_registrate.addActionListener(this);
         b_inicio.addActionListener(this);
+        b_inicio.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         MainPanel.setBorder(new MatteBorder(1, 10, 1, 1,  Color.WHITE));
         MainPanel.setBackground(Color.WHITE);
@@ -162,7 +165,7 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         Object target = e.getSource();
         if(target == lbl_olvidar){
-            frame_errorInicio = new ErrorInicio(this);
+            frame_olvidar = new OlvidarContraseña(this);
         }
     }
 
@@ -174,6 +177,7 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
         Object target = e.getSource();
         if(target == lbl_olvidar){
             lbl_olvidar.setForeground(Color.BLUE);
+            lbl_olvidar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 

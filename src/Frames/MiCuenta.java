@@ -91,6 +91,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_eliminarCuenta.setBackground(Color.WHITE);
         lbl_eliminarCuenta.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_eliminarCuenta.setPreferredSize(new Dimension(20, 50));
+        lbl_eliminarCuenta.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel_botonEliminar.add(lbl_eliminarCuenta);
         panel_eliminar.add(panel_botonEliminar);
         panel_eliminar.add(lbl_eliminar);
@@ -238,7 +239,12 @@ public class MiCuenta extends JFrame implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        Object target = e.getSource();
+        if(target == lbltitulo){
+            lbltitulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        } else if(target == lbl_logo){
+            lbl_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
     }
 
     @Override
