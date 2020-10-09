@@ -159,6 +159,8 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
             frame_register = new Register();
         }
         else if(target == b_inicio){
+            this.setVisible (false);
+            this.dispose();
             frame_MiCuenta = new MiCuenta();
         }
     }

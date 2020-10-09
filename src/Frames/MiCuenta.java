@@ -38,6 +38,7 @@ public class MiCuenta extends JFrame implements MouseListener{
     JPanel panel_modificar_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_correo_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_contraseña_fondo = new JPanel(new GridLayout(1,0));
+    JPanel panel_logout = new JPanel(new GridLayout(0,2));
 
     JLabel lbl_correo = new JLabel();
     JLabel lbl_contraseña = new JLabel();
@@ -56,6 +57,7 @@ public class MiCuenta extends JFrame implements MouseListener{
     JLabel lbl_misDatos = new JLabel("MIS DATOS");
     JLabel lbl_misDatosTexto = new JLabel("Modifica tus datos personales a continuación para que tu cuenta esté actualizada.");
     JLabel lbl_eliminarCuenta = new JLabel("    E L I M I N A R  L A  C U E N T A               →");
+    JLabel lbl_logout = new JLabel("Desconectarse");
     JLabel lbl_logo;
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
@@ -68,12 +70,19 @@ public class MiCuenta extends JFrame implements MouseListener{
         ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
         lbl_logo = new JLabel(logo);
         lbl_logo.setBorder(null);
+        lbl_logout.setFont(Fuentes.f_b_inicio);
+        Fuentes.subrayar(lbl_logout);
+        panel_logout.add(lbl_logout);
+        lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_logout.addMouseListener(this);
+        panel_logout.setBackground(Color.WHITE);
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
         lbl_logo.addMouseListener(this);
         lbltitulo.addMouseListener(this);
         panel_titulo.add(lbl_logo,BorderLayout.WEST);
         panel_titulo.add(lbltitulo,BorderLayout.CENTER);
+        panel_titulo.add(panel_logout,BorderLayout.EAST);
         panel_titulo.setBackground(Color.white);
         panel_titulo.setBorder(new MatteBorder(1, 1, 1, 1,  Color.WHITE));
 
@@ -225,6 +234,10 @@ public class MiCuenta extends JFrame implements MouseListener{
             this.setVisible (false);
             this.dispose();
             frame_inicio = new InicioSesion();
+        }else if(target == lbl_logout){
+            this.setVisible (false);
+            this.dispose();
+            new InicioSesion();
         }
     }
 
@@ -244,11 +257,17 @@ public class MiCuenta extends JFrame implements MouseListener{
             lbltitulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         } else if(target == lbl_logo){
             lbl_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }else if(target == lbl_logout){
+            lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            lbl_logout.setForeground(Color.BLUE);
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        Object target = e.getSource();
+        if(target == lbl_logout){
+            lbl_logout.setForeground(Color.BLACK);;
+        }
     }
 }
