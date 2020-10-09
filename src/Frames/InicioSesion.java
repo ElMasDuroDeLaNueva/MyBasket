@@ -69,9 +69,9 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
         txt_password.setBackground(fondo);
 
         b_registrate.setFont(Fuentes.f_b_inicio);
-        b_registrate.setBackground(Color.WHITE);
+        b_registrate.setBackground(Color.white);
         b_inicio.setFont(Fuentes.f_b_inicio);
-        b_inicio.setBackground(Color.WHITE);
+        b_inicio.setBackground(Color.white);
         b_registrate.addActionListener(this);
         b_inicio.addActionListener(this);
 

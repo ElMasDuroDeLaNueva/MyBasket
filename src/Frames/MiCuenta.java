@@ -12,7 +12,7 @@ import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-public class MiCuenta extends JFrame implements ActionListener, MouseListener{
+public class MiCuenta extends JFrame implements MouseListener{
 
     InicioSesion frame_inicio;
 
@@ -33,7 +33,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
     JPanel panel_correo = new JPanel(new BorderLayout());
     JPanel panel_contraseña = new JPanel(new BorderLayout());
     JPanel panel_correo_subpanel = new JPanel(new GridLayout(2,0));
-    JPanel panel_contraseña_subpanel = new JPanel(new GridLayout(4,0));
+    JPanel panel_contraseña_subpanel = new JPanel(new GridLayout(2,0));
     JPanel panel_modificar_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_correo_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_contraseña_fondo = new JPanel(new GridLayout(1,0));
@@ -42,7 +42,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
     JLabel lbl_contraseña = new JLabel();
     JLabel lbl_correo_titulo = new JLabel("CORREO ELECTRONICO");
     JLabel lbl_contraseña_titulo = new JLabel("CONTRASEÑA");
-    JLabel lbltitulo = new JLabel("My Basket");
+    JLabel lbltitulo = new JLabel("Mi Cuenta");
     JLabel lbl_nombre = new JLabel();
     JLabel lbl_movil = new JLabel();
     JLabel lbl_direccion = new JLabel();
@@ -56,24 +56,24 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
     JLabel lbl_misDatosTexto = new JLabel("Modifica tus datos personales a continuación para que tu cuenta esté actualizada.");
 
 
-    JButton btn_eliminarCuenta = new JButton("    E L I M I N A R  L A  C U E N T A                      →");
+    JLabel lbl_eliminarCuenta = new JLabel("    E L I M I N A R  L A  C U E N T A               →");
 
-    JButton btn_logo;
+    JLabel lbl_logo;
 
     public MiCuenta() {
 
         //Panel titulo
         ImageIcon logo = Imagenes.resize(new ImageIcon("images/LogoSinTexto.png"), 120, 110);
-        btn_logo = new JButton(logo);
-        btn_logo.setBorder(null);
+        lbl_logo = new JLabel(logo);
+        lbl_logo.setBorder(null);
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
-        btn_logo.addActionListener(this);
+        lbl_logo.addMouseListener(this);
         lbltitulo.addMouseListener(this);
-        panel_titulo.add(btn_logo,BorderLayout.WEST);
+        panel_titulo.add(lbl_logo,BorderLayout.WEST);
         panel_titulo.add(lbltitulo,BorderLayout.CENTER);
         panel_titulo.setBackground(Color.white);
-        panel_titulo.setBorder(new MatteBorder(-1, -1, 1, -1,  Color.WHITE));
+        panel_titulo.setBorder(new MatteBorder(1, 1, 1, 1,  Color.WHITE));
 
         //Panel MisDatos
         lbl_misDatos.setFont(Fuentes.f_datos);
@@ -83,12 +83,13 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         panel_misDatos.setBackground(Color.WHITE);
 
         //Panel Eliminar
+        lbl_eliminarCuenta.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
         lbl_eliminar.setFont(Fuentes.f_eliminar_plano);
-        btn_eliminarCuenta.setFont(Fuentes.f_eliminar);
-        btn_eliminarCuenta.setBackground(Color.WHITE);
-        btn_eliminarCuenta.setHorizontalAlignment(SwingConstants.LEFT);
-        btn_eliminarCuenta.setPreferredSize(new Dimension(20, 50));
-        panel_botonEliminar.add(btn_eliminarCuenta);
+        lbl_eliminarCuenta.setFont(Fuentes.f_eliminar);
+        lbl_eliminarCuenta.setBackground(Color.WHITE);
+        lbl_eliminarCuenta.setHorizontalAlignment(SwingConstants.LEFT);
+        lbl_eliminarCuenta.setPreferredSize(new Dimension(20, 50));
+        panel_botonEliminar.add(lbl_eliminarCuenta);
         panel_eliminar.add(panel_botonEliminar);
         panel_eliminar.add(lbl_eliminar);
         panel_eliminar.setBorder(new MatteBorder(1, -1, -1, -1,  Color.GRAY));
@@ -110,7 +111,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         Fuentes.subrayar(lbl_modificar_datos);
         panel_modificar_fondo.setBackground(Color.WHITE);
         panel_modificar_fondo.add(lbl_modificar_datos);
-        panel_modificar_fondo.setBorder(new MatteBorder(-1, 1, -1, 525, Color.WHITE));
+        panel_modificar_fondo.setBorder(new MatteBorder(-1, 1, -1, 400, Color.WHITE));
         panel_datos_info.add(lbl_nombre);
         panel_datos_info.add(lbl_movil);
         panel_datos_info.add(lbl_direccion);
@@ -131,8 +132,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         lbl_correo.setFont(Fuentes.f_texto);
         panel_correo_subpanel.add(lbl_correo);
         panel_correo_subpanel.add(panel_correo_fondo);
-        panel_correo_subpanel.setBorder(new MatteBorder(5, -1, -1, -1, Color.WHITE));
-        panel_correo_fondo.setBorder(new MatteBorder(-1, 2, -1, 525, Color.WHITE));
+        panel_correo_subpanel.setBorder(new MatteBorder(5, 1, -1, -1, Color.WHITE));
         panel_correo_subpanel.setBackground(Color.WHITE);
         panel_correo_fondo.setBackground(Color.WHITE);
 
@@ -141,7 +141,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         panel_correo.add(panel_correo_subpanel,BorderLayout.CENTER);
         panel_correo.add(lbl_correo_titulo,BorderLayout.NORTH);
         panel_correo.setBackground(Color.WHITE);
-        panel_correo.setBorder(new MatteBorder(10, 1, 10, 1,  Color.WHITE));
+        panel_correo.setBorder(new MatteBorder(1, 1, 1, 1,  Color.WHITE));
 
         //Panel Contraseña Subpanel
         lbl_modificar_contraseña.setFont(Fuentes.f_eliminar);
@@ -153,7 +153,6 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         panel_contraseña_subpanel.add(lbl_contraseña);
         panel_contraseña_subpanel.add(panel_contraseña_fondo);
         panel_contraseña_subpanel.setBorder(new MatteBorder(5, 1, -1, -1, Color.WHITE));
-        panel_contraseña_fondo.setBorder(new MatteBorder(1, 2, -1, 525, Color.WHITE));
         panel_contraseña_subpanel.setBackground(Color.WHITE);
         panel_contraseña_fondo.setBackground(Color.WHITE);
 
@@ -162,7 +161,7 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
         panel_contraseña.add(panel_contraseña_subpanel,BorderLayout.CENTER);
         panel_contraseña.add(lbl_contraseña_titulo,BorderLayout.NORTH);
         panel_contraseña.setBackground(Color.WHITE);
-        panel_contraseña.setBorder(new MatteBorder(-1, 1, 10, 1, Color.WHITE));
+        panel_contraseña.setBorder(new MatteBorder(1, 1, 1, 1, Color.WHITE));
 
         //Panel Cuenta
         panel_cuenta_info.add(panel_correo);
@@ -213,16 +212,13 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        this.setVisible (false);
-        this.dispose();
-        frame_inicio = new InicioSesion();
-    }
-
-    @Override
     public void mouseClicked(MouseEvent e) {
         Object target = e.getSource();
         if(target == lbltitulo){
+            this.setVisible (false);
+            this.dispose();
+            frame_inicio = new InicioSesion();
+        } else if(target == lbl_logo){
             this.setVisible (false);
             this.dispose();
             frame_inicio = new InicioSesion();
@@ -240,34 +236,11 @@ public class MiCuenta extends JFrame implements ActionListener, MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Object target = e.getSource();
-        if(target == lbl_modificar_datos){
-            lbl_modificar_datos.setForeground(Color.WHITE);
-            lbl_modificar_datos.setOpaque(true);
-            lbl_modificar_datos.setBackground(Color.BLACK);
-        }else if(target == lbl_modificar_correo){
-            lbl_modificar_correo.setForeground(Color.WHITE);
-            lbl_modificar_correo.setOpaque(true);
-            lbl_modificar_correo.setBackground(Color.BLACK);
-        }else if(target == lbl_modificar_contraseña){
-            lbl_modificar_contraseña.setForeground(Color.WHITE);
-            lbl_modificar_contraseña.setOpaque(true);
-            lbl_modificar_contraseña.setBackground(Color.BLACK);
-        }
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Object target = e.getSource();
-        if(target == lbl_modificar_datos){
-            lbl_modificar_datos.setForeground(Color.BLACK);
-            lbl_modificar_datos.setOpaque(false);
-        }else if(target == lbl_modificar_correo){
-            lbl_modificar_correo.setForeground(Color.BLACK);
-            lbl_modificar_correo.setOpaque(false);
-        }else if(target == lbl_modificar_contraseña){
-            lbl_modificar_contraseña.setForeground(Color.BLACK);
-            lbl_modificar_contraseña.setOpaque(false);
-        }
+
     }
 }

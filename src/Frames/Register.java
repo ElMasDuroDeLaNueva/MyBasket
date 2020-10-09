@@ -144,7 +144,9 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         ImageIcon mostrar = Imagenes.resize(new ImageIcon("images/Mostrar.png"), 30, 20);
         btn_mostrar_contraseña = new JButton(mostrar);
         btn_mostrar_contraseña.setBorder(null);
+        btn_mostrar_contraseña.setBackground(Color.WHITE);
         btn_mostrar_contraseña.addActionListener(this);
+        btn_mostrar_contraseña.addMouseListener(this);
         panel_password_sub.add(btn_mostrar_contraseña,BorderLayout.EAST);
         panel_password_sub.add(txt_password,BorderLayout.CENTER);
         panel_password_obligatorio.add(lbl_password,BorderLayout.WEST);
@@ -306,9 +308,12 @@ public class Register extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.setVisible (false);
-        this.dispose();
-        frame_inicio = new InicioSesion();
+        Object target = e.getSource();
+        if(target == lbl_inicioSesion) {
+            this.setVisible(false);
+            this.dispose();
+            frame_inicio = new InicioSesion();
+        }
     }
 
     @Override
@@ -323,13 +328,21 @@ public class Register extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        lbl_inicioSesion.setFont(Fuentes.f_b_inicio);
-        Fuentes.subrayar(lbl_inicioSesion);
+        Object target = e.getSource();
+        if(target == lbl_inicioSesion) {
+            lbl_inicioSesion.setFont(Fuentes.f_b_inicio);
+            Fuentes.subrayar(lbl_inicioSesion);
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        lbl_inicioSesion.setFont(Fuentes.f_register);
-        Fuentes.subrayar(lbl_inicioSesion);
+        Object target = e.getSource();
+        if(target == btn_mostrar_contraseña){
+            btn_mostrar_contraseña.setBackground(Color.WHITE);
+        } else if(target == lbl_inicioSesion){
+            lbl_inicioSesion.setFont(Fuentes.f_register);
+            Fuentes.subrayar(lbl_inicioSesion);
+        }
     }
 }
