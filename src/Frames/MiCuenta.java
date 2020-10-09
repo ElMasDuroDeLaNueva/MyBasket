@@ -214,6 +214,8 @@ public class MiCuenta extends JFrame implements MouseListener{
         getContentPane().add(MainPanel);
 
         //Ventana
+        Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
+        this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,700);
         this.setLocationRelativeTo(null);

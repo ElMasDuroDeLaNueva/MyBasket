@@ -257,6 +257,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         getContentPane().add(panel_principal);
 
         //Ventana
+        Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
+        this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500,750);
         this.setLocationRelativeTo(null);

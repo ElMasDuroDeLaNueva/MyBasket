@@ -47,6 +47,8 @@ public class ErrorInicio extends JFrame {
         });
 
         //Ventana
+        Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
+        this.setIconImage(icon);
         this.setSize(400,350);
         this.setLocationRelativeTo(null);
         this.setResizable(false);

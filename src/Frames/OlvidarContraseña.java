@@ -5,12 +5,9 @@ import Util.Fuentes;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
-public class OlvidarContraseña extends JFrame{
+public class OlvidarContraseña extends JFrame implements ActionListener {
 
     JPanel MainPanel = new JPanel(new GridLayout(4,0));
     JPanel panel_txt = new JPanel(new GridLayout(1,0));
@@ -26,9 +23,12 @@ public class OlvidarContraseña extends JFrame{
 
     JTextField txt_email = new JTextField("Email");
 
+    InicioSesion pantalla_inicio;
+
     public OlvidarContraseña(InicioSesion pantalla_inicio){
 
         pantalla_inicio.setEnabled(false);
+        this.pantalla_inicio = pantalla_inicio;
 
         //Modificar labels
         lbl_pregunta.setFont(Fuentes.f_titulo_20);
@@ -50,6 +50,7 @@ public class OlvidarContraseña extends JFrame{
                 }
             }
         });
+        btn_recuperar.addActionListener(this);
         btn_recuperar.addMouseListener(new MouseAdapter(){
             public void mouseEntered(MouseEvent e) {
                 btn_recuperar.setFocusable(true);
@@ -88,6 +89,8 @@ public class OlvidarContraseña extends JFrame{
         getContentPane().add(MainPanel);
 
         //Ventana
+        Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
+        this.setIconImage(icon);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent ev) {
                 pantalla_inicio.setEnabled(true);
@@ -102,4 +105,10 @@ public class OlvidarContraseña extends JFrame{
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        pantalla_inicio.setEnabled(true);
+        this.setVisible (false);
+        this.dispose();
+    }
 }
