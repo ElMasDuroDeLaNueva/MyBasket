@@ -22,7 +22,6 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JPanel panel_contenido = new JPanel(new GridLayout(1,0));
     JPanel panel_principal = new JPanel(new BorderLayout());
     JPanel panel_sur = new JPanel();
-    //JPanel panel_info = new JPanel(new GridLayout(1,0));
     JPanel panel_info = new JPanel(new BorderLayout());
     JPanel panel_columnas = new JPanel(new GridLayout(9,0));
     JPanel panel_nombre = new JPanel(new GridLayout(2,0));
@@ -33,23 +32,19 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JPanel panel_confirm = new JPanel(new GridLayout(2,0));
     JPanel panel_addres = new JPanel(new GridLayout(2,0));
     JPanel panel_movil = new JPanel(new GridLayout(2,0));
-    JPanel panel_securityQuestion = new JPanel(new GridLayout(2,0));
     JPanel panel_titulo = new JPanel(new BorderLayout());
     JPanel panel_nombre_obligatorio = new JPanel(new BorderLayout());
     JPanel panel_apellido_obligatorio = new JPanel(new BorderLayout());
     JPanel panel_email_obligatorio = new JPanel(new BorderLayout());
     JPanel panel_password_obligatorio = new JPanel(new BorderLayout());
     JPanel panel_confirm_obligatorio = new JPanel(new BorderLayout());
-    JPanel panel_security_obligatorio = new JPanel(new BorderLayout());
     JPanel panel_separador = new JPanel(new BorderLayout());
     JPanel panel_cuentaInicio = new JPanel(new BorderLayout());
 
-    JButton btn_mostrar_contraseña;
+    JButton btn_mostrar_contraseña = new JButton();
     JButton btn_crearCuenta = new JButton("CREA TU CUENTA DE MYBASKET");
 
     Color fondo =new Color(37, 102, 186);
-
-    Font subrayar;
 
     String string_password = " Al menos 6 caracteres";
 
@@ -60,13 +55,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JPasswordField txt_confirm = new JPasswordField();
     JTextField txt_addres = new JTextField();
     JTextField txt_movil= new JTextField();
-    JTextField txt_securityAnswer= new JTextField();
-
-    JComboBox combo_securityQuestions = new JComboBox();
 
     Boolean mostrar_ocultado;
-
-    //JScrollPane scroll_info;
 
     JLabel lbl_asterisco_titulo = new JLabel("  *  Obligatorio");
     JLabel lbl_asterisco_nombre = new JLabel("  *");
@@ -88,13 +78,13 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JLabel lbl_confirm = new JLabel("Confirma tu contraseña");
     JLabel lbl_addres = new JLabel("Direccion");
     JLabel lbl_movil = new JLabel("Movil");
-    JLabel lbl_securityQuestion = new JLabel("Pregunta de seguridad");
 
     URL url_Logo = this.getClass().getResource("/images/Logo.png");
     URL url_Mostrar = this.getClass().getResource("/images/Mostrar.png");
 
     public Register(){
 
+        //Modificacion de fuentes y color de los labels
         lbl_crear.setFont(Fuentes.f_inicio);
         lbl_nombre.setFont(Fuentes.f_register);
         lbl_apellidos.setFont(Fuentes.f_register);
@@ -118,36 +108,52 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         lbl_asterisco_security.setFont(Fuentes.f_register);
         lbl_asterisco_security.setForeground(Color.RED);
 
+        //Modificar fondos de paneles, botones y labels
+        panel_nombre.setBackground(Color.WHITE);
+        panel_nombre_obligatorio.setBackground(Color.WHITE);
+        panel_apellidos.setBackground(Color.WHITE);
+        panel_apellido_obligatorio.setBackground(Color.WHITE);
+        panel_email.setBackground(Color.WHITE);
+        panel_email_obligatorio.setBackground(Color.WHITE);
+        btn_mostrar_contraseña.setBackground(Color.WHITE);
+        panel_password.setBackground(Color.WHITE);
+        panel_password_sub.setBackground(Color.WHITE);
+        panel_password_obligatorio.setBackground(Color.WHITE);
+        panel_sur.setBackground(Color.WHITE);
+        panel_logo.setBackground(Color.WHITE);
+        panel_contenido.setBackground(Color.WHITE);
+        panel_info.setBackground(Color.WHITE);
+        panel_columnas.setBackground(Color.WHITE);
+        btn_crearCuenta.setBackground(Color.WHITE);
+        panel_separador.setBackground(Color.WHITE);
+        panel_cuentaInicio.setBackground(Color.WHITE);
+        panel_titulo.setBackground(Color.WHITE);
+        panel_addres.setBackground(Color.WHITE);
+        panel_movil.setBackground(Color.WHITE);
+
         //PANEL NOMBRE
         panel_nombre_obligatorio.add(lbl_nombre,BorderLayout.WEST);
         panel_nombre_obligatorio.add(lbl_asterisco_nombre,BorderLayout.CENTER);
         panel_nombre.add(panel_nombre_obligatorio);
         panel_nombre.add(txt_nombre);
-        panel_nombre.setBackground(Color.WHITE);
-        panel_nombre_obligatorio.setBackground(Color.WHITE);
 
         //PANEL APELLIDOS
         panel_apellido_obligatorio.add(lbl_apellidos,BorderLayout.WEST);
         panel_apellido_obligatorio.add(lbl_asterisco_apellido,BorderLayout.CENTER);
         panel_apellidos.add(panel_apellido_obligatorio);
         panel_apellidos.add(txt_apellidos);
-        panel_apellidos.setBackground(Color.WHITE);
-        panel_apellido_obligatorio.setBackground(Color.WHITE);
 
         //PANEL EMAIL
         panel_email_obligatorio.add(lbl_email,BorderLayout.WEST);
         panel_email_obligatorio.add(lbl_asterisco_email,BorderLayout.CENTER);
         panel_email.add(panel_email_obligatorio);
         panel_email.add(txt_email);
-        panel_email.setBackground(Color.WHITE);
-        panel_email_obligatorio.setBackground(Color.WHITE);
 
         //PANEL PASSWORD
         ImageIcon icon_mostrar = new ImageIcon(url_Mostrar);
         ImageIcon mostrar = Imagenes.resize(icon_mostrar, 30, 20);
-        btn_mostrar_contraseña = new JButton(mostrar);
+        btn_mostrar_contraseña.setIcon(mostrar);
         btn_mostrar_contraseña.setBorder(null);
-        btn_mostrar_contraseña.setBackground(Color.WHITE);
         btn_mostrar_contraseña.addActionListener(this);
         btn_mostrar_contraseña.addMouseListener(this);
         panel_password_sub.add(btn_mostrar_contraseña,BorderLayout.EAST);
@@ -172,10 +178,6 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         });
         mostrar_ocultado = false;
 
-        panel_password.setBackground(Color.WHITE);
-        panel_password_sub.setBackground(Color.WHITE);
-        panel_password_obligatorio.setBackground(Color.WHITE);
-
         //PANEL CONFIRM
         panel_confirm_obligatorio.add(lbl_confirm,BorderLayout.WEST);
         panel_confirm_obligatorio.add(lbl_asterisco_confirm,BorderLayout.CENTER);
@@ -187,27 +189,14 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         //PANEL ADDRES
         panel_addres.add(lbl_addres);
         panel_addres.add(txt_addres);
-        panel_addres.setBackground(Color.WHITE);
 
         //PANEL MOVIL
         panel_movil.add(lbl_movil);
         panel_movil.add(txt_movil);
-        panel_movil.setBackground(Color.WHITE);
-
-        //PANEL PREGUNTA SEGURIDAD
-        combo_securityQuestions.addItem("¿Cual era el nombre de tu primera mascota?");
-        combo_securityQuestions.addItem("¿Quien era el heroe de tu infancia?");
-        combo_securityQuestions.addItem("¿Como se llama el primer colegio al que asististe?");
-        //panel_securityQuestion.add(lbl_securityQuestion);
-        panel_securityQuestion.add(combo_securityQuestions);
-        panel_securityQuestion.add(txt_securityAnswer);
-        panel_securityQuestion.setBackground(Color.WHITE);
-        panel_security_obligatorio.setBackground(Color.WHITE);
 
         //PANEL CREAR
         panel_titulo.add(lbl_crear,BorderLayout.CENTER);
         panel_titulo.add(lbl_asterisco_titulo,BorderLayout.EAST);
-        panel_titulo.setBackground(Color.WHITE);
 
         //PANEL CUENTA-INICIO
         lbl_inicioSesion.setForeground(fondo);
@@ -215,22 +204,19 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         lbl_inicioSesion.addMouseListener(this);
         lbl_inicioSesion.setFont(Fuentes.f_register);
         Fuentes.subrayar(lbl_inicioSesion);
-
         panel_cuentaInicio.add(lbl_cuenta,BorderLayout.WEST);
-        panel_cuentaInicio.setBackground(Color.WHITE);
 
         //PANEL SEPARADOR
         panel_separador.add(lbl_condiciones,BorderLayout.CENTER);
         lbl_condiciones.setBorder(new MatteBorder(20, 1, 10, 1,  Color.WHITE));
         panel_separador.add(panel_cuentaInicio,BorderLayout.SOUTH);
-        panel_separador.setBackground(Color.WHITE);
         panel_separador.setBorder(new MatteBorder(1, 20, 1, 20,  Color.WHITE));
 
         //BOTON
         btn_crearCuenta.setFont(Fuentes.f_eliminar);
-        btn_crearCuenta.setBackground(Color.WHITE);
         btn_crearCuenta.addActionListener(this);
 
+        //Panel Columanas (Info a rellenar)
         panel_columnas.add(panel_titulo);
         panel_columnas.add(panel_nombre);
         panel_columnas.add(panel_apellidos);
@@ -239,38 +225,26 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         panel_columnas.add(panel_confirm);
         panel_columnas.add(panel_addres);
         panel_columnas.add(panel_movil);
-        //panel_columnas.add(panel_securityQuestion);
         panel_columnas.add(btn_crearCuenta);
-
-        //panel_intermedio.add(panel_columnas);
         panel_columnas.setBorder(new MatteBorder(1, 20, 10, 20,  Color.WHITE));
-        /*scroll_info = new JScrollPane();
-        scroll_info.setViewportView(panel_columnas);
-        scroll_info.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panel_info.add(scroll_info);*/
-        //panel_info.add(panel_columnas);
+
+        //Panel info
         panel_info.add(panel_columnas,BorderLayout.CENTER);
         panel_info.add(panel_separador,BorderLayout.SOUTH);
-
-        panel_columnas.setBackground(Color.WHITE);
         panel_info.setBorder(new RoundedBorder(10));
-        panel_info.setBackground(Color.WHITE);
-        panel_contenido.add(panel_info);
 
-        panel_contenido.setBackground(Color.WHITE);
+        //Panel Contenido
+        panel_contenido.add(panel_info);
         panel_contenido.setBorder(new MatteBorder(1, 25, 1, 25,  Color.WHITE));
 
         //Panel Logo
         ImageIcon icon_logo = new ImageIcon(url_Logo);
         ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
-        //ImageIcon logo = Imagenes.resize(new ImageIcon("images/Logo.png"), 182, 70);
         JLabel lblLogo = new JLabel(logo);
         panel_logo.add(lblLogo);
-        panel_logo.setBackground(Color.WHITE);
         panel_logo.setBorder(new MatteBorder(5, 1, 1, 1,  Color.WHITE));
 
         //Panel Sur
-        panel_sur.setBackground(Color.WHITE);
         panel_sur.setBorder(new MatteBorder(5, 1, 1, 1,  Color.WHITE));
 
 
