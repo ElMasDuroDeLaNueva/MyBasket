@@ -17,7 +17,7 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
 
     OlvidarContraseña frame_olvidar;
     ErrorInicio frame_errorInicio;
-    MiCuenta frame_MiCuenta;
+    MenuPrincipal frame_menu;
     Register frame_register;
 
     JPanel MainPanel= new JPanel();
@@ -163,7 +163,7 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
         else if(target == b_inicio){
             this.setVisible (false);
             this.dispose();
-            frame_MiCuenta = new MiCuenta();
+            frame_menu = new MenuPrincipal();
         }
     }
 
