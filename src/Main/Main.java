@@ -2,6 +2,7 @@ package Main;
 
 import Frames.InicioSesion;
 import Frames.MiCuenta;
+import Frames.ModificarDatos;
 import Frames.OlvidarContraseña;
 
 public class Main {

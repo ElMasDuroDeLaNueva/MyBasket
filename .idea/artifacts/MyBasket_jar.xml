@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MyBasket:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MyBasket_jar</output-path>
+    <root id="archive" name="MyBasket.jar">
+      <element id="module-output" name="MyBasket" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/postgresql-9.4-1206-jdbc4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

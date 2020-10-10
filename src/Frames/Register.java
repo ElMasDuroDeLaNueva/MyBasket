@@ -64,7 +64,6 @@ public class Register extends JFrame implements ActionListener, MouseListener {
     JLabel lbl_asterisco_email = new JLabel("  *");
     JLabel lbl_asterisco_password = new JLabel("  *");
     JLabel lbl_asterisco_confirm = new JLabel("  *");
-    JLabel lbl_asterisco_security= new JLabel("  *");
     JLabel lbl_condiciones = new JLabel("<html>Al identificarte aceptas nuestras Condiciones de uso y venta. " +
             "Consulta nuestro Aviso de privacidad, nuestro Aviso de Cookies y nuestro Aviso sobre publicidad basada " +
             "en los intereses del usuario.</html>");
@@ -103,10 +102,6 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         lbl_asterisco_email.setForeground(Color.RED);
         lbl_asterisco_password.setFont(Fuentes.f_register);
         lbl_asterisco_password.setForeground(Color.RED);
-        lbl_asterisco_confirm.setFont(Fuentes.f_register);
-        lbl_asterisco_confirm.setForeground(Color.RED);
-        lbl_asterisco_security.setFont(Fuentes.f_register);
-        lbl_asterisco_security.setForeground(Color.RED);
 
         //Modificar fondos de paneles, botones y labels
         panel_nombre.setBackground(Color.WHITE);

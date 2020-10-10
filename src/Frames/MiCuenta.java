@@ -74,6 +74,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         Fuentes.subrayar(lbl_logout);
         panel_logout.add(lbl_logout);
         lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_logout.addMouseListener(this);
         panel_logout.setBackground(Color.WHITE);
         lbltitulo.setFont(Fuentes.f_titulo);
@@ -119,6 +120,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_direccion.setFont(Fuentes.f_info);
         lbl_direccion.setText("Paseo de la Castellana");//PROXIMAMENTE METODO PARA OBTENER DIRECCION
         lbl_modificar_datos.setFont(Fuentes.f_eliminar);
+        lbl_modificar_datos.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_modificar_datos.addMouseListener(this);
         Fuentes.subrayar(lbl_modificar_datos);
         panel_modificar_fondo.setBackground(Color.WHITE);
@@ -137,6 +139,7 @@ public class MiCuenta extends JFrame implements MouseListener{
 
         //Panel Correo Subpanel
         lbl_modificar_correo.setFont(Fuentes.f_eliminar);
+        lbl_modificar_correo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_modificar_correo.addMouseListener(this);
         Fuentes.subrayar(lbl_modificar_correo);
         panel_correo_fondo.add(lbl_modificar_correo);
@@ -157,6 +160,7 @@ public class MiCuenta extends JFrame implements MouseListener{
 
         //Panel Contraseña Subpanel
         lbl_modificar_contraseña.setFont(Fuentes.f_eliminar);
+        lbl_modificar_contraseña.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_modificar_contraseña.addMouseListener(this);
         Fuentes.subrayar(lbl_modificar_contraseña);
         panel_contraseña_fondo.add(lbl_modificar_contraseña);
@@ -240,6 +244,8 @@ public class MiCuenta extends JFrame implements MouseListener{
             this.setVisible (false);
             this.dispose();
             new InicioSesion();
+        }else if(target == lbl_modificar_datos){
+            new ModificarDatos(this);
         }
     }
 
