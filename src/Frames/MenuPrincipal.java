@@ -42,14 +42,14 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
     URL url_despensa = this.getClass().getResource("/images/Despensa.png");
     URL url_listas = this.getClass().getResource("/images/Listas.png");
     URL url_usuario = this.getClass().getResource("/images/Usuario2.png");
-    URL url_ajustes = this.getClass().getResource("/images/Ajustes.png");
+    URL url_desconectar = this.getClass().getResource("/images/CerrarSesion.png");
 
     JLabel lbl_productos = new JLabel("PRODUCTOS");
     JLabel lbl_facturas = new JLabel("FACTURAS");
     JLabel lbl_despensa = new JLabel("DESPENSA");
     JLabel lbl_usuario = new JLabel();
     JLabel lbl_listas = new JLabel("LISTAS");
-    JLabel lbl_ajustes = new JLabel();
+    JLabel lbl_desconectar = new JLabel();
     JLabel lbl_usuario_logo = new JLabel();
 
     public MenuPrincipal(){
@@ -199,18 +199,19 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         //PANEL USUARIO
         ImageIcon icon_usuario = new ImageIcon(url_usuario);
         ImageIcon logo_usuarios = Imagenes.resize(icon_usuario, 70, 60);
-        ImageIcon icon_ajustes = new ImageIcon(url_ajustes);
-        ImageIcon logo_ajustes = Imagenes.resize(icon_ajustes, 40, 40);
+        ImageIcon icon_desconectar = new ImageIcon(url_desconectar);
+        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 40, 40);
         lbl_usuario_logo.setIcon(logo_usuarios);
-        lbl_ajustes.setIcon(logo_ajustes);
+        lbl_desconectar.setIcon(logo_desconectar);
         lbl_usuario_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario_logo.addMouseListener((MouseListener) this);
-        lbl_ajustes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_desconectar.addMouseListener(this);
         lbl_usuario.setText("Atilano");//Posteriormente metodo
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);
-        panel_usuario.add(lbl_ajustes,BorderLayout.WEST);
+        panel_usuario.add(lbl_desconectar,BorderLayout.WEST);
         panel_usuario.add(lbl_usuario_logo,BorderLayout.CENTER);
         panel_usuario.add(lbl_usuario,BorderLayout.EAST);
         panel_usuario.setBackground(fondo_menu);
@@ -262,6 +263,10 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
             this.setVisible(false);
             this.dispose();
             new MiCuenta();
+        }if(target == lbl_desconectar){
+            this.setVisible(false);
+            this.dispose();
+            new InicioSesion();
         }
     }
 
@@ -275,10 +280,15 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        Object target = e.getSource();
+        if(target == lbl_usuario){
+            Fuentes.subrayar(lbl_usuario);
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        lbl_usuario.setFont(Fuentes.f_usuario);
     }
 }
 
