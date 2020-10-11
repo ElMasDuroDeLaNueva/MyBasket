@@ -50,8 +50,8 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
         this.frame_MiCuenta = frame_MiCuenta;
 
         //Cajas de texto con datos
-        txt_nombre.setText("Lucas"); //POSTERIORMENTE METODO
-        txt_apellidos.setText("Martínez"); //POSTERIORMENTE METODO
+        txt_nombre.setText("Atilano"); //POSTERIORMENTE METODO
+        txt_apellidos.setText("Fernandez-Pacheco"); //POSTERIORMENTE METODO
         txt_direccion.setText("Paseo de la Castellana"); //POSTERIORMENTE METODO
         txt_numero.setText("623932329"); //POSTERIORMENTE METODO
 

@@ -12,7 +12,7 @@ import java.awt.font.TextAttribute;
 import java.net.URL;
 import java.util.Map;
 
-public class MenuPrincipal extends JFrame implements ActionListener{
+public class MenuPrincipal extends JFrame implements ActionListener, MouseListener{
 
     JPanel MainPanel= new JPanel(new BorderLayout());
     JPanel panel_titulo = new JPanel(new BorderLayout());
@@ -44,22 +44,26 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     URL url_usuario = this.getClass().getResource("/images/Usuario2.png");
     URL url_ajustes = this.getClass().getResource("/images/Ajustes.png");
 
+    JLabel lbl_productos = new JLabel("PRODUCTOS");
+    JLabel lbl_facturas = new JLabel("FACTURAS");
+    JLabel lbl_despensa = new JLabel("DESPENSA");
+    JLabel lbl_usuario = new JLabel();
+    JLabel lbl_listas = new JLabel("LISTAS");
+    JLabel lbl_ajustes = new JLabel();
+    JLabel lbl_usuario_logo = new JLabel();
+
     public MenuPrincipal(){
 
         MainPanel.setBackground(fondo_opciones);
 
         //PRODUCTOS
-        JLabel lbl_productos = new JLabel("PRODUCTOS");
         ImageIcon icon_comprar = new ImageIcon(url_comprar);
         ImageIcon logo_comprar = Imagenes.resize(icon_comprar, 150, 150);
         lbl_productos.setIcon(logo_comprar);
         lbl_productos.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_productos.setFont(Fuentes.f_menu);
 
-        Font font = lbl_productos.getFont();
-        Map attributes = font.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        lbl_productos.setFont(font.deriveFont(attributes));
+        Fuentes.subrayar(lbl_productos);
 
         productos.add(lbl_productos);
         //productos.add(lbl_productos1);
@@ -83,17 +87,14 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
 
         //FACTURAS
-        JLabel lbl_facturas = new JLabel("FACTURAS");
         ImageIcon icon_facturas = new ImageIcon(url_facturas);
         ImageIcon logo_facturas = Imagenes.resize(icon_facturas, 150, 150);
         lbl_facturas.setIcon(logo_facturas);
         lbl_facturas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_facturas.setFont(Fuentes.f_menu);
 
-        Font font1 = lbl_facturas.getFont();
-        Map attributes1 = font1.getAttributes();
-        attributes1.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        lbl_facturas.setFont(font1.deriveFont(attributes1));
+        Fuentes.subrayar(lbl_facturas);
+
 
         facturas.add(lbl_facturas);
         facturas.setBackground(fondo_menu);
@@ -115,17 +116,13 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         });
 
         //DESPENSA
-        JLabel lbl_despensa = new JLabel("DESPENSA");
         ImageIcon icon_despensa = new ImageIcon(url_despensa);
         ImageIcon logo_despensa = Imagenes.resize(icon_despensa, 150, 150);
         lbl_despensa.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_despensa.setIcon(logo_despensa);
         lbl_despensa.setFont(Fuentes.f_menu);
 
-        Font font2 = lbl_despensa.getFont();
-        Map attributes2 = font2.getAttributes();
-        attributes2.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        lbl_facturas.setFont(font2.deriveFont(attributes2));
+        Fuentes.subrayar(lbl_despensa);
 
         despensa.add(lbl_despensa);
         despensa.setBackground(fondo_menu);
@@ -148,17 +145,13 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
 
         //LISTAS
-        JLabel lbl_listas = new JLabel("LISTAS");
         ImageIcon icon_listas = new ImageIcon(url_listas);
         ImageIcon logo_listas = Imagenes.resize(icon_listas, 150, 135);
         lbl_listas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_listas.setIcon(logo_listas);
         lbl_listas.setFont(Fuentes.f_menu);
 
-        Font font3 = lbl_listas.getFont();
-        Map attributes3 = font3.getAttributes();
-        attributes3.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        lbl_facturas.setFont(font3.deriveFont(attributes3));
+        Fuentes.subrayar(lbl_listas);
 
         listas.add(lbl_listas);
         listas.setBackground(fondo_menu);
@@ -208,11 +201,13 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         ImageIcon logo_usuarios = Imagenes.resize(icon_usuario, 70, 60);
         ImageIcon icon_ajustes = new ImageIcon(url_ajustes);
         ImageIcon logo_ajustes = Imagenes.resize(icon_ajustes, 40, 40);
-        JLabel lbl_usuario_logo = new JLabel(logo_usuarios);
+        lbl_usuario_logo.setIcon(logo_usuarios);
+        lbl_ajustes.setIcon(logo_ajustes);
         lbl_usuario_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JLabel lbl_ajustes = new JLabel(logo_ajustes);
+        lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_ajustes.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JLabel lbl_usuario = new JLabel("Mi Cuenta");
+        lbl_usuario.setText("Atilano");//Posteriormente metodo
+        lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);
         panel_usuario.add(lbl_ajustes,BorderLayout.WEST);
@@ -254,6 +249,36 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             System.out.println("Def");
             productos.setBorder(borde_def);
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Object target = e.getSource();
+        if(target == lbl_usuario_logo){
+            this.setVisible(false);
+            this.dispose();
+            new MiCuenta();
+        }else if(target == lbl_usuario){
+            this.setVisible(false);
+            this.dispose();
+            new MiCuenta();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
 

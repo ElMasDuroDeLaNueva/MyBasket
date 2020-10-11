@@ -114,7 +114,7 @@ public class MiCuenta extends JFrame implements MouseListener{
 
         //Panel Datos
         lbl_nombre.setFont(Fuentes.f_info);
-        lbl_nombre.setText("LUCAS MARTÍNEZ");//PROXIMAMENTE METODO PARA OBTENER NOMBRE
+        lbl_nombre.setText("ATILANO FERNANDEZ-PACHECO");//PROXIMAMENTE METODO PARA OBTENER NOMBRE
         lbl_movil.setFont(Fuentes.f_info);
         lbl_movil.setText("623932329");//PROXIMAMENTE METODO PARA OBTENER MOVIL
         lbl_direccion.setFont(Fuentes.f_info);
@@ -143,7 +143,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_modificar_correo.addMouseListener(this);
         Fuentes.subrayar(lbl_modificar_correo);
         panel_correo_fondo.add(lbl_modificar_correo);
-        lbl_correo.setText("LUCA2510ML@GMAIL.COM");//IMPLEMENTAR METODO
+        lbl_correo.setText("ATILANO@GMAIL.COM");//IMPLEMENTAR METODO
         lbl_correo.setFont(Fuentes.f_texto);
         panel_correo_subpanel.add(lbl_correo);
         panel_correo_subpanel.add(panel_correo_fondo);
