@@ -277,7 +277,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         } else if(target == btn_crearCuenta){
             this.setVisible (false);
             this.dispose();
-            frame_inicio = new InicioSesion();
+            new MenuPrincipal();
         }
     }
 

@@ -15,8 +15,6 @@ import java.util.Map;
 
 public class MiCuenta extends JFrame implements MouseListener{
 
-    InicioSesion frame_inicio;
-
     JPanel MainPanel = new JPanel(new BorderLayout());
     JPanel panel_titulo = new JPanel(new BorderLayout());
     JPanel panel_central = new JPanel(new GridLayout(1,0));
@@ -235,11 +233,11 @@ public class MiCuenta extends JFrame implements MouseListener{
         if(target == lbltitulo){
             this.setVisible (false);
             this.dispose();
-            frame_inicio = new InicioSesion();
+            new MenuPrincipal();
         } else if(target == lbl_logo){
             this.setVisible (false);
             this.dispose();
-            frame_inicio = new InicioSesion();
+            new MenuPrincipal();
         }else if(target == lbl_logout){
             this.setVisible (false);
             this.dispose();
