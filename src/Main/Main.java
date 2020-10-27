@@ -1,9 +1,6 @@
 package Main;
 
-import Frames.InicioSesion;
-import Frames.MiCuenta;
-import Frames.ModificarDatos;
-import Frames.OlvidarContraseña;
+import Frames.*;
 
 public class Main {
 

@@ -244,6 +244,10 @@ public class MiCuenta extends JFrame implements MouseListener{
             new InicioSesion();
         }else if(target == lbl_modificar_datos){
             new ModificarDatos(this);
+        }else if(target == lbl_modificar_correo){
+            new ModificarCorreo(this);
+        } else if(target == lbl_modificar_contraseña){
+            new ModificarContraseña(this);
         }
     }
 
