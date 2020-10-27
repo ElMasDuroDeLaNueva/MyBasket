@@ -173,6 +173,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
         });
         mostrar_ocultado = false;
 
+
         //PANEL CONFIRM
         panel_confirm_obligatorio.add(lbl_confirm,BorderLayout.WEST);
         panel_confirm_obligatorio.add(lbl_asterisco_confirm,BorderLayout.CENTER);

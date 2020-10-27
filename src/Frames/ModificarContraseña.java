@@ -27,8 +27,8 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
     JLabel lbl_titulo = new JLabel("MODIFICA TU CONTRASEÑA DE CORREO");
     JLabel lbl_titulo2 = new JLabel("ELECTRÓNICO");
 
-    JTextField txt_contraseña = new JTextField();
-    JTextField txt_contraseña2 = new JTextField();
+    JPasswordField txt_contraseña = new JPasswordField();
+    JPasswordField txt_contraseña2 = new JPasswordField();
 
     JButton btn_actualizar = new JButton("G U A R D A R  C A M B I O S");
     JButton btn_cancelar = new JButton("C A N C E L A R");
@@ -39,6 +39,30 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
 
         txt_contraseña.setFocusable(false);
         txt_contraseña2.setFocusable(false);
+        txt_contraseña.setEchoChar((char)0);
+        txt_contraseña2.setEchoChar((char)0);
+        txt_contraseña.addMouseListener(new MouseAdapter()
+        {
+            public void mouseEntered(MouseEvent me){
+                char[] arrayC = txt_contraseña.getPassword();
+                String pass = new String(arrayC);
+                if( pass.equals("Escriba su antigua contraseña")){
+                    txt_contraseña.setText("");
+                    txt_contraseña.setEchoChar('\u25cf');
+                }
+            }
+        });
+        txt_contraseña2.addMouseListener(new MouseAdapter()
+        {
+            public void mouseEntered(MouseEvent me){
+                char[] arrayC = txt_contraseña2.getPassword();
+                String pass = new String(arrayC);
+                if( pass.equals("Escriba la nueva contraseña")){
+                    txt_contraseña2.setText("");
+                    txt_contraseña2.setEchoChar('\u25cf');
+                }
+            }
+        });
         btn_actualizar.setFocusable(false);
         btn_cancelar.setFocusable(false);
         lbl_titulo.setFont(Fuentes.f_datos);
@@ -196,10 +220,12 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
         }else if(target == txt_contraseña){
             if(txt_contraseña.getText().equals("")){
                 txt_contraseña.setText("Escriba su antigua contraseña");
+                txt_contraseña.setEchoChar((char)0);
             }
         }else if(target == txt_contraseña2){
             if(txt_contraseña2.getText().equals("")){
                 txt_contraseña2.setText("Escriba la nueva contraseña");
+                txt_contraseña.setEchoChar((char)0);
             }
         }
     }
