@@ -135,8 +135,8 @@ public class Productos extends JFrame implements MouseListener{
         btn_lista.setBackground(Fuentes.color_logo);
         btn_comprar.setFont(Fuentes.f_eliminar);
         btn_lista.setFont(Fuentes.f_eliminar);
-        btn_comprar.setForeground(Color.BLACK);
-        btn_comprar.setForeground(Color.BLACK);
+        btn_comprar.setForeground(Color.WHITE);
+        btn_comprar.setForeground(Color.WHITE);
         panel_btn_listas.add(btn_lista);
         panel_btn_comprar.add(btn_comprar);
         lbl_total.setText("Total : "+total+" €");
