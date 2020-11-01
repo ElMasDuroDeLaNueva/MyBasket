@@ -37,6 +37,8 @@ public class OlvidarContraseña extends JFrame implements ActionListener {
         btn_recuperar.setFont(Fuentes.f_b_inicio);
         txt_email.setFocusable(false);
         btn_recuperar.setFocusable(false);
+        btn_recuperar.setBackground(Color.BLACK);
+        btn_recuperar.setForeground(Color.WHITE);
         txt_email.addMouseListener(new MouseAdapter(){
             public void mouseEntered(MouseEvent e) {
                 txt_email.setFocusable(true);
