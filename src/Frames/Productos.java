@@ -128,7 +128,10 @@ public class Productos extends JFrame implements MouseListener{
         scroll.setBorder(BorderFactory.createEmptyBorder());
 
         //Panel Botones
+        btn_buscar.setBackground(Color.WHITE);
         btn_comprar.setBackground(Fuentes.color_logo);
+        btn_comprar.setBorder(null);
+        btn_lista.setBorder(null);
         btn_lista.setBackground(Fuentes.color_logo);
         btn_comprar.setFont(Fuentes.f_eliminar);
         btn_lista.setFont(Fuentes.f_eliminar);

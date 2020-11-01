@@ -117,6 +117,7 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
 
         //PANEL CANCELAR
         btn_cancelar.setFont(Fuentes.f_eliminar);
+        btn_cancelar.setBackground(Color.WHITE);
         panel_cancelar.setBackground(Color.WHITE);
         panel_cancelar.add(btn_cancelar);
         this.frame_MiCuenta = frame_MiCuenta;
