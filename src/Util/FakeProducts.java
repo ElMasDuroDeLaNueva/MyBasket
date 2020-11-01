@@ -14,11 +14,19 @@ public class FakeProducts {
     public static ArrayList<Product> generarProductos(){
 
         ArrayList<Product> array_Productos = new ArrayList<Product>();
-        array_Productos.add(product_1);
-        array_Productos.add(product_2);
-        array_Productos.add(product_3);
-        array_Productos.add(product_4);
+
+        for (int i = 0; i < 2; ++i) {
+           // array_Productos.add(product_1);
+            array_Productos.add(product_2);
+            array_Productos.add(product_3);
+            //array_Productos.add(product_4);
+            //array_Productos.add(product_5);
+        }
         array_Productos.add(product_5);
+        for (int i = 0; i < 2; ++i) {
+            array_Productos.add(product_2);
+
+        }
 
         return array_Productos;
     }
