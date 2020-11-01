@@ -226,7 +226,7 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
         }else if(target == txt_contraseña2){
             if(txt_contraseña2.getText().equals("")){
                 txt_contraseña2.setText("Escriba la nueva contraseña");
-                txt_contraseña.setEchoChar((char)0);
+                txt_contraseña2.setEchoChar((char)0);
             }
         }
     }
