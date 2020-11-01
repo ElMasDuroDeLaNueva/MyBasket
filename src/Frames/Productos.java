@@ -115,6 +115,15 @@ public class Productos extends JFrame implements MouseListener{
         panel_filtro_precio.add(cb_bebidas);
         panel_filtro_precio.add(cb_lacteos);
         panel_filtro_precio.add(cb_dulcesSalado);
+        cb_verduras.setBackground(Color.WHITE);
+        cb_frutas.setBackground(Color.WHITE);
+        cb_pescaderia.setBackground(Color.WHITE);
+        cb_carniceria.setBackground(Color.WHITE);
+        cb_bebidas.setBackground(Color.WHITE);
+        cb_lacteos.setBackground(Color.WHITE);
+        cb_dulcesSalado.setBackground(Color.WHITE);
+
+
         panel_filtro_precio.add(btn_buscar);
 
         //Filtros
