@@ -1,5 +1,6 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.Fuentes;
 
 import javax.swing.*;
@@ -74,6 +75,7 @@ public class ModificarCorreo extends JFrame implements MouseListener, ActionList
 
         //PANEL CANCELAR
         btn_cancelar.setFont(Fuentes.f_eliminar);
+        btn_cancelar.setBackground(Color.WHITE);
         panel_cancelar.setBackground(Color.WHITE);
         panel_cancelar.add(btn_cancelar);
         this.frame_MiCuenta = frame_MiCuenta;
@@ -176,6 +178,10 @@ public class ModificarCorreo extends JFrame implements MouseListener, ActionList
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
+            String correo = InicioSesion.getUsuario_logeado();
+            Conexion.modificarCorreo(correo, txt_direccion.getText());
+            InicioSesion.setUsuario_logeado(txt_direccion.getText());
+            frame_MiCuenta.ActualizarDatos();
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);
             this.dispose();

@@ -20,6 +20,7 @@ public class User {
         this.direccion = direccion;
         this.movil = movil;
     }
+    public User(){}
 
     //GETTERS/SETTERS VARIABLES
     public String getNombre() {

@@ -48,7 +48,7 @@ public class GestorProductos {
 
     public static int maximoProductos(HashSet<String> categorias){
 
-        int inicial = 0;
+        int inicial;
         int maximo = 0;
         Iterator<String> it = categorias.iterator();
         ArrayList<Product> array = FakeProducts.generarProductos();
@@ -73,5 +73,6 @@ public class GestorProductos {
         return maximo;
 
     }
+
 
 }

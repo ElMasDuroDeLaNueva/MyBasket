@@ -1,18 +1,19 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.*;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Productos extends JFrame implements MouseListener{
+public class Productos extends JFrame implements MouseListener,ItemListener{
 
     JPanel MainPanel = new JPanel(new BorderLayout());
     JPanel panel_categorias = new JPanel(new GridLayout(0, 1, 5, 10));
@@ -26,13 +27,14 @@ public class Productos extends JFrame implements MouseListener{
     JPanel panel_btn_listas = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JPanel panel_total = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    JCheckBox cb_verduras = new JCheckBox("Verduras ");
-    JCheckBox cb_frutas = new JCheckBox("Frutas ");
-    JCheckBox cb_pescaderia = new JCheckBox("Pescaderia ");
-    JCheckBox cb_carniceria = new JCheckBox("Carniceria ");
-    JCheckBox cb_bebidas = new JCheckBox("Bebidas ");
-    JCheckBox cb_lacteos = new JCheckBox("Lacteos ");
-    JCheckBox cb_dulcesSalado = new JCheckBox("Dulces y Salados ");
+    JCheckBox cb_verduras = new JCheckBox("Verduras");
+    JCheckBox cb_frutas = new JCheckBox("Frutas");
+    JCheckBox cb_pescaderia = new JCheckBox("Pescaderia");
+    JCheckBox cb_carniceria = new JCheckBox("Carniceria");
+    JCheckBox cb_bebidas = new JCheckBox("Bebidas");
+    JCheckBox cb_lacteos = new JCheckBox("Lacteos");
+    JCheckBox cb_dulcesSalado = new JCheckBox("Dulces y Salados");
+    JCheckBox cb_miSeleccion = new JCheckBox("Mi seleccion");
 
     JScrollPane scroll;
 
@@ -51,6 +53,8 @@ public class Productos extends JFrame implements MouseListener{
     URL url_desconectar = this.getClass().getResource("/images/CerrarSesion.png");
     URL url_mas = this.getClass().getResource("/images/Mas.png");
     URL url_menos = this.getClass().getResource("/images/Menos.png");
+
+    ArrayList<Product> mi_seleccion = new ArrayList<Product>();
 
     double total = 0;
 
@@ -90,7 +94,9 @@ public class Productos extends JFrame implements MouseListener{
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        lbl_usuario.setText("Atilano");//Posteriormente metodo
+        String correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        lbl_usuario.setText(user.getNombre());
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);
@@ -115,6 +121,7 @@ public class Productos extends JFrame implements MouseListener{
         panel_filtro_precio.add(cb_bebidas);
         panel_filtro_precio.add(cb_lacteos);
         panel_filtro_precio.add(cb_dulcesSalado);
+        panel_filtro_precio.add(cb_miSeleccion);
         cb_verduras.setBackground(Color.WHITE);
         cb_frutas.setBackground(Color.WHITE);
         cb_pescaderia.setBackground(Color.WHITE);
@@ -122,16 +129,68 @@ public class Productos extends JFrame implements MouseListener{
         cb_bebidas.setBackground(Color.WHITE);
         cb_lacteos.setBackground(Color.WHITE);
         cb_dulcesSalado.setBackground(Color.WHITE);
-
-
+        cb_miSeleccion.setBackground(Color.WHITE);
+        cb_verduras.addItemListener(this);
+        cb_frutas.addItemListener(this);
+        cb_pescaderia.addItemListener(this);
+        cb_carniceria.addItemListener(this);
+        cb_bebidas.addItemListener(this);
+        cb_lacteos.addItemListener(this);
+        cb_dulcesSalado.addItemListener(this);
         panel_filtro_precio.add(btn_buscar);
+        cb_miSeleccion.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(cb_miSeleccion.isSelected()){
+                    cb_verduras.setSelected(false);
+                    cb_frutas.setSelected(false);
+                    cb_pescaderia.setSelected(false);
+                    cb_carniceria.setSelected(false);
+                    cb_bebidas.setSelected(false);
+                    cb_lacteos.setSelected(false);
+                    cb_dulcesSalado.setSelected(false);
+                }
+            }
+        });
+        btn_buscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HashSet<String> categorias_seleccionadas = new HashSet<String>();
+                Iterator<String> iterator = categorias_seleccionadas.iterator();
+                while (iterator.hasNext()) {
+                    iterator.remove();
+                }
+                meterCategoria(categorias_seleccionadas, cb_verduras);
+                meterCategoria(categorias_seleccionadas, cb_frutas);
+                meterCategoria(categorias_seleccionadas, cb_pescaderia);
+                meterCategoria(categorias_seleccionadas, cb_carniceria);
+                meterCategoria(categorias_seleccionadas, cb_bebidas);
+                meterCategoria(categorias_seleccionadas, cb_lacteos);
+                meterCategoria(categorias_seleccionadas, cb_dulcesSalado);
+                meterCategoria(categorias_seleccionadas, cb_miSeleccion);
+
+                if(categorias_seleccionadas.isEmpty()){
+                    System.out.println("Esta vacio");
+                    panel_categorias.removeAll();
+                    panel_categorias.revalidate();
+                    panel_categorias.repaint();
+                }else {
+                    panel_categorias.removeAll();
+                    meterProductos(categorias_seleccionadas);
+                    panel_categorias.revalidate();
+                    panel_categorias.repaint();
+                }
+            }
+        });
 
         //Filtros
         panel_filtros.add(panel_filtro_precio);
         panel_filtros.setBorder(new MatteBorder(0, 0, 0, 1, new Color(215, 215, 215)));
 
         //Productos
-        meterProductos();
+        HashSet<String> categorias = GestorProductos.obtenerCategorías();
+        meterProductos(categorias);
         panel_categorias.setBorder(new MatteBorder(0, 20, 0, 20, Color.WHITE));
         scroll = new JScrollPane(panel_categorias);
         scroll.setBorder(BorderFactory.createEmptyBorder());
@@ -145,7 +204,7 @@ public class Productos extends JFrame implements MouseListener{
         btn_comprar.setFont(Fuentes.f_eliminar);
         btn_lista.setFont(Fuentes.f_eliminar);
         btn_comprar.setForeground(Color.WHITE);
-        btn_comprar.setForeground(Color.WHITE);
+        btn_lista.setForeground(Color.WHITE);
         panel_btn_listas.add(btn_lista);
         panel_btn_comprar.add(btn_comprar);
         lbl_total.setText("Total : "+total+" €");
@@ -173,20 +232,26 @@ public class Productos extends JFrame implements MouseListener{
 
     }
 
-    public void meterProductos(){
+    public void meterProductos(HashSet<String> categorias){
 
-        HashSet<String> categorias = GestorProductos.obtenerCategorías();
         Iterator<String> it = categorias.iterator();
-        int maximo = GestorProductos.maximoProductos(categorias);
+        int maximo;
+        System.out.println(categorias);
         while (it.hasNext())
         {
             String categoria =  it.next();
+            ArrayList<Product> productos;
+            JPanel panel_productos;
+            if(categoria.equals("Mi seleccion")){
+                panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
+                productos = mi_seleccion;
+                System.out.println(productos);
+            }else{maximo = GestorProductos.maximoProductos(categorias);
+                productos = GestorProductos.productosCategoria(categoria);
+                panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));}
 
-            JPanel panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
             panel_productos.setBackground(Color.WHITE);
 
-
-            ArrayList<Product> productos = GestorProductos.productosCategoria(categoria);
             Iterator<Product> it2 = productos.iterator();
 
             while (it2.hasNext())
@@ -229,6 +294,37 @@ public class Productos extends JFrame implements MouseListener{
                 lbl_cantidad.setText(String.valueOf(cantidad));
                 lbl_cantidad.setFont(Fuentes.f_eliminar);
                 panel_cantidad.add(lbl_cantidad);
+
+                lbl_mas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                lbl_menos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                lbl_mas.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e);
+                        int unidades = Integer.parseInt(lbl_cantidad.getText());
+                        unidades++;
+                        lbl_cantidad.setText(String.valueOf(unidades));
+                        modificar_precio(product,true);
+                        mi_seleccion.add(product);
+                    }
+                });
+
+                lbl_menos.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e);
+                        int unidades = Integer.parseInt(lbl_cantidad.getText());
+                        unidades--;
+                        if(unidades<0){
+                            unidades=0;
+                        }else{
+                            lbl_cantidad.setText(String.valueOf(unidades));
+                            modificar_precio(product,false);
+                            mi_seleccion.remove(product);
+                        }
+                    }
+                });
 
                 JLabel lbl_descripcion = new JLabel("<html>"+product.getDescripcion()+"</html>");
                 JLabel lbl_marca = new JLabel(product.getMarca());
@@ -276,6 +372,31 @@ public class Productos extends JFrame implements MouseListener{
 
     }
 
+    public void modificar_precio(Product producto, boolean sumaResta){
+        if(sumaResta){
+            String str = lbl_total.getText();
+            str = str.replaceAll("[^\\d.]", "");
+            double total2 = Double.parseDouble(str);
+            total2 = total2+producto.getPrecio();
+            lbl_total.setText("Total : "+total2+" €");
+        }else {
+            String str = lbl_total.getText();
+            str = str.replaceAll("[^\\d.]", "");
+            double total2 = Double.parseDouble(str);
+            total2 = total2-producto.getPrecio();
+            lbl_total.setText("Total : "+total2+" €");
+        }
+    }
+
+    public HashSet<String> meterCategoria(HashSet<String> set, JCheckBox cb){
+
+        if(cb.isSelected()){
+            set.add(cb.getText());
+        }
+
+        return set;
+    }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -314,5 +435,10 @@ public class Productos extends JFrame implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
         lbl_usuario.setFont(Fuentes.f_usuario);
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        cb_miSeleccion.setSelected(false);
     }
 }

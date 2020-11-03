@@ -1,7 +1,6 @@
 package Frames;
 
-import Util.Fuentes;
-import Util.Imagenes;
+import Util.*;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -50,6 +49,7 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
     JButton b_inicio= new JButton("INICIAR SESION");
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
+    static String correo_user = "prueba";
 
     public InicioSesion(){
 
@@ -152,6 +152,14 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
 
     }
 
+    public static String getUsuario_logeado(){
+        return correo_user;
+    }
+
+    public static void setUsuario_logeado(String correo_new){
+       correo_user = correo_new;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
@@ -161,8 +169,9 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
             frame_register = new Register();
         }
         else if(target == b_inicio){
-            boolean existe = true;//posteriormente al llamar a un metodo podrá ser false
+            boolean existe = GestorUsuarios.existeUsuario(txt_email.getText().toLowerCase(),txt_password.getText());
             if(existe){
+                correo_user = txt_email.getText();
                 this.setVisible (false);
                 this.dispose();
                 frame_menu = new MenuPrincipal();

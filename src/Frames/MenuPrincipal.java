@@ -1,7 +1,9 @@
 package Frames;
 
 import Util.Fuentes;
+import Util.GestorUsuarios;
 import Util.Imagenes;
+import Util.User;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -207,7 +209,9 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        lbl_usuario.setText("Atilano");//Posteriormente metodo
+        String correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        lbl_usuario.setText(user.getNombre());
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);

@@ -1,5 +1,6 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.Fuentes;
 
 import javax.swing.*;
@@ -235,6 +236,8 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
+            String correo = InicioSesion.getUsuario_logeado();
+            Conexion.modificarContraseña(correo, txt_contraseña.getText());
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);
             this.dispose();

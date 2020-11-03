@@ -1,7 +1,10 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.Fuentes;
+import Util.GestorUsuarios;
 import Util.Imagenes;
+import Util.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -100,6 +103,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_eliminarCuenta.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_eliminarCuenta.setPreferredSize(new Dimension(20, 50));
         lbl_eliminarCuenta.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_eliminarCuenta.addMouseListener(this);
         panel_botonEliminar.add(lbl_eliminarCuenta);
         panel_eliminar.add(panel_botonEliminar);
         panel_eliminar.add(lbl_eliminar);
@@ -112,11 +116,13 @@ public class MiCuenta extends JFrame implements MouseListener{
 
         //Panel Datos
         lbl_nombre.setFont(Fuentes.f_info);
-        lbl_nombre.setText("ATILANO FERNANDEZ-PACHECO");//PROXIMAMENTE METODO PARA OBTENER NOMBRE
+        String correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        lbl_nombre.setText(user.getNombre()+" "+user.getApellidos());
         lbl_movil.setFont(Fuentes.f_info);
-        lbl_movil.setText("623932329");//PROXIMAMENTE METODO PARA OBTENER MOVIL
+        lbl_movil.setText(user.getMovil());//PROXIMAMENTE METODO PARA OBTENER MOVIL
         lbl_direccion.setFont(Fuentes.f_info);
-        lbl_direccion.setText("Paseo de la Castellana");//PROXIMAMENTE METODO PARA OBTENER DIRECCION
+        lbl_direccion.setText(user.getDireccion());//PROXIMAMENTE METODO PARA OBTENER DIRECCION
         lbl_modificar_datos.setFont(Fuentes.f_eliminar);
         lbl_modificar_datos.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_modificar_datos.addMouseListener(this);
@@ -141,7 +147,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_modificar_correo.addMouseListener(this);
         Fuentes.subrayar(lbl_modificar_correo);
         panel_correo_fondo.add(lbl_modificar_correo);
-        lbl_correo.setText("ATILANO@GMAIL.COM");//IMPLEMENTAR METODO
+        lbl_correo.setText(user.getEmail());//IMPLEMENTAR METODO
         lbl_correo.setFont(Fuentes.f_texto);
         panel_correo_subpanel.add(lbl_correo);
         panel_correo_subpanel.add(panel_correo_fondo);
@@ -227,6 +233,15 @@ public class MiCuenta extends JFrame implements MouseListener{
 
     }
 
+    public void ActualizarDatos(){
+        String correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        lbl_nombre.setText(user.getNombre()+" "+user.getApellidos());
+        lbl_movil.setText(user.getMovil());
+        lbl_direccion.setText(user.getDireccion());
+        lbl_correo.setText(user.getEmail());
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         Object target = e.getSource();
@@ -248,6 +263,12 @@ public class MiCuenta extends JFrame implements MouseListener{
             new ModificarCorreo(this);
         } else if(target == lbl_modificar_contraseña){
             new ModificarContraseña(this);
+        }else if(target == lbl_eliminarCuenta){
+            String correo = InicioSesion.getUsuario_logeado();
+            Conexion.eliminarCuenta(correo);
+            this.setVisible(false);
+            this.dispose();
+            new InicioSesion();
         }
     }
 

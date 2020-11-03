@@ -1,6 +1,9 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.Fuentes;
+import Util.GestorUsuarios;
+import Util.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -45,15 +48,19 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
 
     Color color_borde = new Color(76, 166, 94);
 
+    String correo;
+
     public ModificarDatos(MiCuenta frame_MiCuenta){
 
         this.frame_MiCuenta = frame_MiCuenta;
 
         //Cajas de texto con datos
-        txt_nombre.setText("Atilano"); //POSTERIORMENTE METODO
-        txt_apellidos.setText("Fernandez-Pacheco"); //POSTERIORMENTE METODO
-        txt_direccion.setText("Paseo de la Castellana"); //POSTERIORMENTE METODO
-        txt_numero.setText("623932329"); //POSTERIORMENTE METODO
+        correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        txt_nombre.setText(user.getNombre());
+        txt_apellidos.setText(user.getApellidos());
+        txt_direccion.setText(user.getDireccion());
+        txt_numero.setText(user.getMovil());
 
         //Label mensaje de error en rojo cuando está vacio
         lbl_nombreVacio.setForeground(Color.RED);
@@ -258,6 +265,10 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
+            Conexion.modificarDatos(correo,txt_nombre.getText(),txt_apellidos.getText(),txt_numero.getText(),txt_direccion.getText());
+            frame_MiCuenta.ActualizarDatos();
+            frame_MiCuenta.revalidate();
+            frame_MiCuenta.repaint();
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);
             this.dispose();

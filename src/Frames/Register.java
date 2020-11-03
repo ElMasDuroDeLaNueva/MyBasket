@@ -1,5 +1,6 @@
 package Frames;
 
+import BaseDatos.Conexion;
 import Util.Fuentes;
 import Util.Imagenes;
 import Util.RoundedBorder;
@@ -276,6 +277,8 @@ public class Register extends JFrame implements ActionListener, MouseListener {
                 mostrar_ocultado = true;
             }
         } else if(target == btn_crearCuenta){
+            Conexion.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
+            InicioSesion.setUsuario_logeado(txt_email.getText());
             this.setVisible (false);
             this.dispose();
             new MenuPrincipal();
