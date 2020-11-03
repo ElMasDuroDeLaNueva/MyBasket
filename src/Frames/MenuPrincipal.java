@@ -85,6 +85,12 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
                 borde = false;
                 productos.setBorder(borde_def);
             }
+            public void mouseClicked(MouseEvent e)
+            {
+               cerrar();
+               new Productos();
+            }
+
         });
 
 
@@ -244,6 +250,11 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         this.setVisible(true);
     }
 
+    public void cerrar(){
+        this.dispose();
+        this.setVisible(false);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(borde){
@@ -267,7 +278,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
             this.setVisible(false);
             this.dispose();
             new MiCuenta();
-        }if(target == lbl_desconectar){
+        }else if(target == lbl_desconectar){
             this.setVisible(false);
             this.dispose();
             new InicioSesion();
