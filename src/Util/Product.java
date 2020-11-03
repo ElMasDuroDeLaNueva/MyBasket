@@ -6,15 +6,15 @@ import java.net.URL;
 public class Product {
 
     //VARIABLES
-    int idProduct;
+    String idProduct;
     double precio;
     String marca;
     String descripcion;
     String categoria;
-    String imagen;
+    ImageIcon imagen;
 
     //CONSTRUCTOR
-    public Product(int idProduct, double precio, String marca, String descripcion, String categoria, String imagen){
+    public Product(String idProduct, double precio, String marca, String descripcion, String categoria, ImageIcon imagen){
         this.idProduct = idProduct;
         this.precio = precio;
         this.marca = marca;
@@ -23,11 +23,13 @@ public class Product {
         this.imagen = imagen;
     }
 
-    public int getIdProduct() {
+    public Product(){}
+
+    public String getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(int idProduct) {
+    public void setIdProduct(String idProduct) {
         this.idProduct = idProduct;
     }
 
@@ -63,11 +65,11 @@ public class Product {
         this.categoria = categoria;
     }
 
-    public String getImagen() {
+    public ImageIcon getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(ImageIcon imagen) {
         this.imagen = imagen;
     }
 

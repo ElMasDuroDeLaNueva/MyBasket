@@ -1,20 +1,16 @@
 package Frames;
 
-import BaseDatos.Conexion;
+import BaseDatos.ConexionClientes;
 import Util.Fuentes;
 import Util.GestorUsuarios;
 import Util.Imagenes;
 import Util.User;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.TextAttribute;
 import java.net.URL;
-import java.util.Map;
 
 public class MiCuenta extends JFrame implements MouseListener{
 
@@ -265,7 +261,7 @@ public class MiCuenta extends JFrame implements MouseListener{
             new ModificarContraseña(this);
         }else if(target == lbl_eliminarCuenta){
             String correo = InicioSesion.getUsuario_logeado();
-            Conexion.eliminarCuenta(correo);
+            ConexionClientes.eliminarCuenta(correo);
             this.setVisible(false);
             this.dispose();
             new InicioSesion();

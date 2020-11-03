@@ -1,6 +1,5 @@
 package Frames;
 
-import BaseDatos.Conexion;
 import Util.*;
 
 import javax.swing.*;
@@ -8,7 +7,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -282,8 +280,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
                 Product product = (Product) it2.next();
 
-                URL url_producto = this.getClass().getResource(product.getImagen());
-                ImageIcon imagen = new ImageIcon(url_producto);
+                ImageIcon imagen = product.getImagen();
                 JLabel lbl_imagen = new JLabel(Imagenes.resize(imagen,200,200));
                 ImageIcon imagen_menos = new ImageIcon(url_menos);
                 JLabel lbl_menos = new JLabel(Imagenes.resize(imagen_menos,15,15));

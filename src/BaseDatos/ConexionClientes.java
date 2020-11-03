@@ -5,7 +5,7 @@ import Util.User;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Conexion {
+public class ConexionClientes {
 
     public static Connection conexion;
 
@@ -13,7 +13,7 @@ public class Conexion {
         ArrayList<User> usuarios = new ArrayList<User>();
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  clientes";
 
@@ -43,7 +43,7 @@ public class Conexion {
 
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
             String query = "UPDATE clientes SET nombre=?, apellido=?, telefono=?, direccion=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -66,7 +66,7 @@ public class Conexion {
 
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
             String query = "UPDATE clientes SET correo=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -86,7 +86,7 @@ public class Conexion {
 
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
             String query = "UPDATE clientes SET contraseña=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -106,7 +106,7 @@ public class Conexion {
 
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
             String query = "INSERT INTO clientes (apellido,correo,nombre,direccion,contraseña,telefono) VALUES (?,?,?,?,?,?)";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -131,7 +131,7 @@ public class Conexion {
 
         try {
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/MyBasket", "lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket", "lucas", "");
             String query = "DELETE FROM clientes WHERE correo = ?";
 
             PreparedStatement prest = conexion.prepareStatement(query);

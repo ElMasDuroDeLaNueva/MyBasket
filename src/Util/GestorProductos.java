@@ -1,5 +1,7 @@
 package Util;
 
+import BaseDatos.ConexionProductos;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class GestorProductos {
 
     public static HashSet<String> obtenerCategorías(){
 
-        ArrayList<Product> array = FakeProducts.generarProductos();
+        ArrayList<Product> array = ConexionProductos.getProductos();
         Iterator<Product> it = array.iterator();
         HashSet<String> categorias= new HashSet<String>();
         while (it.hasNext())
@@ -28,7 +30,7 @@ public class GestorProductos {
 
     public static ArrayList<Product> productosCategoria(String categoria){
 
-        ArrayList<Product> array = FakeProducts.generarProductos();
+        ArrayList<Product> array = ConexionProductos.getProductos();
         Iterator<Product> it = array.iterator();
         ArrayList<Product> productos = new ArrayList<Product>();
 
@@ -51,7 +53,7 @@ public class GestorProductos {
         int inicial;
         int maximo = 0;
         Iterator<String> it = categorias.iterator();
-        ArrayList<Product> array = FakeProducts.generarProductos();
+        ArrayList<Product> array = ConexionProductos.getProductos();
 
         while (it.hasNext())
         {

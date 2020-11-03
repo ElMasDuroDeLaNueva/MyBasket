@@ -1,6 +1,6 @@
 package Frames;
 
-import BaseDatos.Conexion;
+import BaseDatos.ConexionClientes;
 import Util.Fuentes;
 
 import javax.swing.*;
@@ -179,7 +179,7 @@ public class ModificarCorreo extends JFrame implements MouseListener, ActionList
         Object target = e.getSource();
         if(target == btn_actualizar){
             String correo = InicioSesion.getUsuario_logeado();
-            Conexion.modificarCorreo(correo, txt_direccion.getText());
+            ConexionClientes.modificarCorreo(correo, txt_direccion.getText());
             InicioSesion.setUsuario_logeado(txt_direccion.getText());
             frame_MiCuenta.ActualizarDatos();
             frame_MiCuenta.setEnabled(true);

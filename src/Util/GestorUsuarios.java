@@ -1,9 +1,7 @@
 package Util;
 
-import BaseDatos.Conexion;
-import Frames.InicioSesion;
+import BaseDatos.ConexionClientes;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,7 +11,7 @@ public class GestorUsuarios {
 
         boolean existe = false;
 
-        ArrayList<User> usuarios = Conexion.getUsuarios();
+        ArrayList<User> usuarios = ConexionClientes.getUsuarios();
         Iterator<User> it = usuarios.iterator();
 
         while (it.hasNext())
@@ -32,7 +30,7 @@ public class GestorUsuarios {
 
         User usuario = new User();
 
-        ArrayList<User> usuarios = Conexion.getUsuarios();
+        ArrayList<User> usuarios = ConexionClientes.getUsuarios();
         Iterator<User> it = usuarios.iterator();
 
         while (it.hasNext())

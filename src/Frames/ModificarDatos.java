@@ -1,13 +1,12 @@
 package Frames;
 
-import BaseDatos.Conexion;
+import BaseDatos.ConexionClientes;
 import Util.Fuentes;
 import Util.GestorUsuarios;
 import Util.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -265,7 +264,7 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
-            Conexion.modificarDatos(correo,txt_nombre.getText(),txt_apellidos.getText(),txt_numero.getText(),txt_direccion.getText());
+            ConexionClientes.modificarDatos(correo,txt_nombre.getText(),txt_apellidos.getText(),txt_numero.getText(),txt_direccion.getText());
             frame_MiCuenta.ActualizarDatos();
             frame_MiCuenta.revalidate();
             frame_MiCuenta.repaint();

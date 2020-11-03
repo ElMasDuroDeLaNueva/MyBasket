@@ -1,19 +1,15 @@
 package Frames;
 
-import BaseDatos.Conexion;
+import BaseDatos.ConexionClientes;
 import Util.Fuentes;
 import Util.Imagenes;
 import Util.RoundedBorder;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.TextAttribute;
 import java.net.URL;
-import java.util.Map;
 
 public class Register extends JFrame implements ActionListener, MouseListener {
 
@@ -277,7 +273,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
                 mostrar_ocultado = true;
             }
         } else if(target == btn_crearCuenta){
-            Conexion.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
+            ConexionClientes.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
             InicioSesion.setUsuario_logeado(txt_email.getText());
             this.setVisible (false);
             this.dispose();
