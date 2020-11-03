@@ -31,7 +31,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
     JCheckBox cb_carniceria = new JCheckBox("Carniceria");
     JCheckBox cb_bebidas = new JCheckBox("Bebidas");
     JCheckBox cb_lacteos = new JCheckBox("Lacteos");
-    JCheckBox cb_dulcesSalado = new JCheckBox("Dulces y Salados");
+    JCheckBox cb_dulcesSalado = new JCheckBox("Dulces");
     JCheckBox cb_miSeleccion = new JCheckBox("Mi seleccion");
 
     JScrollPane scroll;
@@ -154,7 +154,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         btn_buscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                HashSet<String> categorias_seleccionadas = new HashSet<String>();
+                ArrayList<String> categorias_seleccionadas = new ArrayList<String>();
                 Iterator<String> iterator = categorias_seleccionadas.iterator();
                 while (iterator.hasNext()) {
                     iterator.remove();
@@ -187,7 +187,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         panel_filtros.setBorder(new MatteBorder(0, 0, 0, 1, new Color(215, 215, 215)));
 
         //Productos
-        HashSet<String> categorias = GestorProductos.obtenerCategorías();
+        ArrayList<String> categorias = GestorProductos.obtenerCategorías();
         meterProductos(categorias);
         panel_categorias.setBorder(new MatteBorder(0, 20, 0, 20, Color.WHITE));
         scroll = new JScrollPane(panel_categorias);
@@ -230,7 +230,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
     }
 
-    public void meterProductos(HashSet<String> categorias){
+    public void meterProductos(ArrayList<String> categorias){
 
         Iterator<String> it = categorias.iterator();
         int maximo;
@@ -385,7 +385,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         }
     }
 
-    public HashSet<String> meterCategoria(HashSet<String> set, JCheckBox cb){
+    public ArrayList<String> meterCategoria(ArrayList<String> set, JCheckBox cb){
 
         if(cb.isSelected()){
             set.add(cb.getText());

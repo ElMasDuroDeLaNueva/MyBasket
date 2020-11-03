@@ -6,17 +6,17 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
+import java.util.List;
 
 public class GestorProductos {
 
-    public static HashSet<String> obtenerCategorías(){
+    public static ArrayList<String> obtenerCategorías(){
 
         ArrayList<Product> array = ConexionProductos.getProductos();
         Iterator<Product> it = array.iterator();
-        HashSet<String> categorias= new HashSet<String>();
+        Set<String> categorias= new HashSet<String>();
+        ArrayList<String> categorias_ordenadas;
         while (it.hasNext())
         {
 
@@ -25,7 +25,12 @@ public class GestorProductos {
             categorias.add(product.getCategoria());
 
         }
-        return categorias;
+
+        List sort = new ArrayList(categorias);
+        Collections.sort(sort);
+        categorias_ordenadas = new ArrayList<>(sort);
+
+        return categorias_ordenadas;
     }
 
     public static ArrayList<Product> productosCategoria(String categoria){
@@ -48,7 +53,7 @@ public class GestorProductos {
         return productos;
     }
 
-    public static int maximoProductos(HashSet<String> categorias){
+    public static int maximoProductos(ArrayList<String> categorias){
 
         int inicial;
         int maximo = 0;
