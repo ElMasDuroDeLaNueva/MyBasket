@@ -14,6 +14,11 @@ public class ConexionClientes {
     public static ArrayList<User> getUsuarios(){
         ArrayList<User> usuarios = new ArrayList<User>();
         try{
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
+            }
             conexion = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/bd_MyBasket",user, password);
             Statement stmt = conexion.createStatement();
@@ -34,7 +39,7 @@ public class ConexionClientes {
             }
 
 
-        } catch (SQLException throwables) {
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
 
