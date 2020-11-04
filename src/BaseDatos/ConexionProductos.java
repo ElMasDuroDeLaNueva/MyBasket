@@ -13,12 +13,14 @@ import java.util.ArrayList;
 public class ConexionProductos {
 
     public static Connection conexion;
+    static String user = "postgres";
+    static String password = "";
 
     public static ArrayList<Product> getProductos(){
         ArrayList<Product> productos = new ArrayList<Product>();
         try{
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/bd_MyBasket","lucas", "");
+                    "jdbc:postgresql://localhost:5432/bd_MyBasket",user, password);
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  productos";
 
