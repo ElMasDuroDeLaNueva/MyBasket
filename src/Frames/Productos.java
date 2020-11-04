@@ -169,7 +169,6 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 meterCategoria(categorias_seleccionadas, cb_miSeleccion);
 
                 if(categorias_seleccionadas.isEmpty()){
-                    System.out.println("Esta vacio");
                     panel_categorias.removeAll();
                     panel_categorias.revalidate();
                     panel_categorias.repaint();
@@ -234,7 +233,6 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
         Iterator<String> it = categorias.iterator();
         int maximo;
-        System.out.println(categorias);
         while (it.hasNext())
         {
             String categoria =  it.next();
@@ -243,7 +241,6 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             if(categoria.equals("Mi seleccion")){
                 panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
                 productos = mi_seleccion;
-                System.out.println(productos);
             }else{maximo = GestorProductos.maximoProductos(categorias);
                 productos = GestorProductos.productosCategoria(categoria);
                 panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));}
