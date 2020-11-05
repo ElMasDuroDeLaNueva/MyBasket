@@ -42,6 +42,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
     JLabel lbl_usuario_logo = new JLabel();
     JLabel lbl_usuario = new JLabel();
     JLabel lbl_total = new JLabel();
+    JLabel lblLogo;
 
     JButton btn_comprar = new JButton(" C O M P R A R ");
     JButton btn_lista = new JButton(" A Ñ A D I R  L I S T A ");
@@ -75,10 +76,12 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         //PANEL LOGO
         ImageIcon icon_logo = new ImageIcon(url_Logo);
         ImageIcon logo = Imagenes.resize(icon_logo, 140, 130);
-        JLabel lblLogo = new JLabel(logo);
+        lblLogo = new JLabel(logo);
         JLabel lbltitulo = new JLabel("Productos");
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
+        lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblLogo.addMouseListener(this);
         panel_logo.add(lblLogo,BorderLayout.WEST);
         panel_logo.add(lbltitulo,BorderLayout.CENTER);
 
@@ -426,10 +429,14 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             this.setVisible(false);
             this.dispose();
             new MiCuenta();
-        }if(target == lbl_desconectar){
+        }else if(target == lbl_desconectar){
             this.setVisible(false);
             this.dispose();
             new InicioSesion();
+        }else if(target == lblLogo){
+            this.setVisible(false);
+            this.dispose();
+            new MenuPrincipal();
         }
     }
 

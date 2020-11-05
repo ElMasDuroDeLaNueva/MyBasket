@@ -35,7 +35,8 @@ public class MiCuenta extends JFrame implements MouseListener{
     JPanel panel_modificar_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_correo_fondo = new JPanel(new GridLayout(1,0));
     JPanel panel_contraseña_fondo = new JPanel(new GridLayout(1,0));
-    JPanel panel_logout = new JPanel(new GridLayout(0,2));
+    JPanel panel_logo = new JPanel(new BorderLayout());
+    JPanel panel_usuario = new JPanel(new BorderLayout());
 
     JLabel lbl_correo = new JLabel();
     JLabel lbl_contraseña = new JLabel();
@@ -54,35 +55,53 @@ public class MiCuenta extends JFrame implements MouseListener{
     JLabel lbl_misDatos = new JLabel("MIS DATOS");
     JLabel lbl_misDatosTexto = new JLabel("Modifica tus datos personales a continuación para que tu cuenta esté actualizada.");
     JLabel lbl_eliminarCuenta = new JLabel("    E L I M I N A R  L A  C U E N T A               →");
-    JLabel lbl_logout = new JLabel("Desconectarse");
-    JLabel lbl_logo;
+    JLabel lblLogo;
+    JLabel lbl_desconectar = new JLabel();
+    JLabel lbl_usuario_logo = new JLabel();
+    JLabel lbl_usuario = new JLabel();
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
-
+    URL url_usuario = this.getClass().getResource("/images/Usuario2.png");
+    URL url_desconectar = this.getClass().getResource("/images/CerrarSesion.png");
 
     public MiCuenta() {
 
-        //Panel titulo
+        //PANEL LOGO
         ImageIcon icon_logo = new ImageIcon(url_Logo);
-        ImageIcon logo = Imagenes.resize(icon_logo, 120, 110);
-        lbl_logo = new JLabel(logo);
-        lbl_logo.setBorder(null);
-        lbl_logout.setFont(Fuentes.f_b_inicio);
-        //Fuentes.subrayar(lbl_logout);
-        panel_logout.add(lbl_logout);
-        lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbl_logout.addMouseListener(this);
-        panel_logout.setBackground(Color.WHITE);
+        ImageIcon logo = Imagenes.resize(icon_logo, 140, 130);
+        lblLogo = new JLabel(logo);
+        JLabel lbltitulo = new JLabel("Productos");
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
-        lbl_logo.addMouseListener(this);
-        lbltitulo.addMouseListener(this);
-        panel_titulo.add(lbl_logo,BorderLayout.WEST);
-        panel_titulo.add(lbltitulo,BorderLayout.CENTER);
-        panel_titulo.add(panel_logout,BorderLayout.EAST);
-        panel_titulo.setBackground(Color.white);
-        panel_titulo.setBorder(new MatteBorder(1, 1, 1, 1,  Color.WHITE));
+        lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblLogo.addMouseListener(this);
+        panel_logo.add(lblLogo,BorderLayout.WEST);
+        panel_logo.add(lbltitulo,BorderLayout.CENTER);
+
+        //PANEL USUARIO
+        ImageIcon icon_usuario = new ImageIcon(url_usuario);
+        ImageIcon logo_usuarios = Imagenes.resize(icon_usuario, 70, 60);
+        ImageIcon icon_desconectar = new ImageIcon(url_desconectar);
+        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 30, 30);
+        lbl_usuario_logo.setIcon(logo_usuarios);
+        lbl_desconectar.setIcon(logo_desconectar);
+        lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_desconectar.addMouseListener(this);
+        String correo = InicioSesion.getUsuario_logeado();
+        User user = GestorUsuarios.getUser(correo);
+        lbl_usuario.setText(user.getNombre());
+        lbl_usuario.setFont(Fuentes.f_usuario);
+        panel_usuario.add(lbl_desconectar,BorderLayout.WEST);
+        panel_usuario.add(lbl_usuario_logo,BorderLayout.CENTER);
+        panel_usuario.add(lbl_usuario,BorderLayout.EAST);
+        panel_usuario.setBorder(new MatteBorder(1, 1, 1, 20, Color.WHITE));
+
+        //Panel titulo
+        panel_titulo.setBackground(Color.WHITE);
+        panel_logo.setBackground(Color.WHITE);
+        panel_usuario.setBackground(Color.WHITE);
+        panel_titulo.add(panel_logo,BorderLayout.WEST);
+        panel_titulo.add(panel_usuario,BorderLayout.EAST);
 
         //Panel MisDatos
         lbl_misDatos.setFont(Fuentes.f_datos);
@@ -112,8 +131,6 @@ public class MiCuenta extends JFrame implements MouseListener{
 
         //Panel Datos
         lbl_nombre.setFont(Fuentes.f_info);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
         lbl_nombre.setText(user.getNombre()+" "+user.getApellidos());
         lbl_movil.setFont(Fuentes.f_info);
         lbl_movil.setText(user.getMovil());//PROXIMAMENTE METODO PARA OBTENER MOVIL
@@ -245,14 +262,10 @@ public class MiCuenta extends JFrame implements MouseListener{
             this.setVisible (false);
             this.dispose();
             new MenuPrincipal();
-        } else if(target == lbl_logo){
+        } else if(target == lblLogo){
             this.setVisible (false);
             this.dispose();
             new MenuPrincipal();
-        }else if(target == lbl_logout){
-            this.setVisible (false);
-            this.dispose();
-            new InicioSesion();
         }else if(target == lbl_modificar_datos){
             new ModificarDatos(this);
         }else if(target == lbl_modificar_correo){
@@ -262,6 +275,10 @@ public class MiCuenta extends JFrame implements MouseListener{
         }else if(target == lbl_eliminarCuenta){
             String correo = InicioSesion.getUsuario_logeado();
             ConexionClientes.eliminarCuenta(correo);
+            this.setVisible(false);
+            this.dispose();
+            new InicioSesion();
+        }else if(target == lbl_desconectar){
             this.setVisible(false);
             this.dispose();
             new InicioSesion();
@@ -282,19 +299,13 @@ public class MiCuenta extends JFrame implements MouseListener{
         Object target = e.getSource();
         if(target == lbltitulo){
             lbltitulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        } else if(target == lbl_logo){
-            lbl_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        }else if(target == lbl_logout){
-            lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            lbl_logout.setForeground(Color.BLUE);
+        } else if(target == lblLogo){
+            lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Object target = e.getSource();
-        if(target == lbl_logout){
-            lbl_logout.setForeground(Color.BLACK);;
-        }
+
     }
 }

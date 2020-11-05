@@ -1,6 +1,5 @@
 package Main;
 
-import BaseDatos.ConexionProductos;
 import Frames.*;
 
 import java.sql.SQLException;
