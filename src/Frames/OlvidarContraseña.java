@@ -76,7 +76,6 @@ public class OlvidarContraseña extends JFrame implements ActionListener {
         panel_separador.add(panel_email);
         panel_separador.setBackground(Color.WHITE);
 
-        btn_recuperar.setBackground(Color.WHITE);
         panel_btn.setBackground(Color.WHITE);
         panel_btn.add(btn_recuperar);
 

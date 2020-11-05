@@ -65,7 +65,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_productos.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_productos.setFont(Fuentes.f_menu);
 
-        Fuentes.subrayar(lbl_productos);
+        //Fuentes.subrayar(lbl_productos);
 
         productos.add(lbl_productos);
         //productos.add(lbl_productos1);
@@ -101,7 +101,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_facturas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_facturas.setFont(Fuentes.f_menu);
 
-        Fuentes.subrayar(lbl_facturas);
+        //Fuentes.subrayar(lbl_facturas);
 
 
         facturas.add(lbl_facturas);
@@ -130,7 +130,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_despensa.setIcon(logo_despensa);
         lbl_despensa.setFont(Fuentes.f_menu);
 
-        Fuentes.subrayar(lbl_despensa);
+        //Fuentes.subrayar(lbl_despensa);
 
         despensa.add(lbl_despensa);
         despensa.setBackground(fondo_menu);
@@ -159,7 +159,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_listas.setIcon(logo_listas);
         lbl_listas.setFont(Fuentes.f_menu);
 
-        Fuentes.subrayar(lbl_listas);
+        //Fuentes.subrayar(lbl_listas);
 
         listas.add(lbl_listas);
         listas.setBackground(fondo_menu);
@@ -208,7 +208,7 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         ImageIcon icon_usuario = new ImageIcon(url_usuario);
         ImageIcon logo_usuarios = Imagenes.resize(icon_usuario, 70, 60);
         ImageIcon icon_desconectar = new ImageIcon(url_desconectar);
-        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 40, 40);
+        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 30, 30);
         lbl_usuario_logo.setIcon(logo_usuarios);
         lbl_desconectar.setIcon(logo_desconectar);
         lbl_usuario_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));

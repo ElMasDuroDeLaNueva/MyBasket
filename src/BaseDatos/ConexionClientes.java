@@ -39,7 +39,7 @@ public class ConexionClientes {
             }
 
 
-        } catch (SQLException | ClassNotFoundException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 

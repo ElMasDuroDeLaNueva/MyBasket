@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -85,7 +86,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         ImageIcon icon_usuario = new ImageIcon(url_usuario);
         ImageIcon logo_usuarios = Imagenes.resize(icon_usuario, 70, 60);
         ImageIcon icon_desconectar = new ImageIcon(url_desconectar);
-        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 40, 40);
+        ImageIcon logo_desconectar = Imagenes.resize(icon_desconectar, 30, 30);
         lbl_usuario_logo.setIcon(logo_usuarios);
         lbl_desconectar.setIcon(logo_desconectar);
         lbl_usuario_logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -233,21 +234,26 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
         Iterator<String> it = categorias.iterator();
         int maximo;
+        HashSet<Product> productos_seleccionados = new HashSet<>();
         while (it.hasNext())
         {
             String categoria =  it.next();
             ArrayList<Product> productos;
             JPanel panel_productos;
+            Iterator<Product> it2;
             if(categoria.equals("Mi seleccion")){
                 panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
                 productos = mi_seleccion;
+                productos_seleccionados = new HashSet<Product>(productos);
+                it2 = productos_seleccionados.iterator();
             }else{maximo = GestorProductos.maximoProductos(categorias);
                 productos = GestorProductos.productosCategoria(categoria);
-                panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));}
+                panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
+                it2 = productos.iterator();
+            }
 
             panel_productos.setBackground(Color.WHITE);
 
-            Iterator<Product> it2 = productos.iterator();
 
             while (it2.hasNext())
             {
@@ -283,7 +289,12 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 JLabel lbl_menos = new JLabel(Imagenes.resize(imagen_menos,15,15));
                 ImageIcon imagen_mas = new ImageIcon(url_mas);
                 JLabel lbl_mas = new JLabel(Imagenes.resize(imagen_mas,18,18));
-                int cantidad = 0;
+                int cantidad;
+                if(categoria.equals("Mi seleccion")){
+                    cantidad = Collections.frequency(mi_seleccion, product);
+                }else{
+                    cantidad = 0;
+                }
                 JLabel lbl_cantidad = new JLabel();
                 lbl_cantidad.setText(String.valueOf(cantidad));
                 lbl_cantidad.setFont(Fuentes.f_eliminar);
@@ -372,14 +383,26 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             str = str.replaceAll("[^\\d.]", "");
             double total2 = Double.parseDouble(str);
             total2 = total2+producto.getPrecio();
-            lbl_total.setText("Total : "+total2+" €");
+            double decimal = redondearDecimales(total2, 2);
+            lbl_total.setText("Total : "+decimal+" €");
         }else {
             String str = lbl_total.getText();
             str = str.replaceAll("[^\\d.]", "");
             double total2 = Double.parseDouble(str);
             total2 = total2-producto.getPrecio();
-            lbl_total.setText("Total : "+total2+" €");
+            double decimal = redondearDecimales(total2, 2);
+            lbl_total.setText("Total : "+decimal+" €");
         }
+    }
+
+    public static double redondearDecimales(double valorInicial, int numeroDecimales) {
+        double parteEntera, resultado;
+        resultado = valorInicial;
+        parteEntera = Math.floor(resultado);
+        resultado=(resultado-parteEntera)*Math.pow(10, numeroDecimales);
+        resultado=Math.round(resultado);
+        resultado=(resultado/Math.pow(10, numeroDecimales))+parteEntera;
+        return resultado;
     }
 
     public ArrayList<String> meterCategoria(ArrayList<String> set, JCheckBox cb){

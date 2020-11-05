@@ -68,7 +68,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_logo = new JLabel(logo);
         lbl_logo.setBorder(null);
         lbl_logout.setFont(Fuentes.f_b_inicio);
-        Fuentes.subrayar(lbl_logout);
+        //Fuentes.subrayar(lbl_logout);
         panel_logout.add(lbl_logout);
         lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_logout.setCursor(new Cursor(Cursor.HAND_CURSOR));

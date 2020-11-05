@@ -23,7 +23,7 @@ public class Fuentes {
     public static final Font f_texto= new Font("Helvetica", Font.PLAIN, 14);
     public static final Font f_eliminar= new Font("Helvetica", Font.BOLD, 14);
     public static final Font f_eliminar_plano= new Font("Helvetica", Font.PLAIN, 13);
-    public static final Font f_usuario = new Font("American Typewriter", Font.ITALIC, 25);
+    public static final Font f_usuario = new Font("American Typewriter", Font.PLAIN, 20);
     public static final Font f_menu = new Font("American Typewriter", Font.BOLD, 20);
     private static Font subrayar;
 
