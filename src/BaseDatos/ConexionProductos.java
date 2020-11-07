@@ -1,7 +1,6 @@
 package BaseDatos;
 
 import Util.Product;
-import Util.User;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,14 +12,11 @@ import java.util.ArrayList;
 public class ConexionProductos {
 
     public static Connection conexion;
-    static String user = "postgres";
-    static String password = "";
 
     public static ArrayList<Product> getProductos(){
         ArrayList<Product> productos = new ArrayList<Product>();
         try{
-            conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/bd_MyBasket",user, password);
+            conexion = Conexion.getConexion();
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  productos";
 

@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Productos extends JFrame implements MouseListener,ItemListener{
+public class Productos extends JFrame implements MouseListener,ItemListener,ActionListener{
 
     JPanel MainPanel = new JPanel(new BorderLayout());
     JPanel panel_categorias = new JPanel(new GridLayout(0, 1, 5, 10));
@@ -54,7 +54,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
     URL url_mas = this.getClass().getResource("/images/Mas.png");
     URL url_menos = this.getClass().getResource("/images/Menos.png");
 
-    ArrayList<Product> mi_seleccion = new ArrayList<Product>();
+    static ArrayList<Product> mi_seleccion = new ArrayList<Product>();
 
     double total = 0;
 
@@ -184,6 +184,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 }
             }
         });
+        btn_lista.addActionListener(this);
 
         //Filtros
         panel_filtros.add(panel_filtro_precio);
@@ -380,6 +381,10 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
     }
 
+    public static ArrayList<Product> getProductosSeleccionados(){
+        return mi_seleccion;
+    }
+
     public void modificar_precio(Product producto, boolean sumaResta){
         if(sumaResta){
             String str = lbl_total.getText();
@@ -415,6 +420,14 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         }
 
         return set;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object target = e.getSource();
+        if (target == btn_lista) {
+            new ConfirmaLista(this);
+        }
     }
 
 

@@ -81,5 +81,29 @@ public class GestorProductos {
 
     }
 
+    public static ArrayList<Product> obtenerProductos(ArrayList<String> idproductos){
+
+        ArrayList<Product> array = ConexionProductos.getProductos();
+        Iterator<Product> it = array.iterator();
+        ArrayList<Product> productos = new ArrayList<Product>();
+        Iterator<String> it2 = idproductos.iterator();
+
+        while (it.hasNext())
+        {
+            while (it2.hasNext())
+            {
+
+                Product product = (Product) it.next();
+                String idproducto = it2.next();
+
+                if(product.getIdProduct().equals(idproducto)){
+                    productos.add(product);
+                }
+            }
+        }
+
+        return productos;
+    }
+
 
 }

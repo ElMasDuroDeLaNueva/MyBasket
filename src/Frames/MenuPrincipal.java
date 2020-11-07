@@ -178,6 +178,11 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
                 borde3 = false;
                 listas.setBorder(borde_def);
             }
+            public void mouseClicked(MouseEvent e)
+            {
+                cerrar();
+                new Listas();
+            }
         });
 
 
