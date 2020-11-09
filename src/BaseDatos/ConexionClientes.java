@@ -9,6 +9,7 @@ public class ConexionClientes {
 
     public static Connection conexion;
 
+    //Metodo para obtener los usuarios
     public static ArrayList<User> getUsuarios(){
         ArrayList<User> usuarios = new ArrayList<User>();
         try{
@@ -30,6 +31,8 @@ public class ConexionClientes {
                 usuarios.add(user);
             }
 
+            Conexion.cerrarConexion(conexion);
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -37,7 +40,7 @@ public class ConexionClientes {
 
         return usuarios;
     }
-
+    //Metodo para modificar en la base de datos atributos del usuario
     public static void modificarDatos(String correo, String nombre, String apellido, String numero, String direccion){
 
         try{
@@ -53,6 +56,7 @@ public class ConexionClientes {
 
             int retorno = prest.executeUpdate();
 
+            Conexion.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -60,6 +64,7 @@ public class ConexionClientes {
 
     }
 
+    //Metodo para actualizar el correo
     public static void modificarCorreo(String correo, String nuevo){
 
         try{
@@ -72,6 +77,7 @@ public class ConexionClientes {
 
             int retorno = prest.executeUpdate();
 
+            Conexion.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -79,6 +85,7 @@ public class ConexionClientes {
 
     }
 
+    //Metodo para modificar contraseña
     public static void modificarContraseña(String correo, String contraseña){
 
         try{
@@ -91,6 +98,8 @@ public class ConexionClientes {
 
             int retorno = prest.executeUpdate();
 
+            Conexion.cerrarConexion(conexion);
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -98,6 +107,7 @@ public class ConexionClientes {
 
     }
 
+    //Metodo para registrar usuario
     public static void logearUsuario(String nombre, String apellido, String numero, String direccion ,String correo, String contraseña){
 
         try{
@@ -112,8 +122,9 @@ public class ConexionClientes {
             prest.setString(2, correo);
             prest.setString(5, contraseña);
 
-
             prest.executeUpdate();
+
+            Conexion.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {
@@ -122,6 +133,7 @@ public class ConexionClientes {
 
     }
 
+    //Metodo para eliminar usuario
     public static void eliminarCuenta(String correo) {
 
         try {
@@ -132,6 +144,8 @@ public class ConexionClientes {
             prest.setString(1, correo);
 
             int x = prest.executeUpdate();
+
+            Conexion.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {

@@ -39,7 +39,7 @@ public class ConexionProductos {
                 producto.setImagen(imagen);
                 productos.add(producto);
             }
-
+            Conexion.cerrarConexion(conexion);
 
         } catch (SQLException | IOException throwables) {
             //throwables.printStackTrace();

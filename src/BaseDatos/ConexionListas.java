@@ -34,6 +34,8 @@ public class ConexionListas {
                 prest.setString(3, idproducto);
 
                 prest.executeUpdate();
+
+                Conexion.cerrarConexion(conexion);
             }
 
         } catch (SQLException throwables) {
@@ -56,18 +58,23 @@ public class ConexionListas {
             conexion = Conexion.getConexion();
 
 
-            String query = "SELECT * FROM  listas WHERE correo=? AND lista=?";
+            String query = "SELECT * FROM  listas";
 
-            PreparedStatement prest = conexion.prepareStatement(query);
-            prest.setString(1, correo);
-            prest.setString(2, lista);
+            Statement prest = conexion.createStatement();
 
             ResultSet result = prest.executeQuery(query);
 
             while(result.next())
             {
-                idproductos.add(result.getString("idproducto"));
+                String correo_lista = result.getString("correo");
+                String lista_listas = result.getString("lista");
+                if(correo.equals(correo_lista)){
+                    if(lista.equals(lista_listas)){
+                        idproductos.add(result.getString("idproducto"));
+                    }
+                }
             }
+            Conexion.cerrarConexion(conexion);
             productos = GestorProductos.obtenerProductos(idproductos);
 
 
@@ -98,13 +105,31 @@ public class ConexionListas {
                     listas.add(result.getString("lista"));
                 }
             }
-
+            Conexion.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
         return listas;
+    }
+
+    public static void eliminarLista(String lista) {
+
+        try {
+            conexion = Conexion.getConexion();
+            String query = "DELETE FROM listas WHERE lista = ?";
+
+            PreparedStatement prest = conexion.prepareStatement(query);
+            prest.setString(1, lista);
+
+            int x = prest.executeUpdate();
+            Conexion.cerrarConexion(conexion);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
 

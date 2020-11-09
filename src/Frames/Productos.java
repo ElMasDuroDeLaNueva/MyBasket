@@ -35,13 +35,13 @@ public class Productos extends JFrame implements MouseListener,ItemListener,Acti
     JCheckBox cb_dulcesSalado = new JCheckBox("Dulces");
     JCheckBox cb_miSeleccion = new JCheckBox("Mi seleccion");
 
-    JScrollPane scroll;
+    static JScrollPane scroll;
 
     JLabel lbl_categorias = new JLabel("Categorias");
     JLabel lbl_desconectar = new JLabel();
     JLabel lbl_usuario_logo = new JLabel();
     JLabel lbl_usuario = new JLabel();
-    JLabel lbl_total = new JLabel();
+    static JLabel lbl_total = new JLabel();
     JLabel lblLogo;
 
     JButton btn_comprar = new JButton(" C O M P R A R ");
@@ -234,6 +234,10 @@ public class Productos extends JFrame implements MouseListener,ItemListener,Acti
 
     }
 
+    public static JScrollPane getPanel(){
+        return scroll;
+    }
+
     public void meterProductos(ArrayList<String> categorias){
 
         Iterator<String> it = categorias.iterator();
@@ -261,104 +265,15 @@ public class Productos extends JFrame implements MouseListener,ItemListener,Acti
 
             while (it2.hasNext())
             {
-
-                JPanel producto_individual = new JPanel(new BorderLayout());
-                JPanel panel_producto = new JPanel(new BorderLayout());
-                JPanel panel_btn = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JPanel panel_btn_2 = new JPanel(new GridLayout(0, 3));
-                JPanel panel_sur_ind= new JPanel(new GridLayout(3, 0));
-                JPanel panel_cantidad = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JPanel panel_descripcion = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JPanel panel_marca = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JPanel panel_precio = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-
-                panel_cantidad.setBackground(Color.WHITE);
-                producto_individual.setBackground(Color.WHITE);
-                panel_producto.setBackground(Color.WHITE);
-                panel_btn.setBackground(Color.WHITE);
-                panel_btn_2.setBackground(Color.WHITE);
-                panel_btn.setBackground(Color.WHITE);
-                panel_btn_2.setBackground(Color.WHITE);
-                panel_descripcion.setBackground(Color.WHITE);
-                panel_sur_ind.setBackground(Color.WHITE);
-                panel_marca.setBackground(Color.WHITE);
-                panel_precio.setBackground(Color.WHITE);
-
-                Product product = (Product) it2.next();
-
-                ImageIcon imagen = product.getImagen();
-                JLabel lbl_imagen = new JLabel(Imagenes.resize(imagen,200,200));
-                ImageIcon imagen_menos = new ImageIcon(url_menos);
-                JLabel lbl_menos = new JLabel(Imagenes.resize(imagen_menos,15,15));
-                ImageIcon imagen_mas = new ImageIcon(url_mas);
-                JLabel lbl_mas = new JLabel(Imagenes.resize(imagen_mas,18,18));
+                Product producto = it2.next();
                 int cantidad;
                 if(categoria.equals("Mi seleccion")){
-                    cantidad = Collections.frequency(mi_seleccion, product);
+                    cantidad = Collections.frequency(mi_seleccion, producto);
                 }else{
                     cantidad = 0;
                 }
-                JLabel lbl_cantidad = new JLabel();
-                lbl_cantidad.setText(String.valueOf(cantidad));
-                lbl_cantidad.setFont(Fuentes.f_eliminar);
-                panel_cantidad.add(lbl_cantidad);
-
-                lbl_mas.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                lbl_menos.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                lbl_mas.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e);
-                        int unidades = Integer.parseInt(lbl_cantidad.getText());
-                        unidades++;
-                        lbl_cantidad.setText(String.valueOf(unidades));
-                        modificar_precio(product,true);
-                        mi_seleccion.add(product);
-                    }
-                });
-
-                lbl_menos.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e);
-                        int unidades = Integer.parseInt(lbl_cantidad.getText());
-                        unidades--;
-                        if(unidades<0){
-                            unidades=0;
-                        }else{
-                            lbl_cantidad.setText(String.valueOf(unidades));
-                            modificar_precio(product,false);
-                            mi_seleccion.remove(product);
-                        }
-                    }
-                });
-
-                JLabel lbl_descripcion = new JLabel("<html>"+product.getDescripcion()+"</html>");
-                JLabel lbl_marca = new JLabel(product.getMarca());
-                JLabel lbl_precio = new JLabel(String.valueOf(product.getPrecio())+" €");
-                lbl_marca.setForeground(Color.LIGHT_GRAY);
-                panel_descripcion.add(lbl_descripcion);
-                panel_marca.add(lbl_marca);
-                panel_precio.add(lbl_precio);
-
-                panel_sur_ind.add(panel_descripcion);
-                panel_sur_ind.add(panel_marca);
-                panel_sur_ind.add(panel_precio);
-
-                panel_btn_2.add(lbl_menos);
-                panel_btn_2.add(panel_cantidad);
-                panel_btn_2.add(lbl_mas);
-                panel_btn.add(panel_btn_2);
-                panel_producto.add(lbl_imagen,BorderLayout.CENTER);
-                panel_producto.add(panel_btn,BorderLayout.SOUTH);
-                producto_individual.add(panel_producto,BorderLayout.CENTER);
-                producto_individual.add(panel_sur_ind,BorderLayout.SOUTH);
-                producto_individual.setBorder(new MatteBorder(10, 0, 0, 0, Color.WHITE));
-
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos);
                 panel_productos.add(producto_individual);
-
             }
 
             JPanel panel_contenedor = new JPanel(new BorderLayout());
@@ -385,7 +300,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener,Acti
         return mi_seleccion;
     }
 
-    public void modificar_precio(Product producto, boolean sumaResta){
+    public static void modificar_precio(Product producto, boolean sumaResta){
         if(sumaResta){
             String str = lbl_total.getText();
             str = str.replaceAll("[^\\d.]", "");
