@@ -272,7 +272,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener,Acti
                 }else{
                     cantidad = 0;
                 }
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos);
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true);
                 panel_productos.add(producto_individual);
             }
 

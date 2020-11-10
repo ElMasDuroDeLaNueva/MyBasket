@@ -19,6 +19,8 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
 
     Productos frame_Productos;
 
+    Listas frame_Listas;
+
     JPanel MainPanel = new JPanel(new GridLayout(4,0));
     JPanel panel_titulo = new JPanel(new GridLayout(3,0));
     JPanel panel_lista = new JPanel(new GridLayout(1,0));
@@ -36,7 +38,25 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
 
     Color color_borde = new Color(76, 166, 94);
 
-    public ConfirmaLista(Productos frame_Productos) {
+    boolean frame;
+    String lista;
+
+    public ConfirmaLista(Listas frame_lista, String lista){
+        this.frame_Listas = frame_lista;
+        frame_Listas.setEnabled(false);
+        this.lista = lista;
+        panel();
+        frame=true;
+    }
+
+    public ConfirmaLista(Productos frame_productos){
+        this.frame_Productos = frame_productos;
+        frame_Productos.setEnabled(false);
+        panel();
+        frame=false;
+    }
+
+    public void panel() {
 
         txt_lista.setFocusable(false);
         btn_actualizar.setFocusable(false);
@@ -81,7 +101,6 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         btn_cancelar.setBackground(Color.WHITE);
         panel_cancelar.setBackground(Color.WHITE);
         panel_cancelar.add(btn_cancelar);
-        this.frame_Productos = frame_Productos;
         panel_cancelar.setBorder(new MatteBorder(1, 1, 30, 1,  Color.white));
 
         btn_actualizar.addActionListener(this);
@@ -95,8 +114,6 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         MainPanel.add(panel_guardar);
         MainPanel.add(panel_cancelar);
 
-        frame_Productos.setEnabled(false);
-
         //Añadir el panel
         getContentPane().add(MainPanel);
         MainPanel.setBackground(Color.WHITE);
@@ -106,6 +123,7 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent ev) {
                 frame_Productos.setEnabled(true);
+                frame_Listas.setEnabled(true);
             }
         });
         Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
@@ -115,7 +133,6 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         this.setResizable(false);
         this.setVisible(true);
         getContentPane().setBackground(Color.white);
-
 
     }
 
@@ -181,13 +198,27 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
-            ArrayList<Product> productos = Productos.getProductosSeleccionados();
-            ConexionListas.añadirLista(productos, txt_lista.getText());
-            frame_Productos.setEnabled(true);
-            this.setVisible (false);
-            this.dispose();
+            if(frame){
+                ConexionListas.modificarLista(lista, txt_lista.getText());
+                frame_Listas.setEnabled(true);
+                frame_Listas.ActualizarListasPestañas(txt_lista.getText());
+                frame_Listas.revalidate();
+                frame_Listas.repaint();
+                this.setVisible (false);
+                this.dispose();
+            }else{
+                ArrayList<Product> productos = Productos.getProductosSeleccionados();
+                ConexionListas.añadirLista(productos, txt_lista.getText());
+                frame_Productos.setEnabled(true);
+                this.setVisible (false);
+                this.dispose();
+            }
         }else if(target == btn_cancelar){
-            frame_Productos.setEnabled(true);
+            if(frame){
+                frame_Listas.setEnabled(true);
+            }else{
+                frame_Productos.setEnabled(true);
+            }
             this.setVisible (false);
             this.dispose();
         }

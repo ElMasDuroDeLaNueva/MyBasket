@@ -1,6 +1,5 @@
 package Frames;
 
-import BaseDatos.Conexion;
 import BaseDatos.ConexionListas;
 import Util.*;
 
@@ -8,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -44,10 +44,12 @@ public class Listas extends JFrame implements MouseListener{
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
     URL url_usuario = this.getClass().getResource("/images/Usuario2.png");
     URL url_desconectar = this.getClass().getResource("/images/CerrarSesion.png");
-    URL url_editar = this.getClass().getResource("/images/editar.png");
-    URL url_papelera = this.getClass().getResource("/images/papelera.png");
+    URL url_editar = this.getClass().getResource("/images/Ver.png");
+    URL url_papelera = this.getClass().getResource("/images/Papelera1.png");
     URL url_mas = this.getClass().getResource("/images/Mas.png");
     URL url_menos = this.getClass().getResource("/images/Menos.png");
+
+    String antiguo;
 
     public Listas(){
 
@@ -62,24 +64,7 @@ public class Listas extends JFrame implements MouseListener{
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab(str_listas, panel_central);
         tabbedPane.setBackgroundAt(0, Fuentes.color_logo);
-        tabbedPane.addChangeListener(new ChangeListener() {
 
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (e.getSource() instanceof JTabbedPane) {
-                    JTabbedPane pane = (JTabbedPane) e.getSource();
-                    int index = pane.getSelectedIndex();
-                    int pestañas = tabbedPane.getTabCount();
-                    for(int i = 0; i < pestañas; ++i){
-                        tabbedPane.setBackgroundAt(i, Color.WHITE);
-                    }
-                    tabbedPane.setBackgroundAt(index, Fuentes.color_logo);
-                }
-            }
-        });
-        // tabbedPane.setBackground(Color.WHITE);
-
-        /*
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             private final Insets borderInsets = new Insets(0, 0, 0, 0);
             @Override
@@ -89,7 +74,7 @@ public class Listas extends JFrame implements MouseListener{
             protected Insets getContentBorderInsets(int tabPlacement) {
                 return borderInsets;
             }
-        });*/
+        });
 
         //Panel Listas
         meterListas();
@@ -97,7 +82,7 @@ public class Listas extends JFrame implements MouseListener{
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scroll.setBorder(new MatteBorder(15, 0, 0, 0, Color.WHITE));
+        scroll.setBorder(new MatteBorder(15, 0, 10, 0, Color.WHITE));
         lbl_listas.setFont(Fuentes.f_titulo_20);
         lbl_crear.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_crear.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
@@ -105,12 +90,14 @@ public class Listas extends JFrame implements MouseListener{
         lbl_crear.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_crear.setPreferredSize(new Dimension(20, 50));
         lbl_crear.addMouseListener(this);
+        //lbl_crear.setBackground(Fuentes.color_logo);
+        //lbl_crear.setForeground(Color.WHITE);
         panel_crear.add(lbl_crear);
         panel_crear.setBorder(new MatteBorder(10, 0, 10, 500,  Color.WHITE));
         panel_central.add(lbl_listas,BorderLayout.NORTH);
         panel_central.add(scroll);
         panel_central.add(panel_crear,BorderLayout.SOUTH);
-        panel_central.setBorder(new MatteBorder(10, 60, 0, 0, Color.WHITE));
+        panel_central.setBorder(new MatteBorder(20, 60, 0, 0, Color.WHITE));
 
         //PANEL LOGO
         ImageIcon icon_logo = new ImageIcon(url_Logo);
@@ -167,25 +154,108 @@ public class Listas extends JFrame implements MouseListener{
         this.setVisible(true);
     }
 
+    public Listas getPane(){
+        return this;
+    }
+
     public void añadirPanel(String lista){
+
+        JPanel panel_renombrar = new JPanel(new GridLayout(1,0));
+        JPanel panel_editar = new JPanel(new GridLayout(1,0));
+        JLabel lbl_renombrar = new JLabel("    RENOMBRAR LISTA        ->  ");
+        JLabel lbl_editar = new JLabel("    EDITAR LA LISTA        ->  ");
+        JPanel panel_contenedor = new JPanel(new BorderLayout());
+        JPanel panel_botones = new JPanel(new GridLayout(0, 2));
         JPanel panel = new JPanel(new GridLayout(1, 0));
         JScrollPane scroll;
         panel.setBackground(Color.WHITE);
+        panel_contenedor.setBackground(Color.WHITE);
+        panel_botones.setBackground(Color.WHITE);
         ArrayList<Product> productos = ConexionListas.getProductosLista(lista);
         HashSet<Product> productos_unicos = new HashSet<Product>(productos);
-        Iterator<Product> it = productos_unicos.iterator();
-        while(it.hasNext()){
-            Product producto = it.next();
-            int cantidad = Collections.frequency(productos, producto);
-            JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos);
-            panel.add(producto_individual);
+
+        panel_editar.setBackground(Color.WHITE);
+        panel_renombrar.setBackground(Color.WHITE);
+        panel_editar.setBorder(new MatteBorder(10, 80, 10, 80,  Color.WHITE));
+        panel_renombrar.setBorder(new MatteBorder(10, 80, 10, 80,  Color.WHITE));
+
+        lbl_renombrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_renombrar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
+        lbl_renombrar.setFont(Fuentes.f_eliminar);
+        lbl_renombrar.setHorizontalAlignment(SwingConstants.LEFT);
+        lbl_renombrar.setPreferredSize(new Dimension(20, 50));
+        lbl_renombrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ConfirmaLista(getPane(), lista);
+                antiguo = lista;
+            }
+        });
+        //lbl_crear.setBackground(Fuentes.color_logo);
+        //lbl_crear.setForeground(Color.WHITE);
+        panel_renombrar.add(lbl_renombrar);
+
+        lbl_editar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_editar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
+        lbl_editar.setFont(Fuentes.f_eliminar);
+        lbl_editar.setHorizontalAlignment(SwingConstants.LEFT);
+        lbl_editar.setPreferredSize(new Dimension(20, 50));
+        lbl_editar.addMouseListener(this);
+        //lbl_crear.setBackground(Fuentes.color_logo);
+        //lbl_crear.setForeground(Color.WHITE);
+        panel_editar.add(lbl_editar);
+
+        panel_botones.add(panel_renombrar);
+        panel_botones.add(panel_editar);
+
+        if(productos_unicos.size()<4){
+            Iterator<Product> it = productos_unicos.iterator();
+            while(it.hasNext()){
+                Product producto = it.next();
+                int cantidad = Collections.frequency(productos, producto);
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false);
+                panel.add(producto_individual);
+            }
+        }else{
+            Iterator<Product> it = productos_unicos.iterator();
+            JPanel panel_filas = new JPanel(new GridLayout(0, 1));
+            panel_filas.setBackground(Color.WHITE);
+            JScrollPane scroll2;
+            int contador = 0;
+            while(it.hasNext()){
+                Product producto = it.next();
+                int cantidad = Collections.frequency(productos, producto);
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false);
+                panel_filas.add(producto_individual);
+                contador++;
+                if(contador == 3){
+                    scroll2 = new JScrollPane(panel_filas);
+                    scroll2.setBorder(BorderFactory.createEmptyBorder());
+                    panel.add(scroll2);
+                    panel_filas = new JPanel(new GridLayout(0, 1));
+                    contador = 0;
+                }
+            }
+            if(contador!=0){
+                for(int i=0; i<3-contador;i++){
+                    JPanel panel_vacio = new JPanel();
+                    panel_vacio.setBackground(Color.WHITE);
+                    panel_filas.add(panel_vacio);
+                }
+                scroll2 = new JScrollPane(panel_filas);
+                scroll2.setBorder(BorderFactory.createEmptyBorder());
+                panel.add(scroll2);
+            }
         }
         scroll = new JScrollPane(panel);
         scroll.setBackground(Color.WHITE);
         scroll.setBorder(BorderFactory.createEmptyBorder());
-        tabbedPane.addTab(lista, scroll);
+        panel_contenedor.add(scroll,BorderLayout.CENTER);
+        panel_contenedor.add(panel_botones,BorderLayout.SOUTH);
+        tabbedPane.addTab(lista, panel_contenedor);
         int pestaña = tabbedPane.getTabCount()-1;
         tabbedPane.setTabComponentAt(pestaña,new PestañaCruz(tabbedPane.getTitleAt(pestaña),tabbedPane));
+        tabbedPane.setBackgroundAt(pestaña, Color.WHITE);
         tabbedPane.addChangeListener(new ChangeListener() {
 
             @Override
@@ -201,7 +271,6 @@ public class Listas extends JFrame implements MouseListener{
                 }
             }
         });
-        //tabbedPane.setBackground(Color.WHITE);
     }
 
     private void meterListas() {
@@ -255,7 +324,7 @@ public class Listas extends JFrame implements MouseListener{
         }
 
         if(contador<8 && listas.isEmpty()==false){
-            for (int i = 0; i <(10-contador); ++i) {
+            for (int i = 0; i <(8-contador); ++i) {
                 JLabel lista_vacia = new JLabel();
                 panel_listas.add(lista_vacia);
             }
@@ -284,6 +353,18 @@ public class Listas extends JFrame implements MouseListener{
             }
         }
         return existe;
+    }
+
+    public void ActualizarListasPestañas(String lista){
+        ActualizarListas();
+        boolean existe;
+        existe = getExiste(lista);
+        tabbedPane.removeTabAt(tabbedPane.indexOfTab(antiguo));
+        if(existe){
+            tabbedPane.removeTabAt(tabbedPane.indexOfTab(lista));
+        }
+        añadirPanel(lista);
+
     }
 
     public void ActualizarListas(){

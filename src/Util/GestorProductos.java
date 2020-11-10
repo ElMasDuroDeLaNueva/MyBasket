@@ -107,7 +107,7 @@ public class GestorProductos {
         return productos;
     }
 
-    public static JPanel getPantallaProducto(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos){
+    public static JPanel getPantallaProducto(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos,boolean botones){
 
         JPanel producto_individual = new JPanel(new BorderLayout());
         JPanel panel_producto = new JPanel(new BorderLayout());
@@ -133,46 +133,59 @@ public class GestorProductos {
 
         ImageIcon imagen = product.getImagen();
         JLabel lbl_imagen = new JLabel(Imagenes.resize(imagen,200,200));
-        ImageIcon imagen_menos = new ImageIcon(url_menos);
-        JLabel lbl_menos = new JLabel(Imagenes.resize(imagen_menos,15,15));
-        ImageIcon imagen_mas = new ImageIcon(url_mas);
-        JLabel lbl_mas = new JLabel(Imagenes.resize(imagen_mas,18,18));
 
         JLabel lbl_cantidad = new JLabel();
         lbl_cantidad.setText(String.valueOf(cantidad));
         lbl_cantidad.setFont(Fuentes.f_eliminar);
+
+        JLabel lbl_menos;
+        JLabel lbl_mas;
+
+        if(botones){
+            ImageIcon imagen_menos = new ImageIcon(url_menos);
+            lbl_menos = new JLabel(Imagenes.resize(imagen_menos,15,15));
+            ImageIcon imagen_mas = new ImageIcon(url_mas);
+            lbl_mas = new JLabel(Imagenes.resize(imagen_mas,18,18));
+
+            lbl_mas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            lbl_menos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            lbl_mas.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    int unidades = Integer.parseInt(lbl_cantidad.getText());
+                    unidades++;
+                    lbl_cantidad.setText(String.valueOf(unidades));
+                    modificar_precio(product,true);
+                    mi_seleccion.add(product);
+                }
+            });
+
+            lbl_menos.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    int unidades = Integer.parseInt(lbl_cantidad.getText());
+                    unidades--;
+                    if(unidades<0){
+                        unidades=0;
+                    }else{
+                        lbl_cantidad.setText(String.valueOf(unidades));
+                        modificar_precio(product,false);
+                        mi_seleccion.remove(product);
+                    }
+                }
+            });
+            lbl_cantidad.setText(String.valueOf(cantidad));
+        }else{
+            lbl_menos = new JLabel();
+            lbl_mas = new JLabel();
+            lbl_cantidad.setText("x"+String.valueOf(cantidad));
+        }
+
         panel_cantidad.add(lbl_cantidad);
 
-        lbl_mas.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbl_menos.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        lbl_mas.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int unidades = Integer.parseInt(lbl_cantidad.getText());
-                unidades++;
-                lbl_cantidad.setText(String.valueOf(unidades));
-                modificar_precio(product,true);
-                mi_seleccion.add(product);
-            }
-        });
-
-        lbl_menos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int unidades = Integer.parseInt(lbl_cantidad.getText());
-                unidades--;
-                if(unidades<0){
-                    unidades=0;
-                }else{
-                    lbl_cantidad.setText(String.valueOf(unidades));
-                    modificar_precio(product,false);
-                    mi_seleccion.remove(product);
-                }
-            }
-        });
 
         JLabel lbl_descripcion = new JLabel("<html>"+product.getDescripcion()+"</html>");
         JLabel lbl_marca = new JLabel(product.getMarca());

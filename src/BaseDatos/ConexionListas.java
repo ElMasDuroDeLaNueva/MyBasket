@@ -35,8 +35,9 @@ public class ConexionListas {
 
                 prest.executeUpdate();
 
-                Conexion.cerrarConexion(conexion);
             }
+
+            Conexion.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -124,6 +125,26 @@ public class ConexionListas {
             prest.setString(1, lista);
 
             int x = prest.executeUpdate();
+            Conexion.cerrarConexion(conexion);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void modificarLista(String lista, String nuevo){
+
+        try{
+            conexion = Conexion.getConexion();
+            String query = "UPDATE listas SET lista=? WHERE lista=?";
+
+            PreparedStatement prest = conexion.prepareStatement(query);
+            prest.setString(1, nuevo);
+            prest.setString(2, lista);
+
+            int retorno = prest.executeUpdate();
+
             Conexion.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
