@@ -1,9 +1,8 @@
 package Util;
 
-import BaseDatos.ConexionProductos;
+import DAO.DAOProductos;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,7 +16,7 @@ public class GestorProductos {
 
     public static ArrayList<String> obtenerCategorías(){
 
-        ArrayList<Product> array = ConexionProductos.getProductos();
+        ArrayList<Product> array = DAOProductos.getProductos();
         Iterator<Product> it = array.iterator();
         Set<String> categorias= new HashSet<String>();
         ArrayList<String> categorias_ordenadas;
@@ -39,7 +38,7 @@ public class GestorProductos {
 
     public static ArrayList<Product> productosCategoria(String categoria){
 
-        ArrayList<Product> array = ConexionProductos.getProductos();
+        ArrayList<Product> array = DAOProductos.getProductos();
         Iterator<Product> it = array.iterator();
         ArrayList<Product> productos = new ArrayList<Product>();
 
@@ -62,7 +61,7 @@ public class GestorProductos {
         int inicial;
         int maximo = 0;
         Iterator<String> it = categorias.iterator();
-        ArrayList<Product> array = ConexionProductos.getProductos();
+        ArrayList<Product> array = DAOProductos.getProductos();
 
         while (it.hasNext())
         {
@@ -87,7 +86,7 @@ public class GestorProductos {
 
     public static ArrayList<Product> obtenerProductos(ArrayList<String> idproductos){
 
-        ArrayList<Product> array = ConexionProductos.getProductos();
+        ArrayList<Product> array = DAOProductos.getProductos();
         ArrayList<Product> productos = new ArrayList<Product>();
         Iterator<Product> it = array.iterator();
 
@@ -132,7 +131,7 @@ public class GestorProductos {
         panel_precio.setBackground(Color.WHITE);
 
         ImageIcon imagen = product.getImagen();
-        JLabel lbl_imagen = new JLabel(Imagenes.resize(imagen,200,200));
+        JLabel lbl_imagen = new JLabel(Imagenes.resize(imagen,150,150));
 
         JLabel lbl_cantidad = new JLabel();
         lbl_cantidad.setText(String.valueOf(cantidad));
@@ -207,7 +206,6 @@ public class GestorProductos {
         panel_producto.add(panel_btn,BorderLayout.SOUTH);
         producto_individual.add(panel_producto,BorderLayout.CENTER);
         producto_individual.add(panel_sur_ind,BorderLayout.SOUTH);
-        producto_individual.setBorder(new MatteBorder(10, 0, 0, 0, Color.WHITE));
         return  producto_individual;
     }
 

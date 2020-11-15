@@ -1,6 +1,6 @@
 package Util;
 
-import BaseDatos.ConexionClientes;
+import DAO.DAOClientes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +11,7 @@ public class GestorUsuarios {
 
         boolean existe = false;
 
-        ArrayList<User> usuarios = ConexionClientes.getUsuarios();
+        ArrayList<User> usuarios = DAOClientes.getUsuarios();
         Iterator<User> it = usuarios.iterator();
 
         while (it.hasNext())
@@ -30,7 +30,7 @@ public class GestorUsuarios {
 
         User usuario = new User();
 
-        ArrayList<User> usuarios = ConexionClientes.getUsuarios();
+        ArrayList<User> usuarios = DAOClientes.getUsuarios();
         Iterator<User> it = usuarios.iterator();
 
         while (it.hasNext())

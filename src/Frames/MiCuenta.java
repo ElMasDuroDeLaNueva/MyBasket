@@ -1,6 +1,6 @@
 package Frames;
 
-import BaseDatos.ConexionClientes;
+import DAO.DAOClientes;
 import Util.Fuentes;
 import Util.GestorUsuarios;
 import Util.Imagenes;
@@ -274,7 +274,7 @@ public class MiCuenta extends JFrame implements MouseListener{
             new ModificarContraseña(this);
         }else if(target == lbl_eliminarCuenta){
             String correo = InicioSesion.getUsuario_logeado();
-            ConexionClientes.eliminarCuenta(correo);
+            DAOClientes.eliminarCuenta(correo);
             this.setVisible(false);
             this.dispose();
             new InicioSesion();

@@ -1,4 +1,4 @@
-package BaseDatos;
+package DAO;
 
 import Util.Product;
 
@@ -9,14 +9,21 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ConexionProductos {
+public class DAOProductos {
 
     public static Connection conexion;
+    static ArrayList<Product> productos;
 
     public static ArrayList<Product> getProductos(){
-        ArrayList<Product> productos = new ArrayList<Product>();
+        return productos;
+    }
+
+    public static void obtenerProductos(){
+
+        productos = new ArrayList<Product>();
+
         try{
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  productos";
 
@@ -39,13 +46,12 @@ public class ConexionProductos {
                 producto.setImagen(imagen);
                 productos.add(producto);
             }
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
 
         } catch (SQLException | IOException throwables) {
             //throwables.printStackTrace();
         }
 
-        return productos;
     }
 
 }

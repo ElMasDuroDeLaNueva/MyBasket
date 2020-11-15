@@ -1,9 +1,8 @@
-package BaseDatos;
+package DAO;
 
 import Frames.InicioSesion;
 import Util.GestorProductos;
 import Util.Product;
-import Util.User;
 
 
 import java.sql.*;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class ConexionListas {
+public class DAOListas {
 
     public static Connection conexion;
 
@@ -19,7 +18,7 @@ public class ConexionListas {
 
     public static ArrayList<Product> añadirLista(ArrayList<Product> productos, String nombreLista){
         try{
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
             Iterator<Product> it = productos.iterator();
             while (it.hasNext())
             {
@@ -37,7 +36,7 @@ public class ConexionListas {
 
             }
 
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -56,7 +55,7 @@ public class ConexionListas {
             } catch (ClassNotFoundException ex) {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
 
 
             String query = "SELECT * FROM  listas";
@@ -75,7 +74,7 @@ public class ConexionListas {
                     }
                 }
             }
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
             productos = GestorProductos.obtenerProductos(idproductos);
 
 
@@ -90,7 +89,7 @@ public class ConexionListas {
         HashSet<String> listas = new HashSet<>();
         String correo = InicioSesion.getUsuario_logeado();
         try{
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
 
 
             String query = "SELECT * FROM  listas";
@@ -106,7 +105,7 @@ public class ConexionListas {
                     listas.add(result.getString("lista"));
                 }
             }
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -118,14 +117,14 @@ public class ConexionListas {
     public static void eliminarLista(String lista) {
 
         try {
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
             String query = "DELETE FROM listas WHERE lista = ?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
             prest.setString(1, lista);
 
             int x = prest.executeUpdate();
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -136,7 +135,7 @@ public class ConexionListas {
     public static void modificarLista(String lista, String nuevo){
 
         try{
-            conexion = Conexion.getConexion();
+            conexion = DAO.getConexion();
             String query = "UPDATE listas SET lista=? WHERE lista=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -145,7 +144,7 @@ public class ConexionListas {
 
             int retorno = prest.executeUpdate();
 
-            Conexion.cerrarConexion(conexion);
+            DAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

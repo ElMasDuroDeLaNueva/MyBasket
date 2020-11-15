@@ -1,7 +1,6 @@
 package Frames;
 
-import BaseDatos.ConexionClientes;
-import BaseDatos.ConexionListas;
+import DAO.DAOListas;
 import Util.Fuentes;
 import Util.Product;
 
@@ -47,6 +46,11 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         this.lista = lista;
         panel();
         frame=true;
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent ev) {
+                frame_Listas.setEnabled(true);
+            }
+        });
     }
 
     public ConfirmaLista(Productos frame_productos){
@@ -54,6 +58,11 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         frame_Productos.setEnabled(false);
         panel();
         frame=false;
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent ev) {
+                frame_Productos.setEnabled(true);
+            }
+        });
     }
 
     public void panel() {
@@ -120,12 +129,6 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         MainPanel.setBorder(new MatteBorder(20, 30, 1, 50,  Color.white));
 
         //Ventana
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent ev) {
-                frame_Productos.setEnabled(true);
-                frame_Listas.setEnabled(true);
-            }
-        });
         Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
         this.setIconImage(icon);
         this.setSize(700,400);
@@ -199,7 +202,7 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         Object target = e.getSource();
         if(target == btn_actualizar){
             if(frame){
-                ConexionListas.modificarLista(lista, txt_lista.getText());
+                DAOListas.modificarLista(lista, txt_lista.getText());
                 frame_Listas.setEnabled(true);
                 frame_Listas.ActualizarListasPestañas(txt_lista.getText());
                 frame_Listas.revalidate();
@@ -208,7 +211,7 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
                 this.dispose();
             }else{
                 ArrayList<Product> productos = Productos.getProductosSeleccionados();
-                ConexionListas.añadirLista(productos, txt_lista.getText());
+                DAOListas.añadirLista(productos, txt_lista.getText());
                 frame_Productos.setEnabled(true);
                 this.setVisible (false);
                 this.dispose();

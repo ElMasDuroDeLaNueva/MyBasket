@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Productos extends JFrame implements MouseListener,ItemListener{
+public class ModificarLista extends JFrame implements MouseListener,ItemListener{
 
     JPanel MainPanel = new JPanel(new BorderLayout());
     JPanel panel_categorias = new JPanel(new GridLayout(0, 1, 5, 10));
@@ -44,8 +44,8 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
     static JLabel lbl_total = new JLabel();
     JLabel lblLogo;
 
-    JLabel lbl_comprar = new JLabel("            C O M P R A R ");
-    JLabel lbl_lista = new JLabel("        C R E A R   L I S T A ");
+    JLabel lbl_comprar = new JLabel("   A C T U A L I Z A R   L I S T A ");
+    JLabel lbl_lista = new JLabel("     R E P O N E R  D E S P E N S A");
     JButton btn_buscar = new JButton("BUSCAR");
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
@@ -58,7 +58,11 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
     double total = 0;
 
-    public Productos(){
+    String lista;
+
+    public ModificarLista(String lista){
+
+        this.lista = lista;
 
         //BACKGROUND
         MainPanel.setBackground(Color.WHITE);
@@ -370,7 +374,7 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             this.dispose();
             new MenuPrincipal();
         }else if (target == lbl_lista) {
-            new ConfirmaLista(this);
+           // new ConfirmaLista(this);
         }
     }
 

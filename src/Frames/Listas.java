@@ -1,6 +1,6 @@
 package Frames;
 
-import BaseDatos.ConexionListas;
+import DAO.DAOListas;
 import Util.*;
 
 import javax.swing.*;
@@ -90,8 +90,9 @@ public class Listas extends JFrame implements MouseListener{
         lbl_crear.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_crear.setPreferredSize(new Dimension(20, 50));
         lbl_crear.addMouseListener(this);
-        //lbl_crear.setBackground(Fuentes.color_logo);
-        //lbl_crear.setForeground(Color.WHITE);
+        lbl_crear.setBackground(Fuentes.color_logo);
+        lbl_crear.setForeground(Color.WHITE);
+        lbl_crear.setOpaque(true);
         panel_crear.add(lbl_crear);
         panel_crear.setBorder(new MatteBorder(10, 0, 10, 500,  Color.WHITE));
         panel_central.add(lbl_listas,BorderLayout.NORTH);
@@ -162,8 +163,8 @@ public class Listas extends JFrame implements MouseListener{
 
         JPanel panel_renombrar = new JPanel(new GridLayout(1,0));
         JPanel panel_editar = new JPanel(new GridLayout(1,0));
-        JLabel lbl_renombrar = new JLabel("    RENOMBRAR LISTA        ->  ");
-        JLabel lbl_editar = new JLabel("    EDITAR LA LISTA        ->  ");
+        JLabel lbl_renombrar = new JLabel("           RENOMBRAR LISTA        ->  ");
+        JLabel lbl_editar = new JLabel("    REPONER O MODIFICAR LISTA    ->  ");
         JPanel panel_contenedor = new JPanel(new BorderLayout());
         JPanel panel_botones = new JPanel(new GridLayout(0, 2));
         JPanel panel = new JPanel(new GridLayout(1, 0));
@@ -171,13 +172,13 @@ public class Listas extends JFrame implements MouseListener{
         panel.setBackground(Color.WHITE);
         panel_contenedor.setBackground(Color.WHITE);
         panel_botones.setBackground(Color.WHITE);
-        ArrayList<Product> productos = ConexionListas.getProductosLista(lista);
+        ArrayList<Product> productos = DAOListas.getProductosLista(lista);
         HashSet<Product> productos_unicos = new HashSet<Product>(productos);
 
         panel_editar.setBackground(Color.WHITE);
         panel_renombrar.setBackground(Color.WHITE);
-        panel_editar.setBorder(new MatteBorder(10, 80, 10, 80,  Color.WHITE));
-        panel_renombrar.setBorder(new MatteBorder(10, 80, 10, 80,  Color.WHITE));
+        panel_editar.setBorder(new MatteBorder(10, 60, 10, 60,  Color.WHITE));
+        panel_renombrar.setBorder(new MatteBorder(10, 60, 10, 60,  Color.WHITE));
 
         lbl_renombrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_renombrar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
@@ -191,24 +192,32 @@ public class Listas extends JFrame implements MouseListener{
                 antiguo = lista;
             }
         });
-        //lbl_crear.setBackground(Fuentes.color_logo);
-        //lbl_crear.setForeground(Color.WHITE);
         panel_renombrar.add(lbl_renombrar);
+
+        lbl_editar.setBackground(Fuentes.color_logo);
+        lbl_renombrar.setBackground(Fuentes.color_logo);
+        lbl_editar.setForeground(Color.WHITE);
+        lbl_renombrar.setForeground(Color.WHITE);
+        lbl_editar.setOpaque(true);
+        lbl_renombrar.setOpaque(true);
 
         lbl_editar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_editar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
         lbl_editar.setFont(Fuentes.f_eliminar);
         lbl_editar.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_editar.setPreferredSize(new Dimension(20, 50));
-        lbl_editar.addMouseListener(this);
-        //lbl_crear.setBackground(Fuentes.color_logo);
-        //lbl_crear.setForeground(Color.WHITE);
+        lbl_renombrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ModificarLista(lista);
+            }
+        });
         panel_editar.add(lbl_editar);
 
         panel_botones.add(panel_renombrar);
         panel_botones.add(panel_editar);
 
-        if(productos_unicos.size()<4){
+        if(productos_unicos.size()<5){
             Iterator<Product> it = productos_unicos.iterator();
             while(it.hasNext()){
                 Product producto = it.next();
@@ -220,7 +229,6 @@ public class Listas extends JFrame implements MouseListener{
             Iterator<Product> it = productos_unicos.iterator();
             JPanel panel_filas = new JPanel(new GridLayout(0, 1));
             panel_filas.setBackground(Color.WHITE);
-            JScrollPane scroll2;
             int contador = 0;
             while(it.hasNext()){
                 Product producto = it.next();
@@ -229,9 +237,7 @@ public class Listas extends JFrame implements MouseListener{
                 panel_filas.add(producto_individual);
                 contador++;
                 if(contador == 3){
-                    scroll2 = new JScrollPane(panel_filas);
-                    scroll2.setBorder(BorderFactory.createEmptyBorder());
-                    panel.add(scroll2);
+                    panel.add(panel_filas);
                     panel_filas = new JPanel(new GridLayout(0, 1));
                     contador = 0;
                 }
@@ -242,9 +248,7 @@ public class Listas extends JFrame implements MouseListener{
                     panel_vacio.setBackground(Color.WHITE);
                     panel_filas.add(panel_vacio);
                 }
-                scroll2 = new JScrollPane(panel_filas);
-                scroll2.setBorder(BorderFactory.createEmptyBorder());
-                panel.add(scroll2);
+                panel.add(panel_filas);
             }
         }
         scroll = new JScrollPane(panel);
@@ -252,6 +256,7 @@ public class Listas extends JFrame implements MouseListener{
         scroll.setBorder(BorderFactory.createEmptyBorder());
         panel_contenedor.add(scroll,BorderLayout.CENTER);
         panel_contenedor.add(panel_botones,BorderLayout.SOUTH);
+        panel_contenedor.setBorder(new MatteBorder(10, 10, 0, 0, Color.WHITE));
         tabbedPane.addTab(lista, panel_contenedor);
         int pestaña = tabbedPane.getTabCount()-1;
         tabbedPane.setTabComponentAt(pestaña,new PestañaCruz(tabbedPane.getTitleAt(pestaña),tabbedPane));
@@ -274,7 +279,7 @@ public class Listas extends JFrame implements MouseListener{
     }
 
     private void meterListas() {
-        HashSet<String> listas = ConexionListas.getListas();
+        HashSet<String> listas = DAOListas.getListas();
         Iterator<String> it = listas.iterator();
         int contador = 0;
         while (it.hasNext())
@@ -299,7 +304,7 @@ public class Listas extends JFrame implements MouseListener{
             papelera.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    ConexionListas.eliminarLista(nombre_lista);
+                    DAOListas.eliminarLista(nombre_lista);
                     ActualizarListas();
                 }
             });

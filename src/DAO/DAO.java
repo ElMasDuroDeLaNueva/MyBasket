@@ -1,15 +1,15 @@
-package BaseDatos;
+package DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Conexion {
+public class DAO {
     public static Connection conexion;
     static String user = "postgres";
-    static String password = "admin";
+    static String password = "";
 
-    public Conexion(){
+    public DAO(){
 
         //Cargo el driver
         try {
@@ -30,7 +30,7 @@ public class Conexion {
 
     //Metodo que devuelve la conexion actualizada (pueden haber updates)
     public static Connection getConexion(){
-        new Conexion(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
+        new DAO(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
         return conexion;
     }
 
