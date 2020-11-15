@@ -206,7 +206,7 @@ public class Listas extends JFrame implements MouseListener{
         lbl_editar.setFont(Fuentes.f_eliminar);
         lbl_editar.setHorizontalAlignment(SwingConstants.LEFT);
         lbl_editar.setPreferredSize(new Dimension(20, 50));
-        lbl_renombrar.addMouseListener(new MouseAdapter() {
+        lbl_editar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 new ModificarLista(lista);
