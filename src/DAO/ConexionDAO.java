@@ -40,7 +40,6 @@ public class ConexionDAO {
     //Metodo que devuelve la conexion actualizada (pueden haber updates)
     public static Connection getConexion(){
         new ConexionDAO(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
-        System.out.println(conexion);
         return conexion;
     }
 

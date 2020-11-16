@@ -11,6 +11,8 @@ class GestorProductosTest {
 
     @org.junit.jupiter.api.Test
     void obtenerCategorías() {
+        //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
+        //COMPRUEBO QUE TODAS LAS CATEGORIAS QUE HAN SIDO CREADAS SE OBTIENEN DE MANERA CORRECTA
         ProductosDAO pd = new ProductosDAO();
         pd.obtenerProductos();
         GestorProductos gp = new GestorProductos();
@@ -25,11 +27,4 @@ class GestorProductosTest {
         assertEquals(categorias,gp.obtenerCategorías());
     }
 
-    @org.junit.jupiter.api.Test
-    void productosCategoria() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void obtenerProductos() {
-    }
 }
