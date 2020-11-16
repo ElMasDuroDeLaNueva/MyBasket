@@ -1,18 +1,16 @@
 package TestJUnit;
 
 import DAO.ClientesDAO;
-import Util.GestorUsuarios;
+import Gestores.GestorUsuarios;
 import Util.User;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import java.util.ArrayList;
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class GestorUsuariosTest {
+public class GestorUsuariosTest {
 
     @Test
-    void CreacionUsuario() {
+    public void CreacionUsuario() {
         //Para realizar esta prueba como los usuarios irán variando nos creamos uno, comprobamos que funciona
         //el metodo existe (y que el modo de creacion no da problemas) y luego lo eliminamos
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
@@ -29,7 +27,7 @@ class GestorUsuariosTest {
     }
 
     @Test
-    void getUser() {
+    public void getUser() {
         //CREO UN USUARIO DE PRUEBA
         crearUsuario();
 
@@ -47,7 +45,7 @@ class GestorUsuariosTest {
     }
 
     @Test
-    void EliminacionUsuario() {
+    public void EliminacionUsuario() {
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
         crearUsuario();
         borrarUsuario();
@@ -59,7 +57,7 @@ class GestorUsuariosTest {
     }
 
     @Test
-    void ModificarDatosUsuario(){
+    public void ModificarDatosUsuario(){
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
         //COMPROBAREMOS QUE LOS METODOS PARA MODIFICAR LOS DATOS DEL USUARIO FUNCIONAN
         crearUsuario();
@@ -75,7 +73,7 @@ class GestorUsuariosTest {
     }
 
     @Test
-    void ModificarCorreo(){
+    public void ModificarCorreo(){
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
         crearUsuario();
         String correo = "prueba@gmail.com";
@@ -92,7 +90,7 @@ class GestorUsuariosTest {
     }
 
     @Test
-    void ModificarPassword(){
+    public void ModificarPassword(){
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
         crearUsuario(); //CREA CONTRASEÑA "prueba"
         String correo = "prueba@gmail.com";

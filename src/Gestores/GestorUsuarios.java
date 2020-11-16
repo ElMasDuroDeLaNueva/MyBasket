@@ -1,6 +1,7 @@
-package Util;
+package Gestores;
 
 import DAO.ClientesDAO;
+import Util.User;
 
 import java.util.ArrayList;
 import java.util.Iterator;

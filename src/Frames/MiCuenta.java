@@ -2,7 +2,7 @@ package Frames;
 
 import DAO.ClientesDAO;
 import Util.Fuentes;
-import Util.GestorUsuarios;
+import Gestores.GestorUsuarios;
 import Util.Imagenes;
 import Util.User;
 

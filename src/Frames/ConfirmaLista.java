@@ -207,7 +207,7 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
                 frame_Listas.ActualizarListasPestañas(txt_lista.getText());
                 frame_Listas.revalidate();
                 frame_Listas.repaint();
-                frame_Listas.setFocusLista(lista);
+                frame_Listas.setFocusLista(txt_lista.getText());
                 this.setVisible (false);
                 this.dispose();
             }else{

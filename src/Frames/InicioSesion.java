@@ -1,10 +1,10 @@
 package Frames;
 
+import Gestores.GestorUsuarios;
 import Util.*;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.ColorChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

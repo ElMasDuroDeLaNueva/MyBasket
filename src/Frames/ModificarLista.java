@@ -1,6 +1,8 @@
 package Frames;
 
 import DAO.ListasDAO;
+import Gestores.GestorProductos;
+import Gestores.GestorUsuarios;
 import Util.*;
 
 import javax.swing.*;

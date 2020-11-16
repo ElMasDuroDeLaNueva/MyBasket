@@ -1,16 +1,16 @@
 package TestJUnit;
 
 import DAO.ProductosDAO;
-import Util.GestorProductos;
+import Gestores.GestorProductos;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class GestorProductosTest {
+public class GestorProductosTest {
 
-    @org.junit.jupiter.api.Test
-    void obtenerCategorías() {
+    @org.junit.Test
+    public void obtenerCategorías() {
         //¡¡ANTES DE REALIZAR ESTA PRUEBA ConexionDAOTest TIENE QUE HABERSE COMPROBADO!!
         //COMPRUEBO QUE TODAS LAS CATEGORIAS QUE HAN SIDO CREADAS SE OBTIENEN DE MANERA CORRECTA
         ProductosDAO pd = new ProductosDAO();

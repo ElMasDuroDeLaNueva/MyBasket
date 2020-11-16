@@ -1,6 +1,8 @@
 package Frames;
 
 import DAO.ListasDAO;
+import Gestores.GestorProductos;
+import Gestores.GestorUsuarios;
 import Util.*;
 
 import javax.swing.*;
@@ -268,12 +270,12 @@ public class Listas extends JFrame implements MouseListener{
             public void stateChanged(ChangeEvent e) {
                 if (e.getSource() instanceof JTabbedPane) {
                     JTabbedPane pane = (JTabbedPane) e.getSource();
-                    int index = pane.getSelectedIndex();
+                    //int index = pane.getSelectedIndex();
                     int pestañas = tabbedPane.getTabCount();
                     for(int i = 0; i < pestañas; ++i){
                         tabbedPane.setBackgroundAt(i, Color.WHITE);
                     }
-                    tabbedPane.setBackgroundAt(index, Fuentes.color_logo);
+                    //tabbedPane.setBackgroundAt(index, Fuentes.color_logo);
                 }
             }
         });
@@ -368,7 +370,6 @@ public class Listas extends JFrame implements MouseListener{
     }
 
     public void ActualizarListasPestañas(String lista){
-        ActualizarListas();
         boolean existe;
         existe = getExiste(lista);
         tabbedPane.removeTabAt(tabbedPane.indexOfTab(antiguo));
@@ -376,6 +377,7 @@ public class Listas extends JFrame implements MouseListener{
             tabbedPane.removeTabAt(tabbedPane.indexOfTab(lista));
         }
         añadirPanel(lista);
+        ActualizarListas();
 
     }
 

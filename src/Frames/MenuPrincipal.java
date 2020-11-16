@@ -1,18 +1,15 @@
 package Frames;
 
 import Util.Fuentes;
-import Util.GestorUsuarios;
+import Gestores.GestorUsuarios;
 import Util.Imagenes;
 import Util.User;
 
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.TextAttribute;
 import java.net.URL;
-import java.util.Map;
 
 public class MenuPrincipal extends JFrame implements ActionListener, MouseListener{
 

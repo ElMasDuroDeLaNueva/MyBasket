@@ -1,5 +1,7 @@
 package Frames;
 
+import Gestores.GestorProductos;
+import Gestores.GestorUsuarios;
 import Util.*;
 
 import javax.swing.*;

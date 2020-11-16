@@ -1,7 +1,7 @@
 package DAO;
 
 import Frames.InicioSesion;
-import Util.GestorProductos;
+import Gestores.GestorProductos;
 import Util.Product;
 
 

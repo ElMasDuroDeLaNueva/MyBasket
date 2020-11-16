@@ -1,8 +1,11 @@
-package Util;
+package Gestores;
 
 import DAO.ProductosDAO;
 import Frames.ModificarLista;
 import Frames.Productos;
+import Util.Fuentes;
+import Util.Imagenes;
+import Util.Product;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
