@@ -1,6 +1,6 @@
 package Frames;
 
-import DAO.DAOListas;
+import DAO.ListasDAO;
 import Util.Fuentes;
 import Util.Product;
 
@@ -202,16 +202,17 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         Object target = e.getSource();
         if(target == btn_actualizar){
             if(frame){
-                DAOListas.modificarLista(lista, txt_lista.getText());
+                ListasDAO.modificarLista(lista, txt_lista.getText());
                 frame_Listas.setEnabled(true);
                 frame_Listas.ActualizarListasPestañas(txt_lista.getText());
                 frame_Listas.revalidate();
                 frame_Listas.repaint();
+                frame_Listas.setFocusLista(lista);
                 this.setVisible (false);
                 this.dispose();
             }else{
                 ArrayList<Product> productos = Productos.getProductosSeleccionados();
-                DAOListas.añadirLista(productos, txt_lista.getText());
+                ListasDAO.añadirLista(productos, txt_lista.getText());
                 frame_Productos.setEnabled(true);
                 this.setVisible (false);
                 this.dispose();

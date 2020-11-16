@@ -1,5 +1,6 @@
 package Frames;
 
+import DAO.ListasDAO;
 import Util.*;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
     JCheckBox cb_bebidas = new JCheckBox("Bebidas");
     JCheckBox cb_lacteos = new JCheckBox("Lacteos");
     JCheckBox cb_dulcesSalado = new JCheckBox("Dulces");
-    JCheckBox cb_miSeleccion = new JCheckBox("Mi seleccion");
+    JCheckBox cb_miSeleccion = new JCheckBox();
 
     static JScrollPane scroll;
 
@@ -44,8 +45,8 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
     static JLabel lbl_total = new JLabel();
     JLabel lblLogo;
 
-    JLabel lbl_comprar = new JLabel("   A C T U A L I Z A R   L I S T A ");
-    JLabel lbl_lista = new JLabel("     R E P O N E R  D E S P E N S A");
+    JLabel lbl_lista = new JLabel("     A C T U A L I Z A R   L I S T A ");
+    JLabel lbl_comprar = new JLabel("     R E P O N E R  D E S P E N S A");
     JButton btn_buscar = new JButton("BUSCAR");
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
@@ -60,9 +61,23 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
 
     String lista;
 
-    public ModificarLista(String lista){
+    Listas frame_Listas;
+
+    public ModificarLista(String lista, Listas frame_Listas){
 
         this.lista = lista;
+        this.frame_Listas = frame_Listas;
+        frame_Listas.setEnabled(false);
+
+        cb_miSeleccion.setText(lista);
+
+        mi_seleccion = ListasDAO.getProductosLista(lista);
+        Iterator it = mi_seleccion.iterator();
+        while(it.hasNext()){
+            Product producto = (Product) it.next();
+            total = total+producto.getPrecio();
+        }
+        total = redondearDecimales(total, 2);
 
         //BACKGROUND
         MainPanel.setBackground(Color.WHITE);
@@ -81,7 +96,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         ImageIcon icon_logo = new ImageIcon(url_Logo);
         ImageIcon logo = Imagenes.resize(icon_logo, 140, 130);
         lblLogo = new JLabel(logo);
-        JLabel lbltitulo = new JLabel("Productos");
+        JLabel lbltitulo = new JLabel("Lista: "+lista);
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
         lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -189,40 +204,41 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
             }
         });
 
-        lbl_lista.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbl_lista.addMouseListener(this);
-
         lbl_comprar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_comprar.addMouseListener(this);
+
+        lbl_lista.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbl_lista.addMouseListener(this);
 
         //Filtros
         panel_filtros.add(panel_filtro_precio);
         panel_filtros.setBorder(new MatteBorder(0, 0, 0, 1, new Color(215, 215, 215)));
 
         //Productos
-        ArrayList<String> categorias = GestorProductos.obtenerCategorías();
+        ArrayList<String> categorias = new ArrayList<String>();
+        categorias.add(lista);
         scroll = new JScrollPane(panel_categorias);
         meterProductos(categorias);
         panel_categorias.setBorder(new MatteBorder(0, 20, 0, 20, Color.WHITE));
 
         //Panel Botones
         btn_buscar.setBackground(Color.WHITE);
-        lbl_comprar.setBackground(Fuentes.color_logo);
-        lbl_comprar.setBorder(null);
-        lbl_comprar.setOpaque(true);
-        lbl_comprar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
-        lbl_comprar.setPreferredSize(new Dimension(200, 40));
+        lbl_lista.setBackground(Fuentes.color_logo);
+        lbl_lista.setBorder(null);
         lbl_lista.setOpaque(true);
         lbl_lista.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
-        lbl_lista.setHorizontalAlignment(SwingConstants.LEFT);
-        lbl_lista.setPreferredSize(new Dimension(200, 40));
-        lbl_lista.setBackground(Fuentes.color_logo);
-        lbl_comprar.setFont(Fuentes.f_eliminar);
+        lbl_lista.setPreferredSize(new Dimension(250, 40));
+        lbl_comprar.setOpaque(true);
+        lbl_comprar.setBorder(new MatteBorder(1, 1, 1, 1,  Color.black));
+        lbl_comprar.setHorizontalAlignment(SwingConstants.LEFT);
+        lbl_comprar.setPreferredSize(new Dimension(250, 40));
+        lbl_comprar.setBackground(Fuentes.color_logo);
         lbl_lista.setFont(Fuentes.f_eliminar);
-        lbl_comprar.setForeground(Color.WHITE);
+        lbl_comprar.setFont(Fuentes.f_eliminar);
         lbl_lista.setForeground(Color.WHITE);
-        panel_btn_listas.add(lbl_lista);
-        panel_btn_comprar.add(lbl_comprar);
+        lbl_comprar.setForeground(Color.WHITE);
+        panel_btn_listas.add(lbl_comprar);
+        panel_btn_comprar.add(lbl_lista);
         lbl_total.setText("Total : "+total+" €");
         panel_total.add(lbl_total);
         panel_sur.add(panel_total);
@@ -241,7 +257,11 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         //Ventana
         Image icon = new ImageIcon(getClass().getResource("/images/LogoSinTexto.png")).getImage();
         this.setIconImage(icon);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent ev) {
+                frame_Listas.setEnabled(true);
+            }
+        });
         this.setSize(1080,800);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -269,31 +289,39 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
             ArrayList<Product> productos;
             JPanel panel_productos;
             Iterator<Product> it2;
-            if(categoria.equals("Mi seleccion")){
+            int max_lineas;
+            if(categoria.equals(lista)){
                 panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
                 productos = mi_seleccion;
                 productos_seleccionados = new HashSet<Product>(productos);
                 it2 = productos_seleccionados.iterator();
-            }else{maximo = GestorProductos.maximoProductos(categorias);
+                max_lineas = productos_seleccionados.size()-1;
+            }else{
+                maximo = GestorProductos.maximoProductos(categorias);
                 productos = GestorProductos.productosCategoria(categoria);
                 panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
                 it2 = productos.iterator();
+                max_lineas = maximo-1;
             }
 
             panel_productos.setBackground(Color.WHITE);
+            panel_productos.setBorder(new MatteBorder(5, 5, 5, 5, Fuentes.color_logo));
 
-
+            int contador=0;
             while (it2.hasNext())
             {
                 Product producto = it2.next();
-                int cantidad;
-                if(categoria.equals("Mi seleccion")){
-                    cantidad = Collections.frequency(mi_seleccion, producto);
+                int cantidad = 0;
+                cantidad = Collections.frequency(mi_seleccion, producto);
+                JPanel producto_individual;
+                System.out.println(contador+" "+max_lineas);
+                if(contador==max_lineas){
+                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,false);
                 }else{
-                    cantidad = 0;
+                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,true);
                 }
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true);
                 panel_productos.add(producto_individual);
+                contador++;
             }
 
             JPanel panel_contenedor = new JPanel(new BorderLayout());
@@ -360,21 +388,42 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         if(target == lbl_usuario_logo){
             this.setVisible(false);
             this.dispose();
+            frame_Listas.setVisible(false);
+            frame_Listas.dispose();
             new MiCuenta();
         }else if(target == lbl_usuario){
             this.setVisible(false);
             this.dispose();
+            frame_Listas.setVisible(false);
+            frame_Listas.dispose();
             new MiCuenta();
         }else if(target == lbl_desconectar){
             this.setVisible(false);
             this.dispose();
+            frame_Listas.setVisible(false);
+            frame_Listas.dispose();
             new InicioSesion();
         }else if(target == lblLogo){
             this.setVisible(false);
             this.dispose();
+            frame_Listas.setVisible(false);
+            frame_Listas.dispose();
             new MenuPrincipal();
         }else if (target == lbl_lista) {
-           // new ConfirmaLista(this);
+            ListasDAO.eliminarLista(lista);
+            ListasDAO.añadirLista(mi_seleccion, lista);
+            frame_Listas.tabbedPane.removeTabAt(frame_Listas.tabbedPane.indexOfTab(lista));
+            frame_Listas.añadirPanel(lista);
+            frame_Listas.ActualizarListas();
+            frame_Listas.setFocusLista(lista);
+            this.setVisible(false);
+            this.dispose();
+            frame_Listas.setEnabled(true);
+        }else if(target==lbl_comprar){
+            frame_Listas.setFocusLista(lista);
+            this.setVisible(false);
+            this.dispose();
+            frame_Listas.setEnabled(true);
         }
     }
 

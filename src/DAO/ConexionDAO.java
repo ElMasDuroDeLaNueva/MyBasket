@@ -1,15 +1,19 @@
 package DAO;
 
+import configuracion.PropertiesISW;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DAO {
+public class ConexionDAO {
     public static Connection conexion;
-    static String user = "postgres";
-    static String password = "";
+    String url = PropertiesISW.getInstance().getProperty("ddbb.connection");
+    String user = PropertiesISW.getInstance().getProperty("ddbb.user");
+    String password = PropertiesISW.getInstance().getProperty("ddbb.password");
+    boolean conectado = false;
 
-    public DAO(){
+    public ConexionDAO(){
 
         //Cargo el driver
         try {
@@ -20,17 +24,23 @@ public class DAO {
         try{
             //Realizamos conexion
             conexion = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/bd_MyBasket",user, password);
-             //"jdbc:postgresql://83.34.163.249:5432/bd_MyBasket",user, password);
+                    url,user, password);
+            conectado = true;
 
         } catch (SQLException throwables) {
+            conectado = false;
             throwables.printStackTrace();
         }
     }
 
+    public boolean isConnected(){
+        return conectado;
+    }
+
     //Metodo que devuelve la conexion actualizada (pueden haber updates)
     public static Connection getConexion(){
-        new DAO(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
+        new ConexionDAO(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
+        System.out.println(conexion);
         return conexion;
     }
 

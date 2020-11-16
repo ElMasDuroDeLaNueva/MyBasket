@@ -1,6 +1,6 @@
 package Frames;
 
-import DAO.DAOClientes;
+import DAO.ClientesDAO;
 import Util.Fuentes;
 import Util.GestorUsuarios;
 import Util.Imagenes;
@@ -70,7 +70,7 @@ public class MiCuenta extends JFrame implements MouseListener{
         ImageIcon icon_logo = new ImageIcon(url_Logo);
         ImageIcon logo = Imagenes.resize(icon_logo, 140, 130);
         lblLogo = new JLabel(logo);
-        JLabel lbltitulo = new JLabel("Productos");
+        JLabel lbltitulo = new JLabel("Perfil de Usuario");
         lbltitulo.setFont(Fuentes.f_titulo);
         lbltitulo.setForeground(Fuentes.color_logo);
         lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -274,7 +274,7 @@ public class MiCuenta extends JFrame implements MouseListener{
             new ModificarContraseña(this);
         }else if(target == lbl_eliminarCuenta){
             String correo = InicioSesion.getUsuario_logeado();
-            DAOClientes.eliminarCuenta(correo);
+            ClientesDAO.eliminarCuenta(correo);
             this.setVisible(false);
             this.dispose();
             new InicioSesion();

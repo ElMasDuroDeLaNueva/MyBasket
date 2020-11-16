@@ -5,7 +5,7 @@ import Util.User;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DAOClientes {
+public class ClientesDAO {
 
     public static Connection conexion;
 
@@ -13,7 +13,7 @@ public class DAOClientes {
     public static ArrayList<User> getUsuarios(){
         ArrayList<User> usuarios = new ArrayList<User>();
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  clientes";
 
@@ -31,7 +31,7 @@ public class DAOClientes {
                 usuarios.add(user);
             }
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {
@@ -40,11 +40,12 @@ public class DAOClientes {
 
         return usuarios;
     }
+
     //Metodo para modificar en la base de datos atributos del usuario
     public static void modificarDatos(String correo, String nombre, String apellido, String numero, String direccion){
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "UPDATE clientes SET nombre=?, apellido=?, telefono=?, direccion=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -56,7 +57,7 @@ public class DAOClientes {
 
             int retorno = prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -68,7 +69,7 @@ public class DAOClientes {
     public static void modificarCorreo(String correo, String nuevo){
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "UPDATE clientes SET correo=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -77,7 +78,7 @@ public class DAOClientes {
 
             int retorno = prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -89,7 +90,7 @@ public class DAOClientes {
     public static void modificarContraseña(String correo, String contraseña){
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "UPDATE clientes SET contraseña=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -98,7 +99,7 @@ public class DAOClientes {
 
             int retorno = prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {
@@ -111,7 +112,7 @@ public class DAOClientes {
     public static void logearUsuario(String nombre, String apellido, String numero, String direccion ,String correo, String contraseña){
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "INSERT INTO clientes (apellido,correo,nombre,direccion,contraseña,telefono) VALUES (?,?,?,?,?,?)";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -124,7 +125,7 @@ public class DAOClientes {
 
             prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {
@@ -137,7 +138,7 @@ public class DAOClientes {
     public static void eliminarCuenta(String correo) {
 
         try {
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "DELETE FROM clientes WHERE correo = ?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -145,7 +146,7 @@ public class DAOClientes {
 
             int x = prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
 
         } catch (SQLException throwables) {

@@ -265,31 +265,38 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             ArrayList<Product> productos;
             JPanel panel_productos;
             Iterator<Product> it2;
+            int max_lineas;
             if(categoria.equals("Mi seleccion")){
                 panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
                 productos = mi_seleccion;
                 productos_seleccionados = new HashSet<Product>(productos);
+                max_lineas = productos_seleccionados.size()-1;
                 it2 = productos_seleccionados.iterator();
-            }else{maximo = GestorProductos.maximoProductos(categorias);
+            }else{
+                maximo = GestorProductos.maximoProductos(categorias);
                 productos = GestorProductos.productosCategoria(categoria);
                 panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
+                max_lineas = maximo-1;
                 it2 = productos.iterator();
             }
 
             panel_productos.setBackground(Color.WHITE);
+            panel_productos.setBorder(new MatteBorder(5, 5, 5, 5, Fuentes.color_logo));
 
-
+            int contador=0;
             while (it2.hasNext())
             {
                 Product producto = it2.next();
-                int cantidad;
-                if(categoria.equals("Mi seleccion")){
-                    cantidad = Collections.frequency(mi_seleccion, producto);
+                int cantidad = 0;
+                cantidad = Collections.frequency(mi_seleccion, producto);
+                JPanel producto_individual;
+                if(contador==max_lineas){
+                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,false);
                 }else{
-                    cantidad = 0;
+                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,true);
                 }
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true);
                 panel_productos.add(producto_individual);
+                contador++;
             }
 
             JPanel panel_contenedor = new JPanel(new BorderLayout());
@@ -300,7 +307,6 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
             panel_contenedor.add(lbl_categoria,BorderLayout.NORTH);
             panel_contenedor.add(panel_productos,BorderLayout.CENTER);
-            panel_contenedor.setBorder(new MatteBorder(0, 0, 20, 0, Color.WHITE));
 
             panel_categorias.add(panel_contenedor);
 

@@ -9,7 +9,7 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DAOProductos {
+public class ProductosDAO {
 
     public static Connection conexion;
     static ArrayList<Product> productos;
@@ -23,7 +23,7 @@ public class DAOProductos {
         productos = new ArrayList<Product>();
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             Statement stmt = conexion.createStatement();
             String query = "SELECT * FROM  productos";
 
@@ -46,7 +46,7 @@ public class DAOProductos {
                 producto.setImagen(imagen);
                 productos.add(producto);
             }
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException | IOException throwables) {
             //throwables.printStackTrace();

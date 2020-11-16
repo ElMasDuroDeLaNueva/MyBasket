@@ -1,6 +1,6 @@
 package Frames;
 
-import DAO.DAOClientes;
+import DAO.ClientesDAO;
 import Util.Fuentes;
 import Util.Imagenes;
 import Util.RoundedBorder;
@@ -273,7 +273,7 @@ public class Register extends JFrame implements ActionListener, MouseListener {
                 mostrar_ocultado = true;
             }
         } else if(target == btn_crearCuenta){
-            DAOClientes.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
+            ClientesDAO.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
             InicioSesion.setUsuario_logeado(txt_email.getText());
             this.setVisible (false);
             this.dispose();

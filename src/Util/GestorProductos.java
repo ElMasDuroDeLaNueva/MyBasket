@@ -1,8 +1,11 @@
 package Util;
 
-import DAO.DAOProductos;
+import DAO.ProductosDAO;
+import Frames.ModificarLista;
+import Frames.Productos;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,9 +17,11 @@ import static Frames.Productos.modificar_precio;
 
 public class GestorProductos {
 
+    public GestorProductos(){}
+
     public static ArrayList<String> obtenerCategorías(){
 
-        ArrayList<Product> array = DAOProductos.getProductos();
+        ArrayList<Product> array = ProductosDAO.getProductos();
         Iterator<Product> it = array.iterator();
         Set<String> categorias= new HashSet<String>();
         ArrayList<String> categorias_ordenadas;
@@ -38,7 +43,7 @@ public class GestorProductos {
 
     public static ArrayList<Product> productosCategoria(String categoria){
 
-        ArrayList<Product> array = DAOProductos.getProductos();
+        ArrayList<Product> array = ProductosDAO.getProductos();
         Iterator<Product> it = array.iterator();
         ArrayList<Product> productos = new ArrayList<Product>();
 
@@ -61,7 +66,7 @@ public class GestorProductos {
         int inicial;
         int maximo = 0;
         Iterator<String> it = categorias.iterator();
-        ArrayList<Product> array = DAOProductos.getProductos();
+        ArrayList<Product> array = ProductosDAO.getProductos();
 
         while (it.hasNext())
         {
@@ -86,7 +91,7 @@ public class GestorProductos {
 
     public static ArrayList<Product> obtenerProductos(ArrayList<String> idproductos){
 
-        ArrayList<Product> array = DAOProductos.getProductos();
+        ArrayList<Product> array = ProductosDAO.getProductos();
         ArrayList<Product> productos = new ArrayList<Product>();
         Iterator<Product> it = array.iterator();
 
@@ -106,7 +111,7 @@ public class GestorProductos {
         return productos;
     }
 
-    public static JPanel getPantallaProducto(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos,boolean botones){
+    public static JPanel getPantallaProducto(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos,boolean botones, boolean modificar,boolean pintar){
 
         JPanel producto_individual = new JPanel(new BorderLayout());
         JPanel panel_producto = new JPanel(new BorderLayout());
@@ -120,6 +125,10 @@ public class GestorProductos {
 
         panel_cantidad.setBackground(Color.WHITE);
         producto_individual.setBackground(Color.WHITE);
+        if(pintar){
+            producto_individual.setBorder(new MatteBorder(0, 0, 0, 4, Fuentes.color_logo));
+
+        }
         panel_producto.setBackground(Color.WHITE);
         panel_btn.setBackground(Color.WHITE);
         panel_btn_2.setBackground(Color.WHITE);
@@ -156,7 +165,11 @@ public class GestorProductos {
                     int unidades = Integer.parseInt(lbl_cantidad.getText());
                     unidades++;
                     lbl_cantidad.setText(String.valueOf(unidades));
-                    modificar_precio(product,true);
+                    if(modificar){
+                        Productos.modificar_precio(product,true);
+                    }else{
+                        ModificarLista.modificar_precio(product, true);
+                    }
                     mi_seleccion.add(product);
                 }
             });
@@ -171,7 +184,11 @@ public class GestorProductos {
                         unidades=0;
                     }else{
                         lbl_cantidad.setText(String.valueOf(unidades));
-                        modificar_precio(product,false);
+                        if(modificar){
+                            Productos.modificar_precio(product,false);
+                        }else{
+                            ModificarLista.modificar_precio(product, false);
+                        }
                         mi_seleccion.remove(product);
                     }
                 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class DAOListas {
+public class ListasDAO {
 
     public static Connection conexion;
 
@@ -18,7 +18,7 @@ public class DAOListas {
 
     public static ArrayList<Product> añadirLista(ArrayList<Product> productos, String nombreLista){
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             Iterator<Product> it = productos.iterator();
             while (it.hasNext())
             {
@@ -36,7 +36,7 @@ public class DAOListas {
 
             }
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -55,7 +55,7 @@ public class DAOListas {
             } catch (ClassNotFoundException ex) {
                 System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
             }
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
 
 
             String query = "SELECT * FROM  listas";
@@ -74,7 +74,7 @@ public class DAOListas {
                     }
                 }
             }
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
             productos = GestorProductos.obtenerProductos(idproductos);
 
 
@@ -89,7 +89,7 @@ public class DAOListas {
         HashSet<String> listas = new HashSet<>();
         String correo = InicioSesion.getUsuario_logeado();
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
 
 
             String query = "SELECT * FROM  listas";
@@ -105,7 +105,7 @@ public class DAOListas {
                     listas.add(result.getString("lista"));
                 }
             }
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -117,14 +117,14 @@ public class DAOListas {
     public static void eliminarLista(String lista) {
 
         try {
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "DELETE FROM listas WHERE lista = ?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
             prest.setString(1, lista);
 
             int x = prest.executeUpdate();
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -135,7 +135,7 @@ public class DAOListas {
     public static void modificarLista(String lista, String nuevo){
 
         try{
-            conexion = DAO.getConexion();
+            conexion = ConexionDAO.getConexion();
             String query = "UPDATE listas SET lista=? WHERE lista=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
@@ -144,7 +144,7 @@ public class DAOListas {
 
             int retorno = prest.executeUpdate();
 
-            DAO.cerrarConexion(conexion);
+            ConexionDAO.cerrarConexion(conexion);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

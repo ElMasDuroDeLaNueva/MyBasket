@@ -1,6 +1,6 @@
 package Frames;
 
-import DAO.DAOClientes;
+import DAO.ClientesDAO;
 import Util.Fuentes;
 
 import javax.swing.*;
@@ -237,7 +237,7 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
         Object target = e.getSource();
         if(target == btn_actualizar){
             String correo = InicioSesion.getUsuario_logeado();
-            DAOClientes.modificarContraseña(correo, txt_contraseña.getText());
+            ClientesDAO.modificarContraseña(correo, txt_contraseña.getText());
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);
             this.dispose();

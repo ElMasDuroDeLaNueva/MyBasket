@@ -1,6 +1,6 @@
 package Frames;
 
-import DAO.DAOListas;
+import DAO.ListasDAO;
 import Util.*;
 
 import javax.swing.*;
@@ -49,7 +49,7 @@ public class Listas extends JFrame implements MouseListener{
     URL url_mas = this.getClass().getResource("/images/Mas.png");
     URL url_menos = this.getClass().getResource("/images/Menos.png");
 
-    String antiguo;
+    static String antiguo;
 
     public Listas(){
 
@@ -172,7 +172,7 @@ public class Listas extends JFrame implements MouseListener{
         panel.setBackground(Color.WHITE);
         panel_contenedor.setBackground(Color.WHITE);
         panel_botones.setBackground(Color.WHITE);
-        ArrayList<Product> productos = DAOListas.getProductosLista(lista);
+        ArrayList<Product> productos = ListasDAO.getProductosLista(lista);
         HashSet<Product> productos_unicos = new HashSet<Product>(productos);
 
         panel_editar.setBackground(Color.WHITE);
@@ -209,7 +209,8 @@ public class Listas extends JFrame implements MouseListener{
         lbl_editar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new ModificarLista(lista);
+                antiguo = lista;
+                new ModificarLista(lista,getPane());
             }
         });
         panel_editar.add(lbl_editar);
@@ -222,7 +223,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false);
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false,true,false);
                 panel.add(producto_individual);
             }
         }else{
@@ -233,7 +234,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false);
+                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false,true,false);
                 panel_filas.add(producto_individual);
                 contador++;
                 if(contador == 3){
@@ -276,10 +277,11 @@ public class Listas extends JFrame implements MouseListener{
                 }
             }
         });
+        setFocusLista(lista);
     }
 
     private void meterListas() {
-        HashSet<String> listas = DAOListas.getListas();
+        HashSet<String> listas = ListasDAO.getListas();
         Iterator<String> it = listas.iterator();
         int contador = 0;
         while (it.hasNext())
@@ -304,7 +306,8 @@ public class Listas extends JFrame implements MouseListener{
             papelera.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    DAOListas.eliminarLista(nombre_lista);
+                    ListasDAO.eliminarLista(nombre_lista);
+                    tabbedPane.removeTabAt(tabbedPane.indexOfTab(nombre_lista));
                     ActualizarListas();
                 }
             });
@@ -346,6 +349,10 @@ public class Listas extends JFrame implements MouseListener{
             }
         }
 
+    }
+
+    public void setFocusLista(String lista){
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(lista));
     }
 
     public boolean getExiste(String lista){
