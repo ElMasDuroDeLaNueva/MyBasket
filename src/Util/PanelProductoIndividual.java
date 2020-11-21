@@ -1,11 +1,8 @@
-package Gestores;
+package Util;
 
-import DAO.ProductosDAO;
 import Frames.ModificarLista;
 import Frames.Productos;
-import Util.Fuentes;
-import Util.Imagenes;
-import Util.Product;
+import domain.Product;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -13,108 +10,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
 
-import static Frames.Productos.modificar_precio;
+public class PanelProductoIndividual {
 
-public class GestorProductos {
-
-    public GestorProductos(){}
-
-    public static ArrayList<String> obtenerCategorías(){
-
-        ArrayList<Product> array = ProductosDAO.getProductos();
-        Iterator<Product> it = array.iterator();
-        Set<String> categorias= new HashSet<String>();
-        ArrayList<String> categorias_ordenadas;
-        while (it.hasNext())
-        {
-
-            Product product = (Product) it.next();
-
-            categorias.add(product.getCategoria());
-
-        }
-
-        List sort = new ArrayList(categorias);
-        Collections.sort(sort);
-        categorias_ordenadas = new ArrayList<>(sort);
-
-        return categorias_ordenadas;
-    }
-
-    public static ArrayList<Product> productosCategoria(String categoria){
-
-        ArrayList<Product> array = ProductosDAO.getProductos();
-        Iterator<Product> it = array.iterator();
-        ArrayList<Product> productos = new ArrayList<Product>();
-
-
-        while (it.hasNext())
-        {
-
-            Product product = (Product) it.next();
-
-            if(product.getCategoria().equals(categoria)){
-                productos.add(product);
-            }
-        }
-
-        return productos;
-    }
-
-    public static int maximoProductos(ArrayList<String> categorias){
-
-        int inicial;
-        int maximo = 0;
-        Iterator<String> it = categorias.iterator();
-        ArrayList<Product> array = ProductosDAO.getProductos();
-
-        while (it.hasNext())
-        {
-            inicial = 0;
-            Iterator<Product> it2 = array.iterator();
-            String categoria = it.next();
-            while (it2.hasNext()) {
-
-                Product product = (Product) it2.next();
-                if (product.getCategoria().equals(categoria)) {
-                    inicial++;
-                }
-            }
-            if(inicial>maximo){
-                maximo=inicial;
-            }
-        }
-
-        return maximo;
-
-    }
-
-    public static ArrayList<Product> obtenerProductos(ArrayList<String> idproductos){
-
-        ArrayList<Product> array = ProductosDAO.getProductos();
-        ArrayList<Product> productos = new ArrayList<Product>();
-        Iterator<Product> it = array.iterator();
-
-        while (it.hasNext())
-        {
-            Iterator<String> it2 = idproductos.iterator();
-            Product product = (Product) it.next();
-            while (it2.hasNext())
-            {
-                String idproducto = it2.next();
-                if(product.getIdProduct().equals(idproducto)){
-                    productos.add(product);
-                }
-            }
-        }
-
-        return productos;
-    }
-
-    public static JPanel getPantallaProducto(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos,boolean botones, boolean modificar,boolean pintar){
+    public static JPanel getPanel(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos, boolean botones, boolean modificar, boolean pintar){
 
         JPanel producto_individual = new JPanel(new BorderLayout());
         JPanel panel_producto = new JPanel(new BorderLayout());

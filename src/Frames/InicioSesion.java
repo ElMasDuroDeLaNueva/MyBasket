@@ -1,7 +1,10 @@
 package Frames;
 
-import Gestores.GestorUsuarios;
+import DAO.ProductosDAO;
 import Util.*;
+import client.Client;
+import domain.Product;
+import domain.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -11,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class InicioSesion extends JFrame implements ActionListener, MouseListener {
 
@@ -49,9 +54,16 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
     JButton b_inicio= new JButton("INICIAR SESION");
 
     URL url_Logo = this.getClass().getResource("/images/LogoSinTexto.png");
-    static String correo_user = "prueba";
+    static String usuarioActual;
+
+    static ArrayList<Product> products;
 
     public InicioSesion(){
+
+        //Simplemente dejamos cargados los productos de base de la datos
+        //NO ES NINGUNA PETICION DE CLIENTE (simplemente dejamos cargado los productos para ahorrar tiempo)
+        ProductosDAO.cargarProductos();
+        products = ProductosDAO.getProductos();
 
         pn_email_norte.setBackground(Color.WHITE);
         pn_password_norte.setBackground(Color.WHITE);
@@ -152,12 +164,14 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
 
     }
 
-    public static String getUsuario_logeado(){
-        return correo_user;
+    public static ArrayList<Product> getProductos(){return products;}
+
+    public static void setUsuarioActual(String correo){
+         usuarioActual = correo;
     }
 
-    public static void setUsuario_logeado(String correo_new){
-       correo_user = correo_new;
+    public static String getUsuario(){
+        return usuarioActual;
     }
 
     @Override
@@ -169,9 +183,13 @@ public class InicioSesion extends JFrame implements ActionListener, MouseListene
             frame_register = new Register();
         }
         else if(target == b_inicio){
-            boolean existe = GestorUsuarios.existeUsuario(txt_email.getText().toLowerCase(),txt_password.getText());
+            Client client = Client.getInstance();
+            HashMap<String,String> datos = new HashMap<String,String>();
+            datos.put("email",txt_email.getText().toLowerCase());
+            datos.put("contraseña",txt_password.getText());
+            boolean existe = (boolean) client.clienteServidor("/iniciarSesion", datos);
             if(existe){
-                correo_user = txt_email.getText();
+                this.setUsuarioActual(txt_email.getText());
                 this.setVisible (false);
                 this.dispose();
                 frame_menu = new MenuPrincipal();

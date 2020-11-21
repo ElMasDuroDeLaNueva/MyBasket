@@ -1,18 +1,18 @@
 package Frames;
 
-import Gestores.GestorProductos;
-import Gestores.GestorUsuarios;
+import DAO.ProductosDAO;
 import Util.*;
+import client.Client;
+import domain.Product;
+import domain.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
+import java.util.List;
 
 public class Productos extends JFrame implements MouseListener,ItemListener{
 
@@ -98,8 +98,13 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
+
+        Client cliente = Client.getInstance();
+
+        String correo = InicioSesion.getUsuario();
+
+        User user = (User)cliente.clienteServidor("/getUsuario",correo);
+
         lbl_usuario.setText(user.getNombre());
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -198,7 +203,8 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
         panel_filtros.setBorder(new MatteBorder(0, 0, 0, 1, new Color(215, 215, 215)));
 
         //Productos
-        ArrayList<String> categorias = GestorProductos.obtenerCategorías();
+
+        ArrayList<String> categorias = this.obtenerCategorías();
         scroll = new JScrollPane(panel_categorias);
         meterProductos(categorias);
         panel_categorias.setBorder(new MatteBorder(0, 20, 0, 20, Color.WHITE));
@@ -275,8 +281,12 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 max_lineas = productos_seleccionados.size()-1;
                 it2 = productos_seleccionados.iterator();
             }else{
-                maximo = GestorProductos.maximoProductos(categorias);
-                productos = GestorProductos.productosCategoria(categoria);
+                maximo = this.maximoProductos(categorias);
+                Client cliente = Client.getInstance();
+                HashMap<String,Object> data = new HashMap<String,Object>();
+                data.put("categoria",categoria);
+                data.put("productos",InicioSesion.getProductos());
+                productos = (ArrayList<Product>) cliente.clienteServidor("/getProductosCategoria",data);
                 panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
                 max_lineas = maximo-1;
                 it2 = productos.iterator();
@@ -293,9 +303,9 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 cantidad = Collections.frequency(mi_seleccion, producto);
                 JPanel producto_individual;
                 if(contador==max_lineas){
-                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,false);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,false);
                 }else{
-                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,true);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,true);
                 }
                 panel_productos.add(producto_individual);
                 contador++;
@@ -314,6 +324,56 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
 
         }
 
+
+    }
+
+    public static ArrayList<String> obtenerCategorías(){
+
+        ArrayList<Product> array = InicioSesion.getProductos();
+        Iterator<Product> it = array.iterator();
+        Set<String> categorias= new HashSet<String>();
+        ArrayList<String> categorias_ordenadas;
+        while (it.hasNext())
+        {
+
+            Product product = (Product) it.next();
+
+            categorias.add(product.getCategoria());
+
+        }
+
+        List sort = new ArrayList(categorias);
+        Collections.sort(sort);
+        categorias_ordenadas = new ArrayList<>(sort);
+
+        return categorias_ordenadas;
+    }
+
+    public static int maximoProductos(ArrayList<String> categorias){
+
+        int inicial;
+        int maximo = 0;
+        Iterator<String> it = categorias.iterator();
+        ArrayList<Product> array = InicioSesion.getProductos();
+
+        while (it.hasNext())
+        {
+            inicial = 0;
+            Iterator<Product> it2 = array.iterator();
+            String categoria = it.next();
+            while (it2.hasNext()) {
+
+                Product product = (Product) it2.next();
+                if (product.getCategoria().equals(categoria)) {
+                    inicial++;
+                }
+            }
+            if(inicial>maximo){
+                maximo=inicial;
+            }
+        }
+
+        return maximo;
 
     }
 

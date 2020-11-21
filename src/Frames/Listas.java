@@ -1,9 +1,9 @@
 package Frames;
 
-import DAO.ListasDAO;
-import Gestores.GestorProductos;
-import Gestores.GestorUsuarios;
 import Util.*;
+import client.Client;
+import domain.Product;
+import domain.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -15,10 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 public class Listas extends JFrame implements MouseListener{
 
@@ -125,9 +122,13 @@ public class Listas extends JFrame implements MouseListener{
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
-        lbl_usuario.setText(user.getNombre());
+
+        Client cliente = Client.getInstance();
+        String correo = InicioSesion.getUsuario();
+
+        String nombre = (String)cliente.clienteServidor("/getNombreUsuario",correo);
+
+        lbl_usuario.setText(nombre);
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);
@@ -174,9 +175,16 @@ public class Listas extends JFrame implements MouseListener{
         panel.setBackground(Color.WHITE);
         panel_contenedor.setBackground(Color.WHITE);
         panel_botones.setBackground(Color.WHITE);
-        ArrayList<Product> productos = ListasDAO.getProductosLista(lista);
-        HashSet<Product> productos_unicos = new HashSet<Product>(productos);
 
+        Client cliente = Client.getInstance();
+        HashMap<String,Object> datos = new HashMap<String,Object>();
+        String correo = InicioSesion.getUsuario();
+        datos.put("correo",correo);
+        datos.put("lista",lista);
+        datos.put("array", InicioSesion.getProductos());
+        ArrayList<Product> productos = (ArrayList<Product>) cliente.clienteServidor("/getProductosLista",datos);
+
+        HashSet<Product> productos_unicos = new HashSet<Product>(productos);
         panel_editar.setBackground(Color.WHITE);
         panel_renombrar.setBackground(Color.WHITE);
         panel_editar.setBorder(new MatteBorder(10, 60, 10, 60,  Color.WHITE));
@@ -225,7 +233,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false,true,false);
+                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false);
                 panel.add(producto_individual);
             }
         }else{
@@ -236,7 +244,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,productos,url_mas,url_menos,false,true,false);
+                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false);
                 panel_filas.add(producto_individual);
                 contador++;
                 if(contador == 3){
@@ -283,7 +291,11 @@ public class Listas extends JFrame implements MouseListener{
     }
 
     private void meterListas() {
-        HashSet<String> listas = ListasDAO.getListas();
+
+        Client cliente = Client.getInstance();
+        String correo = InicioSesion.getUsuario();
+        HashSet<String> listas = (HashSet<String>)cliente.clienteServidor("/getListas",correo);
+
         Iterator<String> it = listas.iterator();
         int contador = 0;
         while (it.hasNext())
@@ -308,9 +320,17 @@ public class Listas extends JFrame implements MouseListener{
             papelera.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    ListasDAO.eliminarLista(nombre_lista);
-                    tabbedPane.removeTabAt(tabbedPane.indexOfTab(nombre_lista));
-                    ActualizarListas();
+
+                    Client cliente = Client.getInstance();
+                    HashMap<String,String> datos = new HashMap<String,String>();
+                    String correo = InicioSesion.getUsuario();
+                    datos.put("correo",correo);
+                    datos.put("lista",nombre_lista);
+                    boolean completado = (boolean)cliente.clienteServidor("/getEliminarLista",datos);
+                    if(completado){
+                        tabbedPane.removeTabAt(tabbedPane.indexOfTab(nombre_lista));
+                        ActualizarListas();
+                    }
                 }
             });
             editar.addMouseListener(new MouseAdapter() {

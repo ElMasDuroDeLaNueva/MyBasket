@@ -1,8 +1,11 @@
-package Util;
+package domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     //VARIABLES
+    private static final long serialVersionUID = 1L;
     String nombre;
     String apellidos;
     String email;
@@ -20,6 +23,15 @@ public class User {
         this.direccion = direccion;
         this.movil = movil;
     }
+
+    public User(String nombre, String apellidos, String email, String direccion, String movil){
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.direccion = direccion;
+        this.movil = movil;
+    }
+
     public User(){}
 
     //GETTERS/SETTERS VARIABLES

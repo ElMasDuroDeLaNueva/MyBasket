@@ -1,16 +1,16 @@
 package Frames;
 
-import DAO.ClientesDAO;
 import Util.Fuentes;
-import Gestores.GestorUsuarios;
 import Util.Imagenes;
-import Util.User;
+import domain.User;
+import client.Client;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.HashMap;
 
 public class MiCuenta extends JFrame implements MouseListener{
 
@@ -87,9 +87,16 @@ public class MiCuenta extends JFrame implements MouseListener{
         lbl_desconectar.setIcon(logo_desconectar);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
-        lbl_usuario.setText(user.getNombre());
+
+        Client cliente = Client.getInstance();
+
+        String correo = InicioSesion.getUsuario();
+
+        User user = (User)cliente.clienteServidor("/getUsuario",correo);
+
+        String nombre = user.getNombre();
+
+        lbl_usuario.setText(nombre);
         lbl_usuario.setFont(Fuentes.f_usuario);
         panel_usuario.add(lbl_desconectar,BorderLayout.WEST);
         panel_usuario.add(lbl_usuario_logo,BorderLayout.CENTER);
@@ -247,8 +254,13 @@ public class MiCuenta extends JFrame implements MouseListener{
     }
 
     public void ActualizarDatos(){
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
+
+        Client cliente = Client.getInstance();
+
+        String correo = InicioSesion.getUsuario();
+
+        User user = (User)cliente.clienteServidor("/getUsuario",correo);
+
         lbl_nombre.setText(user.getNombre()+" "+user.getApellidos());
         lbl_movil.setText(user.getMovil());
         lbl_direccion.setText(user.getDireccion());
@@ -273,11 +285,14 @@ public class MiCuenta extends JFrame implements MouseListener{
         } else if(target == lbl_modificar_contraseña){
             new ModificarContraseña(this);
         }else if(target == lbl_eliminarCuenta){
-            String correo = InicioSesion.getUsuario_logeado();
-            ClientesDAO.eliminarCuenta(correo);
-            this.setVisible(false);
-            this.dispose();
-            new InicioSesion();
+            Client cliente = Client.getInstance();
+            String correo = InicioSesion.getUsuario();
+            boolean completado = (boolean)cliente.clienteServidor("/getEliminarCuenta",correo);
+            if(completado){
+                this.setVisible(false);
+                this.dispose();
+                new InicioSesion();
+            }
         }else if(target == lbl_desconectar){
             this.setVisible(false);
             this.dispose();

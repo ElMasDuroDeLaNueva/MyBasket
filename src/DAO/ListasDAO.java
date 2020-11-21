@@ -1,9 +1,8 @@
 package DAO;
 
-import Frames.InicioSesion;
-import Gestores.GestorProductos;
-import Util.Product;
-
+import controler.ProductControler;
+import domain.Lista;
+import domain.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,15 +15,20 @@ public class ListasDAO {
 
     //PARA CADA METODO LLAMO A getConexion PARA POSIBLES ACTUALIZACIONES
 
-    public static ArrayList<Product> añadirLista(ArrayList<Product> productos, String nombreLista){
+    public static ArrayList<Product> añadirLista(Lista lista){
+
+        String nombreLista = lista.getNombre_lista();
+        ArrayList<Product> productos = lista.getProductos();
+        String correo = lista.getCorreo();
+
         try{
             conexion = ConexionDAO.getConexion();
             Iterator<Product> it = productos.iterator();
+
             while (it.hasNext())
             {
                 Product product = it.next();
                 String idproducto = product.getIdProduct();
-                String correo = InicioSesion.getUsuario_logeado();
                 String query = "INSERT INTO listas (lista,correo,idproducto) VALUES (?,?,?)";
 
                 PreparedStatement prest = conexion.prepareStatement(query);
@@ -45,16 +49,12 @@ public class ListasDAO {
         return productos;
     }
 
-    public static ArrayList<Product> getProductosLista(String lista){
+    public static ArrayList<Product> getProductosLista(String lista, String correo, ArrayList<Product> array){
         ArrayList<String> idproductos = new ArrayList<String>();
         ArrayList<Product> productos = new ArrayList<Product>();
-        String correo = InicioSesion.getUsuario_logeado();
+
         try{
-            try {
-                Class.forName("org.postgresql.Driver");
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
-            }
+
             conexion = ConexionDAO.getConexion();
 
 
@@ -75,7 +75,7 @@ public class ListasDAO {
                 }
             }
             ConexionDAO.cerrarConexion(conexion);
-            productos = GestorProductos.obtenerProductos(idproductos);
+            productos = ProductControler.obtenerProductos(idproductos,array);
 
 
         } catch (SQLException throwables) {
@@ -85,9 +85,8 @@ public class ListasDAO {
         return productos;
     }
 
-    public static HashSet<String> getListas(){
+    public static HashSet<String> getListas(String correo){
         HashSet<String> listas = new HashSet<>();
-        String correo = InicioSesion.getUsuario_logeado();
         try{
             conexion = ConexionDAO.getConexion();
 
@@ -114,14 +113,15 @@ public class ListasDAO {
         return listas;
     }
 
-    public static void eliminarLista(String lista) {
+    public static void eliminarLista(String lista, String correo) {
 
         try {
             conexion = ConexionDAO.getConexion();
-            String query = "DELETE FROM listas WHERE lista = ?";
+            String query = "DELETE FROM listas WHERE lista = ? AND correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
             prest.setString(1, lista);
+            prest.setString(2, correo);
 
             int x = prest.executeUpdate();
             ConexionDAO.cerrarConexion(conexion);
@@ -132,15 +132,16 @@ public class ListasDAO {
 
     }
 
-    public static void modificarLista(String lista, String nuevo){
+    public static void modificarLista(String lista, String nuevo, String correo){
 
         try{
             conexion = ConexionDAO.getConexion();
-            String query = "UPDATE listas SET lista=? WHERE lista=?";
+            String query = "UPDATE listas SET lista=? WHERE lista=? AND correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
             prest.setString(1, nuevo);
             prest.setString(2, lista);
+            prest.setString(3, correo);
 
             int retorno = prest.executeUpdate();
 

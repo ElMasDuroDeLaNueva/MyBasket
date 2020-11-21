@@ -1,13 +1,13 @@
 package TestJUnit;
 
 import DAO.ClientesDAO;
-import Gestores.GestorUsuarios;
-import Util.User;
+import controler.UserControler;
+import domain.User;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GestorUsuariosTest {
+public class UserControlerTest {
 
     @Test
     public void CreacionUsuario() {
@@ -18,7 +18,7 @@ public class GestorUsuariosTest {
         String password = "prueba";
         //CREO UN USUARIO
         crearUsuario();
-        GestorUsuarios gu =  new GestorUsuarios();
+        UserControler gu =  new UserControler();
         boolean existe = gu.existeUsuario(correo,password);
         //COMPRUEBO QUE SE HA CREADO Y QUE EXISTE
         assertEquals(true, existe);
@@ -34,7 +34,7 @@ public class GestorUsuariosTest {
         String correo = "prueba@gmail.com";
         //UNA VEZ VERIFICADO
         String info = "Nombre Apellido Numero Direccion";
-        GestorUsuarios gu =  new GestorUsuarios();
+        UserControler gu =  new UserControler();
         User user = gu.getUser(correo);
         String info_user = user.getNombre()+" "+user.getApellidos()+" "+user.getMovil()+" "+user.getDireccion();
         //COMPRUEBO QUE SACA BIEN LA INFO DEL USUARIO
@@ -51,7 +51,7 @@ public class GestorUsuariosTest {
         borrarUsuario();
         String correo = "prueba@gmail.com";
         String password = "prueba";
-        GestorUsuarios gu =  new GestorUsuarios();
+        UserControler gu =  new UserControler();
         boolean existe_borrado = gu.existeUsuario(correo,password);
         assertEquals(false, existe_borrado);
     }
@@ -63,8 +63,8 @@ public class GestorUsuariosTest {
         crearUsuario();
         String correo = "prueba@gmail.com";
         String info = "new_Nom new_Ap new_Num new_Dir";
-        ClientesDAO.modificarDatos(correo,"new_Nom","new_Ap","new_Num","new_Dir");
-        User user = GestorUsuarios.getUser(correo);
+        //ClientesDAO.modificarDatos(correo,"new_Nom","new_Ap","new_Num","new_Dir");
+        User user = UserControler.getUser(correo);
         String info_user = user.getNombre()+" "+user.getApellidos()+" "+user.getMovil()+" "+user.getDireccion();
         //COMPRUEBO QUE SACA BIEN LA INFO DEL USUARIO UNA VEZ HAN SIDO MODIFICADOS
         assertEquals(info,info_user);
@@ -81,7 +81,7 @@ public class GestorUsuariosTest {
         String password = "prueba";
         ClientesDAO.modificarCorreo(correo, new_email);
         boolean eliminado_cambiado = false;
-        if(GestorUsuarios.existeUsuario(correo,password)==false && GestorUsuarios.existeUsuario(new_email,password)==true){
+        if(UserControler.existeUsuario(correo,password)==false && UserControler.existeUsuario(new_email,password)==true){
             eliminado_cambiado = true;
         }
         assertEquals(true, eliminado_cambiado);
@@ -96,14 +96,15 @@ public class GestorUsuariosTest {
         String correo = "prueba@gmail.com";
         String new_password = "prueba2";
         ClientesDAO.modificarContraseña(correo, new_password);
-        assertEquals(true, GestorUsuarios.existeUsuario(correo,new_password));
+        assertEquals(true, UserControler.existeUsuario(correo,new_password));
         borrarUsuario();
     }
 
     public void crearUsuario(){
         String correo = "prueba@gmail.com";
         String password = "prueba";
-        ClientesDAO.logearUsuario("Nombre","Apellido", "Numero", "Direccion" ,correo, password);
+        User user = new User("Nombre","Apellido",correo, password, "Direccion","Numero");
+        ClientesDAO.logearUsuario(user);
     }
 
     public void borrarUsuario(){

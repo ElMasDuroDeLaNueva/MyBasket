@@ -2,8 +2,8 @@ package Frames;
 
 import DAO.ClientesDAO;
 import Util.Fuentes;
-import Gestores.GestorUsuarios;
-import Util.User;
+import domain.User;
+import client.Client;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,6 +13,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class ModificarDatos extends JFrame implements MouseListener, ActionListener {
 
@@ -54,8 +55,12 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
         this.frame_MiCuenta = frame_MiCuenta;
 
         //Cajas de texto con datos
-        correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
+        Client cliente = Client.getInstance();
+
+        correo = InicioSesion.getUsuario();
+
+        User user = (User)cliente.clienteServidor("/getUsuario",correo);
+
         txt_nombre.setText(user.getNombre());
         txt_apellidos.setText(user.getApellidos());
         txt_direccion.setText(user.getDireccion());
@@ -264,13 +269,17 @@ public class ModificarDatos extends JFrame implements MouseListener, ActionListe
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
-            ClientesDAO.modificarDatos(correo,txt_nombre.getText(),txt_apellidos.getText(),txt_numero.getText(),txt_direccion.getText());
-            frame_MiCuenta.ActualizarDatos();
-            frame_MiCuenta.revalidate();
-            frame_MiCuenta.repaint();
-            frame_MiCuenta.setEnabled(true);
-            this.setVisible (false);
-            this.dispose();
+            User user = new User(txt_nombre.getText(),txt_apellidos.getText(),correo,txt_direccion.getText(),txt_numero.getText());
+            Client cliente = Client.getInstance();
+            boolean completado = (boolean)cliente.clienteServidor("/getModificarDatos",user);
+            if(completado){
+                frame_MiCuenta.ActualizarDatos();
+                frame_MiCuenta.revalidate();
+                frame_MiCuenta.repaint();
+                frame_MiCuenta.setEnabled(true);
+                this.setVisible (false);
+                this.dispose();
+            }
         }else if(target == btn_cancelar){
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);

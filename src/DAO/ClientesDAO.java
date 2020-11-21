@@ -1,6 +1,6 @@
 package DAO;
 
-import Util.User;
+import domain.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -42,18 +42,18 @@ public class ClientesDAO {
     }
 
     //Metodo para modificar en la base de datos atributos del usuario
-    public static void modificarDatos(String correo, String nombre, String apellido, String numero, String direccion){
+    public static void modificarDatos(User user){
 
         try{
             conexion = ConexionDAO.getConexion();
             String query = "UPDATE clientes SET nombre=?, apellido=?, telefono=?, direccion=? WHERE correo=?";
 
             PreparedStatement prest = conexion.prepareStatement(query);
-            prest.setString(1, nombre);
-            prest.setString(2, apellido);
-            prest.setString(3, numero);
-            prest.setString(4, direccion);
-            prest.setString(5, correo);
+            prest.setString(1, user.getNombre());
+            prest.setString(2, user.getApellidos());
+            prest.setString(3, user.getMovil());
+            prest.setString(4, user.getDireccion());
+            prest.setString(5, user.getEmail());
 
             int retorno = prest.executeUpdate();
 
@@ -109,19 +109,19 @@ public class ClientesDAO {
     }
 
     //Metodo para registrar usuario
-    public static void logearUsuario(String nombre, String apellido, String numero, String direccion ,String correo, String contraseña){
+    public static void logearUsuario(User user){
 
         try{
             conexion = ConexionDAO.getConexion();
             String query = "INSERT INTO clientes (apellido,correo,nombre,direccion,contraseña,telefono) VALUES (?,?,?,?,?,?)";
 
             PreparedStatement prest = conexion.prepareStatement(query);
-            prest.setString(3, nombre);
-            prest.setString(6, numero);
-            prest.setString(1, apellido);
-            prest.setString(4, direccion);
-            prest.setString(2, correo);
-            prest.setString(5, contraseña);
+            prest.setString(3, user.getNombre());
+            prest.setString(6, user.getMovil());
+            prest.setString(1, user.getApellidos());
+            prest.setString(4, user.getDireccion());
+            prest.setString(2, user.getEmail());
+            prest.setString(5, user.getPassword());
 
             prest.executeUpdate();
 

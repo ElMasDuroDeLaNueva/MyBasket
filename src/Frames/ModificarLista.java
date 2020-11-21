@@ -1,19 +1,18 @@
 package Frames;
 
-import DAO.ListasDAO;
-import Gestores.GestorProductos;
-import Gestores.GestorUsuarios;
+import DAO.ProductosDAO;
 import Util.*;
+import client.Client;
+import domain.Lista;
+import domain.Product;
+import domain.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 public class ModificarLista extends JFrame implements MouseListener,ItemListener{
 
@@ -73,7 +72,17 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
 
         cb_miSeleccion.setText(lista);
 
-        mi_seleccion = ListasDAO.getProductosLista(lista);
+        Client cliente = Client.getInstance();
+
+        HashMap<String,Object> datos = new HashMap<String,Object>();
+        String correo = InicioSesion.getUsuario();
+        datos.put("correo",correo);
+        datos.put("lista",lista);
+        datos.put("array", InicioSesion.getProductos());
+        mi_seleccion = (ArrayList<Product>) cliente.clienteServidor("/getProductosLista",datos);
+
+        User user = (User)cliente.clienteServidor("/getUsuario",correo);
+
         Iterator it = mi_seleccion.iterator();
         while(it.hasNext()){
             Product producto = (Product) it.next();
@@ -117,8 +126,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
+
         lbl_usuario.setText(user.getNombre());
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -299,8 +307,14 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
                 it2 = productos_seleccionados.iterator();
                 max_lineas = productos_seleccionados.size()-1;
             }else{
-                maximo = GestorProductos.maximoProductos(categorias);
-                productos = GestorProductos.productosCategoria(categoria);
+                maximo = this.maximoProductos(categorias);
+
+                Client cliente = Client.getInstance();
+                HashMap<String,Object> data = new HashMap<String,Object>();
+                data.put("categoria",categoria);
+                data.put("productos",InicioSesion.getProductos());
+                productos = (ArrayList<Product>) cliente.clienteServidor("/getProductosCategoria",data);
+
                 panel_productos = new JPanel(new GridLayout(0, maximo, 5, 10));
                 it2 = productos.iterator();
                 max_lineas = maximo-1;
@@ -316,11 +330,10 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
                 int cantidad = 0;
                 cantidad = Collections.frequency(mi_seleccion, producto);
                 JPanel producto_individual;
-                System.out.println(contador+" "+max_lineas);
                 if(contador==max_lineas){
-                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,false);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,false);
                 }else{
-                    producto_individual = GestorProductos.getPantallaProducto(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,true);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,true);
                 }
                 panel_productos.add(producto_individual);
                 contador++;
@@ -340,6 +353,34 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
 
         }
 
+
+    }
+
+    public static int maximoProductos(ArrayList<String> categorias){
+
+        int inicial;
+        int maximo = 0;
+        Iterator<String> it = categorias.iterator();
+        ArrayList<Product> array = InicioSesion.getProductos();
+
+        while (it.hasNext())
+        {
+            inicial = 0;
+            Iterator<Product> it2 = array.iterator();
+            String categoria = it.next();
+            while (it2.hasNext()) {
+
+                Product product = (Product) it2.next();
+                if (product.getCategoria().equals(categoria)) {
+                    inicial++;
+                }
+            }
+            if(inicial>maximo){
+                maximo=inicial;
+            }
+        }
+
+        return maximo;
 
     }
 
@@ -412,15 +453,26 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
             frame_Listas.dispose();
             new MenuPrincipal();
         }else if (target == lbl_lista) {
-            ListasDAO.eliminarLista(lista);
-            ListasDAO.añadirLista(mi_seleccion, lista);
-            frame_Listas.tabbedPane.removeTabAt(frame_Listas.tabbedPane.indexOfTab(lista));
-            frame_Listas.añadirPanel(lista);
-            frame_Listas.ActualizarListas();
-            frame_Listas.setFocusLista(lista);
-            this.setVisible(false);
-            this.dispose();
-            frame_Listas.setEnabled(true);
+
+            Client cliente = Client.getInstance();
+            HashMap<String,String> datos = new HashMap<String,String>();
+            String correo = InicioSesion.getUsuario();
+            datos.put("correo",correo);
+            datos.put("lista",lista);
+            boolean completado = (boolean)cliente.clienteServidor("/getEliminarLista",datos);
+
+            Lista lista_l = new Lista(correo, lista, mi_seleccion);
+            boolean lista_creada = (boolean)cliente.clienteServidor("/crearLista",lista_l);
+
+            if(completado && lista_creada){
+                frame_Listas.tabbedPane.removeTabAt(frame_Listas.tabbedPane.indexOfTab(lista));
+                frame_Listas.añadirPanel(lista);
+                frame_Listas.ActualizarListas();
+                frame_Listas.setFocusLista(lista);
+                this.setVisible(false);
+                this.dispose();
+                frame_Listas.setEnabled(true);
+            }
         }else if(target==lbl_comprar){
             frame_Listas.setFocusLista(lista);
             this.setVisible(false);

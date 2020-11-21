@@ -1,8 +1,9 @@
 package Frames;
 
-import DAO.ListasDAO;
 import Util.Fuentes;
-import Util.Product;
+import client.Client;
+import domain.Lista;
+import domain.Product;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,6 +14,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ConfirmaLista extends JFrame implements ActionListener,MouseListener {
 
@@ -202,20 +204,35 @@ public class ConfirmaLista extends JFrame implements ActionListener,MouseListene
         Object target = e.getSource();
         if(target == btn_actualizar){
             if(frame){
-                ListasDAO.modificarLista(lista, txt_lista.getText());
-                frame_Listas.setEnabled(true);
-                frame_Listas.ActualizarListasPestañas(txt_lista.getText());
-                frame_Listas.revalidate();
-                frame_Listas.repaint();
-                frame_Listas.setFocusLista(txt_lista.getText());
-                this.setVisible (false);
-                this.dispose();
+                Client cliente = Client.getInstance();
+                HashMap<String,String> datos = new HashMap<String,String>();
+                String correo = InicioSesion.getUsuario();
+                datos.put("correo",correo);
+                datos.put("lista",lista);
+                datos.put("nueva_lista",txt_lista.getText());
+                boolean cambiado = (boolean)cliente.clienteServidor("/getListaModificada",datos);
+                if(cambiado){
+                    frame_Listas.setEnabled(true);
+                    frame_Listas.ActualizarListasPestañas(txt_lista.getText());
+                    frame_Listas.revalidate();
+                    frame_Listas.repaint();
+                    frame_Listas.setFocusLista(txt_lista.getText());
+                    this.setVisible (false);
+                    this.dispose();
+                }
             }else{
+
                 ArrayList<Product> productos = Productos.getProductosSeleccionados();
-                ListasDAO.añadirLista(productos, txt_lista.getText());
-                frame_Productos.setEnabled(true);
-                this.setVisible (false);
-                this.dispose();
+                Client cliente = Client.getInstance();
+                String correo = InicioSesion.getUsuario();
+                Lista lista = new Lista(correo, txt_lista.getText(), productos);
+                boolean lista_creada = (boolean)cliente.clienteServidor("/crearLista",lista);
+                if(lista_creada){
+                    frame_Productos.setEnabled(true);
+                    this.setVisible (false);
+                    this.dispose();
+                }
+
             }
         }else if(target == btn_cancelar){
             if(frame){

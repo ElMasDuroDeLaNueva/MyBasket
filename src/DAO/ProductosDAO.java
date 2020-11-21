@@ -1,6 +1,7 @@
 package DAO;
 
-import Util.Product;
+import Frames.InicioSesion;
+import domain.Product;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ProductosDAO {
 
@@ -18,7 +20,7 @@ public class ProductosDAO {
         return productos;
     }
 
-    public static void obtenerProductos(){
+    public static void cargarProductos(){
 
         productos = new ArrayList<Product>();
 
@@ -52,6 +54,26 @@ public class ProductosDAO {
             //throwables.printStackTrace();
         }
 
+    }
+
+    public static ArrayList<Product> productosCategoria(String categoria, ArrayList<Product> array){
+
+        //ArrayList<Product> array = productos;
+        Iterator<Product> it = array.iterator();
+        ArrayList<Product> productos = new ArrayList<Product>();
+
+
+        while (it.hasNext())
+        {
+
+            Product product = (Product) it.next();
+
+            if(product.getCategoria().equals(categoria)){
+                productos.add(product);
+            }
+        }
+
+        return productos;
     }
 
 }

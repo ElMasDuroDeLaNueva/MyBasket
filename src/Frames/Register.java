@@ -1,9 +1,10 @@
 package Frames;
 
-import DAO.ClientesDAO;
 import Util.Fuentes;
 import Util.Imagenes;
 import Util.RoundedBorder;
+import client.Client;
+import domain.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -14,6 +15,8 @@ import java.net.URL;
 public class Register extends JFrame implements ActionListener, MouseListener {
 
     InicioSesion frame_inicio;
+
+    private static final long serialVersionUID = 1L;
 
     JPanel panel_logo = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JPanel panel_contenido = new JPanel(new GridLayout(1,0));
@@ -273,11 +276,15 @@ public class Register extends JFrame implements ActionListener, MouseListener {
                 mostrar_ocultado = true;
             }
         } else if(target == btn_crearCuenta){
-            ClientesDAO.logearUsuario(txt_nombre.getText(), txt_apellidos.getText(),txt_movil.getText(),txt_addres.getText(),txt_email.getText(),txt_password.getText());
-            InicioSesion.setUsuario_logeado(txt_email.getText());
-            this.setVisible (false);
-            this.dispose();
-            new MenuPrincipal();
+            Client cliente = Client.getInstance();
+            User user = new User(txt_nombre.getText(), txt_apellidos.getText(),txt_email.getText(),txt_password.getText(),txt_addres.getText(),txt_movil.getText());
+            boolean creado = (boolean) cliente.clienteServidor("/registrar",user);
+            if(creado) {
+                InicioSesion.setUsuarioActual(txt_email.getText());
+                this.setVisible(false);
+                this.dispose();
+                new MenuPrincipal();
+            }else{System.out.println("ERROR CREANDO USUARIO\n");}
         }
     }
 

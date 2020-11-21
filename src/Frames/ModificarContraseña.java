@@ -1,7 +1,7 @@
 package Frames;
 
-import DAO.ClientesDAO;
 import Util.Fuentes;
+import client.Client;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -11,6 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class ModificarContraseña extends JFrame implements MouseListener, ActionListener {
 
@@ -236,11 +237,17 @@ public class ModificarContraseña extends JFrame implements MouseListener, Actio
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if(target == btn_actualizar){
-            String correo = InicioSesion.getUsuario_logeado();
-            ClientesDAO.modificarContraseña(correo, txt_contraseña.getText());
-            frame_MiCuenta.setEnabled(true);
-            this.setVisible (false);
-            this.dispose();
+            Client cliente = Client.getInstance();
+            HashMap<String,String> datos = new HashMap<String,String>();
+            String correo = InicioSesion.getUsuario();
+            datos.put("correo",correo);
+            datos.put("contraseña",txt_contraseña.getText());
+            boolean completado = (boolean)cliente.clienteServidor("/getModificarContraseña",datos);
+            if(completado){
+                frame_MiCuenta.setEnabled(true);
+                this.setVisible (false);
+                this.dispose();
+            }
         }else if(target == btn_cancelar){
             frame_MiCuenta.setEnabled(true);
             this.setVisible (false);

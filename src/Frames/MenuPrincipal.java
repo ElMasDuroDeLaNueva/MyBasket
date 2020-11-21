@@ -1,9 +1,8 @@
 package Frames;
 
 import Util.Fuentes;
-import Gestores.GestorUsuarios;
 import Util.Imagenes;
-import Util.User;
+import client.Client;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -217,9 +216,13 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
         lbl_usuario_logo.addMouseListener((MouseListener) this);
         lbl_desconectar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_desconectar.addMouseListener(this);
-        String correo = InicioSesion.getUsuario_logeado();
-        User user = GestorUsuarios.getUser(correo);
-        lbl_usuario.setText(user.getNombre());
+
+        Client cliente = Client.getInstance();
+        String correo = InicioSesion.getUsuario();
+
+        String nombre = (String)cliente.clienteServidor("/getNombreUsuario",correo);
+
+        lbl_usuario.setText(nombre);
         lbl_usuario.addMouseListener((MouseListener) this);
         lbl_usuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbl_usuario.setFont(Fuentes.f_usuario);

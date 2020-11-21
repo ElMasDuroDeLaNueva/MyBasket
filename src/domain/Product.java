@@ -1,9 +1,12 @@
-package Util;
+package domain;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.net.URL;
 
-public class Product {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //VARIABLES
     String idProduct;
