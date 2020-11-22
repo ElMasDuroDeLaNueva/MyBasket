@@ -63,7 +63,9 @@ public class UserControlerTest {
         crearUsuario();
         String correo = "prueba@gmail.com";
         String info = "new_Nom new_Ap new_Num new_Dir";
-        //ClientesDAO.modificarDatos(correo,"new_Nom","new_Ap","new_Num","new_Dir");
+        UserControler gu =  new UserControler();
+        User user_modificado = new User("new_Nom","new_Ap",correo,"new_Dir","new_Num");
+        gu.modificarDatos(user_modificado);
         User user = UserControler.getUser(correo);
         String info_user = user.getNombre()+" "+user.getApellidos()+" "+user.getMovil()+" "+user.getDireccion();
         //COMPRUEBO QUE SACA BIEN LA INFO DEL USUARIO UNA VEZ HAN SIDO MODIFICADOS
@@ -79,7 +81,8 @@ public class UserControlerTest {
         String correo = "prueba@gmail.com";
         String new_email = "prueba2@gmail.com";
         String password = "prueba";
-        ClientesDAO.modificarCorreo(correo, new_email);
+        UserControler gu =  new UserControler();
+        gu.modificarCorreo(correo, new_email);
         boolean eliminado_cambiado = false;
         if(UserControler.existeUsuario(correo,password)==false && UserControler.existeUsuario(new_email,password)==true){
             eliminado_cambiado = true;
@@ -95,21 +98,25 @@ public class UserControlerTest {
         crearUsuario(); //CREA CONTRASEÑA "prueba"
         String correo = "prueba@gmail.com";
         String new_password = "prueba2";
-        ClientesDAO.modificarContraseña(correo, new_password);
+        UserControler gu =  new UserControler();
+        gu.modificarContraseña(correo, new_password);
         assertEquals(true, UserControler.existeUsuario(correo,new_password));
         borrarUsuario();
     }
 
+    // Metodos para borrar y crear el usuario de prueba
     public void crearUsuario(){
         String correo = "prueba@gmail.com";
         String password = "prueba";
         User user = new User("Nombre","Apellido",correo, password, "Direccion","Numero");
-        ClientesDAO.logearUsuario(user);
+        UserControler gu =  new UserControler();
+        gu.logearUsuario(user);
     }
 
     public void borrarUsuario(){
         String correo = "prueba@gmail.com";
-        ClientesDAO.eliminarCuenta(correo);
+        UserControler gu =  new UserControler();
+        gu.eliminarCuenta(correo);
     }
 
 }

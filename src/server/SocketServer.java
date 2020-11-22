@@ -23,7 +23,7 @@ public class SocketServer extends  Thread{
 
     private HashMap<String,Object> session = new HashMap<String, Object>();
 
-    private SocketServer(Socket socket) {
+    public SocketServer(Socket socket) {
         this.socket = socket;
         System.out.println("New client connected from " + socket.getInetAddress().getHostAddress());
         start();

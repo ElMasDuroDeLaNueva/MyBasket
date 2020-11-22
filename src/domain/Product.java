@@ -26,6 +26,14 @@ public class Product implements Serializable {
         this.imagen = imagen;
     }
 
+    public Product(String idProduct, double precio, String marca, String descripcion, String categoria){
+        this.idProduct = idProduct;
+        this.precio = precio;
+        this.marca = marca;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+    }
+
     public Product(){}
 
     public String getIdProduct() {

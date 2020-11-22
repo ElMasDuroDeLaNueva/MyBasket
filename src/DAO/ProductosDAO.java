@@ -56,24 +56,4 @@ public class ProductosDAO {
 
     }
 
-    public static ArrayList<Product> productosCategoria(String categoria, ArrayList<Product> array){
-
-        //ArrayList<Product> array = productos;
-        Iterator<Product> it = array.iterator();
-        ArrayList<Product> productos = new ArrayList<Product>();
-
-
-        while (it.hasNext())
-        {
-
-            Product product = (Product) it.next();
-
-            if(product.getCategoria().equals(categoria)){
-                productos.add(product);
-            }
-        }
-
-        return productos;
-    }
-
 }
