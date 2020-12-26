@@ -1,8 +1,7 @@
 package server;
 
-import controler.ListasControler;
-import controler.ProductControler;
-import controler.UserControler;
+import controler.*;
+import domain.Factura;
 import domain.Lista;
 import domain.Product;
 import domain.User;
@@ -46,6 +45,7 @@ public class SocketServer extends  Thread{
         ArrayList<Product> array;
         HashMap<String,Object> data;
         boolean completado;
+        Factura factura;
 
         try {
             in = socket.getInputStream();
@@ -206,6 +206,61 @@ public class SocketServer extends  Thread{
                     productos = ProductControler.productosCategoria(categoria,array);
                     mensajeOut.setContext("/getProductosCategoriaRespuesta");
                     session.put("productos", productos);
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+
+                case "/vaciarDespensa":
+                    correo = (String)mensajeIn.getObject();
+                    DespensaControler.vaciarDespensa(correo);
+                    completado = true;
+                    mensajeOut.setContext("/vaciarDespensaRespuesta");
+                    session.put("completado", completado);
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+
+                case "/getProductosDespensa":
+                    data = (HashMap<String,Object>) mensajeIn.getObject();
+                    correo = (String) data.get("correo");
+                    array = (ArrayList<Product>) data.get("productos");
+                    productos = DespensaControler.getProductos(correo,array);
+                    mensajeOut.setContext("/getProductosDespensaRespuesta");
+                    session.put("productos", productos);
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+
+                case "/setProductosDespensa":
+                    data = (HashMap<String,Object>) mensajeIn.getObject();
+                    correo = (String) data.get("correo");
+                    array = (ArrayList<Product>) data.get("productos");
+                    DespensaControler.setProductos(correo, array);
+                    completado = true;
+                    mensajeOut.setContext("/setProductosDespensaRespuesta");
+                    session.put("completado", completado);
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+
+                case "/setFactura":
+                    data = (HashMap<String,Object>) mensajeIn.getObject();
+                    factura = (Factura) data.get("factura");
+                    FacturaControler.guardarFactura(factura);
+                    completado = true;
+                    mensajeOut.setContext("/setFacturaRespuesta");
+                    session.put("completado", completado);
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+
+                case "/getFactura":
+                    data = (HashMap<String,Object>) mensajeIn.getObject();
+                    correo = (String) data.get("correo");
+                    array = (ArrayList<Product>) data.get("productos");
+                    ArrayList<Factura> facturas = FacturaControler.obtenerFactura(correo,array);
+                    mensajeOut.setContext("/getFacturaRespuesta");
+                    session.put("facturas", facturas);
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;

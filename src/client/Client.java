@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import domain.Factura;
 import domain.Product;
 import domain.User;
 import configuracion.PropertiesISW;
@@ -92,6 +93,26 @@ public class Client {
 
             case "/getProductosCategoriaRespuesta":
                 respuesta = (ArrayList<Product>)(mensajeVuelta.getSession().get("productos"));
+                break;
+
+            case "/vaciarDespensaRespuesta":
+                respuesta = (boolean)(mensajeVuelta.getSession().get("completado"));
+                break;
+
+            case "/getProductosDespensaRespuesta":
+                respuesta = (ArrayList<Product>)(mensajeVuelta.getSession().get("productos"));
+                break;
+
+            case "/setProductosDespensaRespuesta":
+                respuesta = (boolean)(mensajeVuelta.getSession().get("completado"));
+                break;
+
+            case "/setFacturaRespuesta":
+                respuesta = (boolean)(mensajeVuelta.getSession().get("completado"));
+                break;
+
+            case "/getFacturaRespuesta":
+                respuesta = (ArrayList<Factura>)(mensajeVuelta.getSession().get("facturas"));
                 break;
 
             default:

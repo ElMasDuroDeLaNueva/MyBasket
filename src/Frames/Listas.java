@@ -233,7 +233,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false);
+                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false,true);
                 panel.add(producto_individual);
             }
         }else{
@@ -244,7 +244,7 @@ public class Listas extends JFrame implements MouseListener{
             while(it.hasNext()){
                 Product producto = it.next();
                 int cantidad = Collections.frequency(productos, producto);
-                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false);
+                JPanel producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,productos,url_mas,url_menos,false,true,false,true);
                 panel_filas.add(producto_individual);
                 contador++;
                 if(contador == 3){

@@ -1,5 +1,6 @@
 package DAO;
 
+import client.Client;
 import configuracion.PropertiesISW;
 
 import java.sql.Connection;
@@ -7,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionDAO {
-    public static Connection conexion;
+   static Connection instance;
     String url = PropertiesISW.getInstance().getProperty("ddbb.connection");
     String user = PropertiesISW.getInstance().getProperty("ddbb.user");
     String password = PropertiesISW.getInstance().getProperty("ddbb.password");
@@ -23,7 +24,7 @@ public class ConexionDAO {
         }
         try{
             //Realizamos conexion
-            conexion = DriverManager.getConnection(
+            instance = DriverManager.getConnection(
                     url,user, password);
             conectado = true;
 
@@ -38,9 +39,10 @@ public class ConexionDAO {
     }
 
     //Metodo que devuelve la conexion actualizada (pueden haber updates)
-    public static Connection getConexion(){
-        new ConexionDAO(); // ACTUALIAZO LA CONEXION POR SI HAN CAMBIADO LOS DATOS
-        return conexion;
+    public static Connection getConexion() throws SQLException {
+        if(instance == null || instance.isClosed())
+            new ConexionDAO();
+        return instance;
     }
 
     //Cierra la conexion de la Base de Datos
@@ -48,7 +50,7 @@ public class ConexionDAO {
     {
         try
         {
-            con.close();
+            instance.close();
         }
         catch(SQLException e)
         {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class PanelProductoIndividual {
 
-    public static JPanel getPanel(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos, boolean botones, boolean modificar, boolean pintar){
+    public static JPanel getPanel(Product product, int cantidad, ArrayList<Product> mi_seleccion, URL url_mas, URL url_menos, boolean botones, boolean modificar, boolean pintar, boolean precio){
 
         JPanel producto_individual = new JPanel(new BorderLayout());
         JPanel panel_producto = new JPanel(new BorderLayout());
@@ -68,10 +68,12 @@ public class PanelProductoIndividual {
                     int unidades = Integer.parseInt(lbl_cantidad.getText());
                     unidades++;
                     lbl_cantidad.setText(String.valueOf(unidades));
-                    if(modificar){
-                        Productos.modificar_precio(product,true);
-                    }else{
-                        ModificarLista.modificar_precio(product, true);
+                    if(precio) {
+                        if (modificar) {
+                            Productos.modificar_precio(product, true);
+                        } else {
+                            ModificarLista.modificar_precio(product, true);
+                        }
                     }
                     mi_seleccion.add(product);
                 }
@@ -87,10 +89,12 @@ public class PanelProductoIndividual {
                         unidades=0;
                     }else{
                         lbl_cantidad.setText(String.valueOf(unidades));
-                        if(modificar){
-                            Productos.modificar_precio(product,false);
-                        }else{
-                            ModificarLista.modificar_precio(product, false);
+                        if(precio){
+                            if(modificar){
+                                Productos.modificar_precio(product,false);
+                            }else{
+                                ModificarLista.modificar_precio(product, false);
+                            }
                         }
                         mi_seleccion.remove(product);
                     }

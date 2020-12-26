@@ -117,6 +117,11 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
                 borde1 = false;
                 facturas.setBorder(borde_def);
             }
+            public void mouseClicked(MouseEvent e)
+            {
+                cerrar();
+                new Facturas();
+            }
         });
 
         //DESPENSA
@@ -144,6 +149,11 @@ public class MenuPrincipal extends JFrame implements ActionListener, MouseListen
                 //System.out.println("Salir");
                 borde2 = false;
                 despensa.setBorder(borde_def);
+            }
+            public void mouseClicked(MouseEvent e)
+            {
+                cerrar();
+                new Despensa();
             }
         });
 

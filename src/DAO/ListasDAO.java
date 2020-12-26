@@ -13,8 +13,6 @@ public class ListasDAO {
 
     public static Connection conexion;
 
-    //PARA CADA METODO LLAMO A getConexion PARA POSIBLES ACTUALIZACIONES
-
     public static ArrayList<Product> añadirLista(Lista lista){
 
         String nombreLista = lista.getNombre_lista();

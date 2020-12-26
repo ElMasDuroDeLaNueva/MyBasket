@@ -3,6 +3,7 @@ package Frames;
 import DAO.ProductosDAO;
 import Util.*;
 import client.Client;
+import controler.ProductControler;
 import domain.Lista;
 import domain.Product;
 import domain.User;
@@ -35,6 +36,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
     JCheckBox cb_bebidas = new JCheckBox("Bebidas");
     JCheckBox cb_lacteos = new JCheckBox("Lacteos");
     JCheckBox cb_dulcesSalado = new JCheckBox("Dulces");
+    JCheckBox cb_reponer = new JCheckBox("Necesarios en despensa");
     JCheckBox cb_miSeleccion = new JCheckBox();
 
     static JScrollPane scroll;
@@ -152,6 +154,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         panel_filtro_precio.add(cb_bebidas);
         panel_filtro_precio.add(cb_lacteos);
         panel_filtro_precio.add(cb_dulcesSalado);
+        panel_filtro_precio.add(cb_reponer);
         panel_filtro_precio.add(cb_miSeleccion);
         cb_verduras.setBackground(Color.WHITE);
         cb_frutas.setBackground(Color.WHITE);
@@ -167,6 +170,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         cb_carniceria.addItemListener(this);
         cb_bebidas.addItemListener(this);
         cb_lacteos.addItemListener(this);
+        cb_reponer.addItemListener(this);
         cb_dulcesSalado.addItemListener(this);
         panel_filtro_precio.add(btn_buscar);
         cb_miSeleccion.addItemListener(new ItemListener() {
@@ -199,6 +203,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
                 meterCategoria(categorias_seleccionadas, cb_bebidas);
                 meterCategoria(categorias_seleccionadas, cb_lacteos);
                 meterCategoria(categorias_seleccionadas, cb_dulcesSalado);
+                meterCategoria(categorias_seleccionadas, cb_reponer);
                 meterCategoria(categorias_seleccionadas, cb_miSeleccion);
 
                 if(categorias_seleccionadas.isEmpty()){
@@ -227,6 +232,7 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         //Productos
         ArrayList<String> categorias = new ArrayList<String>();
         categorias.add(lista);
+        categorias.add("Necesarios en despensa");
         scroll = new JScrollPane(panel_categorias);
         meterProductos(categorias);
         panel_categorias.setBorder(new MatteBorder(0, 20, 0, 20, Color.WHITE));
@@ -300,9 +306,19 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
             JPanel panel_productos;
             Iterator<Product> it2;
             int max_lineas;
-            if(categoria.equals(lista)){
+            if(categoria.equals(lista) || categoria.equals("Necesarios en despensa")){
                 panel_productos = new JPanel(new GridLayout(1,0, 5, 10));
-                productos = mi_seleccion;
+                if(categoria.equals(lista)){
+                    productos = mi_seleccion;
+                }else{
+                    Client cliente = Client.getInstance();
+                    HashMap<String,Object> datos = new HashMap<String,Object>();
+                    String correo = InicioSesion.getUsuario();
+                    datos.put("correo",correo);
+                    datos.put("productos", InicioSesion.getProductos());
+                    ArrayList<Product> productos_despensa = (ArrayList<Product>) cliente.clienteServidor("/getProductosDespensa",datos);
+                    productos = productosInterseccion(mi_seleccion, productos_despensa);
+                }
                 productos_seleccionados = new HashSet<Product>(productos);
                 it2 = productos_seleccionados.iterator();
                 max_lineas = productos_seleccionados.size()-1;
@@ -328,12 +344,24 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
             {
                 Product producto = it2.next();
                 int cantidad = 0;
-                cantidad = Collections.frequency(mi_seleccion, producto);
-                JPanel producto_individual;
-                if(contador==max_lineas){
-                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,false);
+                if(categoria.equals("Necesarios en despensa")) {
+                    cantidad = Collections.frequency(productos, producto);
                 }else{
-                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,false,true);
+                    cantidad = Collections.frequency(mi_seleccion, producto);
+                }
+                JPanel producto_individual;
+                if(categoria.equals("Necesarios en despensa")) {
+                    if (contador == max_lineas) {
+                        producto_individual = PanelProductoIndividual.getPanel(producto, cantidad, mi_seleccion, url_mas, url_menos, false, false, false, false);
+                    } else {
+                        producto_individual = PanelProductoIndividual.getPanel(producto, cantidad, mi_seleccion, url_mas, url_menos, false, false, true, false);
+                    }
+                }else{
+                    if (contador == max_lineas) {
+                        producto_individual = PanelProductoIndividual.getPanel(producto, cantidad, mi_seleccion, url_mas, url_menos, true, false, false, true);
+                    } else {
+                        producto_individual = PanelProductoIndividual.getPanel(producto, cantidad, mi_seleccion, url_mas, url_menos, true, false, true, true);
+                    }
                 }
                 panel_productos.add(producto_individual);
                 contador++;
@@ -354,6 +382,30 @@ public class ModificarLista extends JFrame implements MouseListener,ItemListener
         }
 
 
+    }
+
+    public ArrayList<Product> productosInterseccion(ArrayList<Product> p_seleccion,ArrayList<Product> p_despensa){
+
+        ArrayList<String> id_p_seleccion = new ArrayList<String>();
+        ArrayList<String> id_p_despensa = new ArrayList<String>();
+        ArrayList<Product> id_pro = new ArrayList<Product>();
+
+        for(Product p : p_seleccion){
+            id_p_seleccion.add(p.getIdProduct());
+        }
+        for(Product p2 : p_despensa){
+            id_p_despensa.add(p2.getIdProduct());
+        }
+
+        for(String p3 : id_p_despensa){
+            if(id_p_seleccion.contains(p3)){
+                id_p_seleccion.remove(p3);
+            }
+        }
+
+        id_pro = ProductControler.obtenerProductos(id_p_seleccion, InicioSesion.getProductos());
+
+        return id_pro;
     }
 
     public static int maximoProductos(ArrayList<String> categorias){

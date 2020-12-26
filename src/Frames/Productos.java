@@ -1,6 +1,5 @@
 package Frames;
 
-import DAO.ProductosDAO;
 import Util.*;
 import client.Client;
 import domain.Product;
@@ -303,9 +302,9 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
                 cantidad = Collections.frequency(mi_seleccion, producto);
                 JPanel producto_individual;
                 if(contador==max_lineas){
-                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,false);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,false,true);
                 }else{
-                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,true);
+                    producto_individual = PanelProductoIndividual.getPanel(producto,cantidad,mi_seleccion,url_mas,url_menos,true,true,true,true);
                 }
                 panel_productos.add(producto_individual);
                 contador++;
@@ -439,6 +438,11 @@ public class Productos extends JFrame implements MouseListener,ItemListener{
             new MenuPrincipal();
         }else if (target == lbl_lista) {
             new ConfirmaLista(this);
+        }else if (target == lbl_comprar) {
+            String str = lbl_total.getText();
+            str = str.replaceAll("[^\\d.]", "");
+            double total2 = Double.parseDouble(str);
+            new Compra(mi_seleccion, this,total2);
         }
     }
 
